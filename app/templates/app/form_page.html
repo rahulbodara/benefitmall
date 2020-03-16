@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static wagtailcore_tags widget_tweaks %}
+
+{% block content %}
+    {% for block in self.text_above %}
+        {% include_block block %}
+    {% endfor %}
+
+
+    <section>
+        <div class="container">
+            <form action="{% pageurl page %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                    <fieldset class="row">
+                    {{ page.intro|richtext }}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="col-md-12">
+                        <small class="required" style="color: #008d83;">* Indicates a required field.</small>
+                    </div>
+
+                    {% for field in form %}
+                        <span style="color:red;">{{ field.errors }}</span>
+                        {% with required_label=' *' %}
+                            {% if field|field_type == 'filefield' %}
+                                <div class="col-md-12 ">
+                                    <label>{{ field.label|safe }}</label>
+                                    {% render_field field placeholder="Document Upload" id="document_upload" name=field.label type="file"%}
+                                </div>
+
+                            {% elif field|field_type == 'multiplechoicefield' %}
+                                <div class="col-md-12 ">
+                                    <span class="alert-danger">{{ field.errors }}</span>
+                                    <label>{{ field.label|safe }}</label>
+                                    {% render_field field name=field.html_name placeholder=field.label %}
+                                </div>
+                            {% elif field|field_type == 'choicefield' %}
+                                <div class="col-md-12">
+                                    <span class="alert-danger">{{ field.errors }}</span>
+                                    <label>{{ field.label|safe }}</label>
+                                    <div class="input-select">
+                                        {% render_field field name=field.html_name placeholder=field.label %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="col-md-12">
+                                    <span class="alert-danger">{{ field.errors }}</span>
+                                    <label class="hidden">{{ field.label|safe }}</label>
+                                    {% render_field field name=field.html_name placeholder=field.label rows="3" cols="20" %}
+                                </div>
+                            {% endif %}
+
+                        {% endwith %}
+                    {% endfor %}
+                    <div class="col-md-12 text-center">
+                        <input style="width: 90px; margin-top: 10px;" type="submit" class="btn" value="Submit" />
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </section>
+
+
+
+    {% for block in self.text_below %}
+        {% include_block block %}
+    {% endfor %}
+
+{% endblock %}

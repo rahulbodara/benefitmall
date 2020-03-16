@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static wagtailcore_tags %}
+
+{# TODO FED needed for form landing page #}
+{% block content %}
+    <div class="container copy_width">
+        {{ page.thank_you_text | richtext }}
+    </div>
+{% endblock %}
