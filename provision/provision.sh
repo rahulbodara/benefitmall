@@ -19,8 +19,7 @@ SOFTWARE=(
     "python-pip"
     "expect"
     "python3-dev"
-    "postgresql-10"
-    "postgresql-contrib-10"
+    "postgresql-12"
     "libpq-dev"
      )
 LOG_COLOR="\e[1;36m"
@@ -42,9 +41,14 @@ logit () {
 #-------------------------------------------------------------
 # INSTALL SOFTWARE
 #-------------------------------------------------------------
-# Update to postgres 10
-wget -qO - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" | sudo tee -a /etc/apt/sources.list.d/PostgreSQL.list
+# Update to postgres 12
+
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee  /etc/apt/sources.list.d/PostgreSQL.list
+#
+#
+#wget -qO - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+#echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" | sudo tee -a /etc/apt/sources.list.d/PostgreSQL.list
 
 # INFO: update ubuntu
 logit "Updating Ubuntu"
