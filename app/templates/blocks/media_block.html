@@ -1,0 +1,30 @@
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% image self.image original as image %}
+{% if width == 'fixed' %}
+    {% if self.mode == 'image' %}
+       <img src="{{ image.url }}" class="{{ self.corners }} {{ self.shadow }}" alt="{{ image.alt }}">
+    {% elif self.mode == 'image-video' %}
+        <div class="video-cover {{ self.corners }} {{ self.shadow }}">
+            <div class="background-image-holder">
+                <img src="{{ image.url }}" alt="{{ image.alt }}">
+            </div>
+            <div class="video-play-icon"></div>
+            <iframe data-src="{{ self.video_source }}{{ self.video_id }}?autoplay=1" allowfullscreen="allowfullscreen"></iframe>
+        </div>
+    {% endif %}
+{% elif width == 'full' %}
+    <div class="background-image-holder">
+        <img src="{{ image.url }}" alt="{{ image.alt }}">
+    </div>
+    {% if self.mode == 'image-video' %}
+        <div class="modal-instance">
+            <div class="video-play-icon modal-trigger"></div>
+            <div class="modal-container">
+                <div class="modal-content bg-dark" data-width="60%" data-height="60%">
+                    <iframe data-src="{{ self.video_source }}{{ self.video_id }}?autoplay=1" allowfullscreen="allowfullscreen"></iframe>
+                </div>
+            </div>
+        </div>
+   {% endif %}
+{% endif %}

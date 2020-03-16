@@ -1,0 +1,28 @@
+{% load wagtailimages_tags %}
+{% image self.image original as image %}
+
+{% if layout == 'three-column' %}
+    <div class="col-md-4">
+        <div class="feature feature-8">
+            {% if image %}
+                <img src="{{ image.url }}" alt="{{ image.alt }}">
+            {% endif %}
+            <h5>{{ self.name }}</h5>
+            {% if self.title %}
+                <span>{{ self.title }}</span>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <div class="col-md-6">
+        <div class="feature feature-9">
+            {% if image %}
+                <img src="{{ image.url }}" alt="{{ image.alt }}" class="border--round">
+            {% endif %}
+            <h4>{{ self.name }}</h4>
+            {% if self.title %}
+                <span>{{ self.title }}</span>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

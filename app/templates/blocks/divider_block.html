@@ -1,0 +1,13 @@
+<div id="{{ prefix }}" class="custom-form-divider">{% if icon %}<i class="icon icon-{{ icon }}"></i>{% endif %}{{ heading }}</div>
+<style>
+.custom-form-divider {
+	background-color: #EEE;
+	padding: 5px 9px;
+	position: relative;
+	left: -20px;
+	width: 100%;
+}
+</style>
+<script>
+	$('#{{ prefix }}').prev().hide();
+</script>

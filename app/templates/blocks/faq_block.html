@@ -1,0 +1,22 @@
+{% load wagtailcore_tags %}
+<section class="{{ self.text.alignment }} {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    <div class="container {{ self.background.size_mode }}">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="text-block">
+                    <h4>{{ self.title }}</h4>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                {% for block in self.faqs_col1 %}
+                    {% include_block block %}
+                {% endfor %}
+            </div>
+            <div class="col-lg-4">
+                {% for block in self.faqs_col2 %}
+                    {% include_block block %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% load app_tags %}
+
+{% block content %}
+<section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <article>
+                    <div class="article__title text-center">
+                        <h1 class="h2">{{ page.title }}</h1>
+                        <span>{{ page.date|date:'F jS, Y' }} in </span>
+                        {% for category in page.categories.all %}
+                            <span><a href="{% pageurl page.blog_landing_page %}category/{{ category.slug }}">{{ category }}</a>{% if not forloop.last %},{% endif %}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="article__body">
+                        {% image page.image original as image %}
+                        {% if page.video_source %}
+                            <div class="video-cover border--round">
+                                <div class="background-image-holder" style="background: url('{{ image.url }}'); opacity: 1;">
+                                    <img src="{{ image.url }}" alt="{{ image.alt }}">
+                                </div>
+                                <div class="video-play-icon"></div>
+                                <iframe data-src="{{ page.video_source }}{{ page.video_id}}?autoplay=1" allowfullscreen="allowfullscreen"></iframe>
+                            </div>
+                        {% else %}
+                            <img src="{{ image.url }}" alt="{{ image.alt }}">
+                        {% endif %}
+                        {% format_blog_content page.content|richtext %}
+                    </div>
+
+                    <div class="article__share text-center">
+                        <a class="btn" href="{% pageurl page.blog_landing_page %}">
+                            <span class="btn__text">&laquo; Back</span>
+                        </a>
+                        <a class="btn bg--facebook btn--icon popup" href="https://www.facebook.com/sharer/sharer.php?u={{ page.get_site.root_url }}{% pageurl page %}">
+                            <span class="btn__text"><i class="socicon socicon-facebook"></i>SHARE ON FACEBOOK</span>
+                        </a>
+                        <a class="btn bg--twitter btn--icon popup" href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ page.get_site.root_url }}{% pageurl page %}">
+                            <span class="btn__text"><i class="socicon socicon-twitter"></i>SHARE ON TWITTER</span>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% get_recent_posts page as recent_posts %}
+{% if recent_posts %}
+    <section class="bg--secondary">
+        <div class="container">
+            <div class="row text-block">
+                <div class="col-md-12">
+                    <h3>Recent Articles</h3>
+                </div>
+            </div>
+            <div class="row">
+                {% for post in recent_posts %}
+                <div class="col-md-4">
+                    <article class="feature feature-1">
+                        {% image post.image original as post_image %}
+                        <a href="{% pageurl post %}" class="block">
+                            <img src="{{ post_image.url }}" alt="{{ post_image.alt }}">
+                        </a>
+                        <div class="feature__body boxed boxed--border">
+                            <span>{{ page.date|date:'F jS, Y' }}</span>
+                            <h5>{{ post.title }}</h5>
+                            <a href="{% pageurl post %}">Read article &raquo;</a> 
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}
+{% endblock %}

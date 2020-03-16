@@ -1,0 +1,34 @@
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% image self.media.image original as image %}
+{% if self.width == 'fixed' %}
+    <section class="{{ self.text.alignment }} {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+        {% include_block self.background %}
+        <div class="container {{ self.background.size_mode }}">
+            <div class="row justify-content-around {{ self.vertical_alignment }}">
+                <div class="col-md-6 col-lg-5">
+                    <div class="switchable__text">
+                        {% include_block self.text %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    {% include_block self.media with width=self.width %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% elif self.width == 'full' %}
+    <section class="imageblock {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+        <div class="imageblock__content col-lg-6 col-md-4 pos-right" style="z-index:3;">
+            {% include_block self.media with width=self.width %}
+        </div>
+        {% include_block self.background %}
+        <div class="container {{ self.background.size_mode }}" style="z-index:2;">
+            <div class="row {{ self.text.alignment }}">
+                <div class="col-lg-5 col-md-7">
+                    {% include_block self.text %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}

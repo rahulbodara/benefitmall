@@ -1,0 +1,42 @@
+{% load wagtailcore_tags wagtailimages_tags app_tags %}
+{% image self.image original as image %}
+<section class="switchable feature-large {{ self.layout }}">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-md-6">
+                <img src="{{ image.url }}" alt="{{ image.alt }}" class="border--round">
+            </div>
+            <div class="col-md-6 col-lg-5">
+                <div class="switchable__text">
+                    <div class="text-block">
+                        <h2>{{ self.name }}</h2>
+                        {% if self.title %}
+                        <span>{{ self.title }}</span>
+                        {% endif %}
+                    </div>
+                    {% format_paragraph self.body self.body_size %}
+                    <ul class="social-list list-inline list--hover">
+                        {% if self.social_mail %}
+                            <li class="list-inline-item"><a href="mailto:{{ self.social_mail }}"><i class="socicon socicon-mail icon icon--xs"></i></a></li>
+                        {% endif %}
+                        {% if self.social_facebook %}
+                            <li class="list-inline-item"><a href="{{ self.social_facebook }}"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
+                        {% endif %}
+                        {% if self.social_instagram %}
+                            <li class="list-inline-item"><a href="{{ self.social_instagram }}"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
+                        {% endif %}
+                        {% if self.social_twitter %}
+                            <li class="list-inline-item"><a href="{{ self.social_twitter }}"><i class="socicon socicon-twitter icon icon--xs"></i></a></li>
+                        {% endif %}
+                        {% if self.social_linkedin %}
+                            <li class="list-inline-item"><a href="{{ self.social_linkedin }}"><i class="socicon socicon-linkedin icon icon--xs"></i></a></li>
+                        {% endif %}
+                        {% if self.social_youtube %}
+                            <li class="list-inline-item"><a href="{{ self.social_youtube }}"><i class="socicon socicon-youtube icon icon--xs"></i></a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

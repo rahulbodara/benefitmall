@@ -1,0 +1,11 @@
+{% load wagtailcore_tags %}
+<section class="text-center {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+    <div class="container {{ self.background.size_mode }}">
+        <div class="row">
+            {% for block in self.bios %}
+                {% include_block block with layout=self.layout %}
+            {% endfor %}
+        </div>
+    </div>
+</section>

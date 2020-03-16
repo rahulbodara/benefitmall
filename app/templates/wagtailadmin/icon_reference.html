@@ -1,0 +1,126 @@
+{% extends "wagtailadmin/base.html" %}
+{% load static %}
+
+{% block titletag %}Icon Reference{% endblock %}
+
+{% block extra_css %}
+<style>
+	@font-face {
+		font-family: 'iconsmind';
+		src:url('{% static "fonts/theme/iconsmind.eot?#iefix-rdmvgc" %}') format('embedded-opentype');
+		src:url('{% static "fonts/theme/iconsmind.woff" %}') format('woff'),
+			url('{% static "fonts/theme/iconsmind.ttf" %}') format('truetype');
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	[class^="iconsmind-"], [class*=" iconsmind-"] {
+		font-family: 'iconsmind';
+		font-size: 35px;
+		speak: none;
+		font-style: normal;
+		font-weight: normal;
+		font-variant: normal;
+		text-transform: none;
+		line-height: 1.1em;
+		/* Better Font Rendering =========== */
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		color: #43b1b0;
+	}
+
+	.icons-list {
+		list-style: none outside none;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+	}
+
+	.icons-list li {
+		flex: 0 1 33%;
+	}
+
+	.icons-list li.category-item {
+		flex: 0 1 100%;
+	}
+
+	.icons-list li.category-item h2 {
+		text-transform: none;
+		margin: 50px 0 20px 0;
+		font-size: 2em;
+	}
+
+	.icons-list li span, .icons-list li span a {
+		font-family: Open Sans,Arial,sans-serif;
+		font-size: 15px;
+		vertical-align: middle;
+		padding-left: 1em;
+		color: #666;
+	}
+</style>
+<link href="{% static 'css/admin/iconsmind-admin.css' %}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+		<header class=" hasform">
+		    <div class="row nice-padding">
+		        <div class="left">
+		            <div class="col header-title" action="#">
+		                <h1 class="icon icon-list-ul">Icon Reference</h1>
+		            </div>
+		            <form class="col search-form" id="icon-search-form">
+		                <ul class="fields">
+		                    <li class="required">
+		                        <div class="field char_field text_input field-small iconfield">
+		                            <label for="id_q">Search term:</label>
+		                            <div class="field-content">
+		                                <div class="input icon-search ">
+		                                    <input type="text" name="q" required="" id="icon-search" placeholder="Search icons">
+		                                    <span></span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </li>
+		                </ul>
+		            </form>
+		        </div>
+		    </div>
+		</header>
+        <section class="active nice-padding">
+			{% regroup icons by get_category_display as grouped_icons %}
+			<ul class="icons-list">
+			{% for group in grouped_icons %}
+				<li class="category-item"><h2>{{ group.grouper }}</h2></li>
+				{% for icon in group.list %}
+				<li>
+					<i class="iconsmind-{{ icon }}"><span><a class="color-grey-1" href="/admin/app/icon/edit/{{ icon.id }}/">{{ icon }}</a></span></i>
+				</li>
+				{% endfor %}
+			{% endfor %}
+			</ul>
+		</section>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(function () {
+	$('#icon-search-form').submit(function(event) {
+		event.preventDefault();
+	});
+
+	$('#icon-search').keyup(function(event) {
+		var input = $(this).val().toLowerCase();
+	    var li = $('.icons-list li');
+	    for (i = 0; i < li.length; i++) {
+			if (li[i].innerHTML.toLowerCase().indexOf(input) > -1) {
+				li[i].style.display = '';
+			} else {
+				li[i].style.display = 'none';
+			}
+		}
+	});
+});
+</script>
+{% endblock %}

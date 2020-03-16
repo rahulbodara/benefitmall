@@ -1,0 +1,55 @@
+/* ====================================================
+    Icon font load for admin
+======================================================= */
+@font-face {
+    font-family: 'iconsmind';
+    src:url('/static/fonts/theme/iconsmind.eot?#iefix-rdmvgc') format('embedded-opentype');
+    src:url('/static/fonts/theme/iconsmind.woff') format('woff'),
+        url('/static/fonts/theme/iconsmind.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+i.glyph {
+    font-family: 'iconsmind';
+    font-size: 35px;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1.1em;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #43b1b0;
+}
+/* ==================================================== */
+
+
+/* ====================================================
+    Categories list styling on Blog edit page
+======================================================= */
+.blog-categories .field-content li {
+    min-width: 29%;
+    margin-right: 20px;
+    float: left;
+}
+
+.blog-categories .field-content li label {
+    white-space: nowrap;
+}
+
+.blog-categories .field-content p.help {
+    clear: both;
+}
+/* ==================================================== */
+
+
+/* ====================================================
+    Video Source help text styling on Blog edit page
+======================================================= */
+.blog-video-source .field-content p.help {
+    clear: both;
+}
+/* ==================================================== */

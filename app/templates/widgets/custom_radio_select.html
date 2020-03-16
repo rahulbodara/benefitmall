@@ -1,0 +1,14 @@
+{% with id=widget.attrs.id %}
+<ul id="{{ id }}" class="custom-radio-widget">
+  {% for group, options, index in widget.optgroups %}
+    {% for option in options %}
+      <li class="item">
+        <label>
+          <input type="{{ option.type }}" name="{{ option.name }}"{% if option.value != None %} value="{{ option.value|stringformat:'s' }}"{% endif %}{% include "django/forms/widgets/attrs.html" %} {% if option.attrs.checked %}checked{% endif %}>
+          <span class="input">{% if option.label|slice:':5' == 'icon-' %}<i class="icon {{ option.label }}"></i>{% else %}{{ option.label }}{% endif %}</span>
+        </label>
+      </li>
+    {% endfor %}
+  {% endfor %}
+</ul>
+{% endwith %}

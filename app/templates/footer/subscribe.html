@@ -1,0 +1,36 @@
+<footer class="footer-4 space--sm text-center-xs">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6"> <img alt="Image" class="logo" src="img/logo-dark.png"> <span class="block--xs">Supercharge your workflow</span> </div>
+            <div class="col-sm-6">
+                <form class="row" action="//mrare.us8.list-manage.com/subscribe/post?u=77142ece814d3cff52058a51f&amp;id=f300c9cce8" data-success="Thanks for signing up.  Please check your inbox for a confirmation email." data-error="Please provide your email address.">
+                    <div class="col-sm-7"> <input class="validate-required validate-email" type="text" name="EMAIL" placeholder="Email Address"> </div>
+                    <div class="col-sm-5"> <button type="submit" class="btn btn--primary type--uppercase">Subscribe</button> </div>
+                    <div style="position: absolute; left: -5000px" aria-hidden="true"> <input type="text" name="b_77142ece814d3cff52058a51f_f300c9cce8" tabindex="-1" value=""> </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6"> <span class="type--fine-print">© <span class="update-year"></span> Stack Inc.</span> <a class="type--fine-print" href="#">Privacy Policy</a> <a class="type--fine-print" href="#">Legal</a> </div>
+            <div class="col-sm-6 text-right text-center-xs block--xs">
+                <ul class="social-list list-inline list--hover">
+                    {% if social_linkedin %}
+                        <li><a href="{{ social_linkedin }}"><i class="socicon socicon-linkedin icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_twitter %}
+                        <li><a href="{{ social_twitter }}"><i class="socicon socicon-twitter icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_facebook %}
+                        <li><a href="{{ social_facebook }}"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_instagram %}
+                        <li><a href="{{ social_instagram }}"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_youtube %}
+                        <li><a href="{{ social_youtube }}"><i class="socicon socicon-youtube icon icon--xs"></i></a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

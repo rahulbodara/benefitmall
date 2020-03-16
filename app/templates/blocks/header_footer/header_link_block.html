@@ -1,0 +1,29 @@
+{% load wagtailcore_tags %}
+{% if self.children %}
+	<li class="dropdown dropdown--hover">
+		<a href="{{ self.href_prefix }}{{ self.href }}" target="{{ self.target }}">
+            <span class="dropdown__trigger">
+			    {{ self.link_text}}
+		    </span>
+        </a>
+	    <div class="dropdown__container">
+	        <div class="container">
+	            <div class="row">
+	                <div class="dropdown__content col-lg-2">
+	                    <ul class="menu-vertical">
+	                    	{% for block in self.children %}
+	                    		{% include_block block %}
+	                    	{% endfor %}
+	                    </ul>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</li>
+{% else %}
+	<li>
+	    <a href="{{ self.href_prefix }}{{ self.href }}" target="{{ self.target }}">
+	        <span class="btn__text">{{ self.link_text }}</span>
+	    </a>
+	</li>
+{% endif %}

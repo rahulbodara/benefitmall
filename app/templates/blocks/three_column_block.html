@@ -1,0 +1,13 @@
+{% load wagtailimages_tags %}
+{% load wagtailcore_tags %}
+{% image self.background_image original as bgimage %}
+<section class="{{ self.text.alignment }} {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+    <div class="container {{ self.background.size_mode }}">
+        <div class="row">
+        {% for block in self.items %}
+            {% include_block block %}
+        {% endfor %}
+        </div>
+    </div>
+</section>

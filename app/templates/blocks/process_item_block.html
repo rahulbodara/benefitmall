@@ -1,0 +1,30 @@
+{% load wagtailcore_tags %}
+
+{% if layout == 'vertical' %}
+    <div class="process__item">
+        <h4>{{ self.title }}</h4>
+        <p> {{ self.text }} </p>
+    </div>
+{% elif layout == 'horizontal' %}
+    <div class="col-md-3">
+        <div class="process__item">
+            <h5>{{ self.title }}</h5>
+            <p> {{ self.text }} </p>
+        </div>
+    </div>
+{% elif layout == 'boxes' %}
+    <div class="col-md-6">
+        <div class="feature feature-3 boxed boxed--lg boxed--border"> <span class="h1 h1--large">{{ num }}.</span>
+            <h4>{{ self.title }}</h4>
+            <p> {{ self.text }} </p>
+        </div>
+    </div>
+{% elif layout == 'media' %}
+    <li class="process_item">
+        <div class="process__number"><span>{{ num }}</span></div>
+        <div class="process__body">
+            <h4>{{ self.title }}</h4>
+            <p> {{ self.text }} </p>
+        </div>
+    </li>
+{% endif %}

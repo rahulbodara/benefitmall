@@ -1,0 +1,95 @@
+{% load wagtailimages_tags %}
+
+<section class="{{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+    <div class="container {{ self.background.size_mode }}">
+        <div class="masonry">
+        {% if self.mode == 'gallery'%}
+            <div class="masonry-filter-container text-center row justify-content-center align-items-center"> <span>Category:</span>
+                <div class="masonry-filter-holder">
+                    <div class="masonry__filters" data-filter-all-text="All Categories">
+                        <ul>
+                            <li class="active" data-masonry-filter="*">All Categories</li>
+                            {% for category in self.categories %}
+                                <li data-masonry-filter="{{category.filter}}">{{category.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="masonry__container row masonry--active">
+                {% for category in self.categories %}
+                    {% for image in category.images %}
+                        {% image image.image original as image %}
+                        <div class="masonry__item col-lg-4 col-6 filter-{{category.filter}}" data-masonry-filter="{{category.name}}">
+                            <a href="{{image.url}}" data-lightbox="{{category.filter}}"> <img alt="Image" src="{{image.url}}"> </a>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% elif self.mode == 'undertext' %}
+            <div class="masonry-filter-container text-center d-flex flex-wrap justify-content-center align-items-center"> <span>Category:</span>
+                <div class="masonry-filter-holder">
+                    <div class="masonry__filters" data-filter-all-text="All Categories">
+                        <ul>
+                            <li class="active" data-masonry-filter="*">All Categories</li>
+                            {% for category in self.categories %}
+                                <li data-masonry-filter="{{category.filter}}">{{category.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+                <div class="masonry__container row">
+                {% for category in self.categories %}
+                    {% for images in category.images %}
+                        {% image images.image original as image %}
+                        <div class="masonry__item col-md-6 text-center" data-masonry-filter="{{category.name}}">
+                            <div class="project-thumb">
+                                <a href="#"> <img alt="Image" class="border--round" src="{{ image.url }}"> </a>
+                                <h4>{{images.title}}</h4> <span>{{ images.subtitle }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                </div>
+        {% elif self.mode == 'overlaytext' %}
+            <div class="masonry-filter-container text-center row justify-content-center align-items-center"> <span>Category:</span>
+                <div class="masonry-filter-holder">
+                    <div class="masonry__filters" data-filter-all-text="All Categories">
+                        <ul>
+                            <li class="active" data-masonry-filter="*">All Categories</li>
+                            {% for category in self.categories %}
+                                <li data-masonry-filter="{{category.filter}}">{{category.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="masonry__container row masonry--active">
+            {% for category in self.categories %}
+                {% for images in category.images %}
+                {% image images.image original as image %}
+                    <div class="masonry__item col-md-6 col-12 filter-{{category.filter}}" data-masonry-filter="{{category.name}}">
+                        <div class="project-thumb hover-element border--round {% if not self.hover %} hover--active{% endif %}">
+                            <a href="#">
+                                <div class="hover-element__initial">
+                                    <div class="background-image-holder"> <img alt="background" src="{{image.url}}"> </div>
+                                </div>
+                                <div class="hover-element__reveal" data-scrim-top="5">
+                                    <div class="project-thumb__title">
+                                        <h4>{{images.title}}</h4> <span>{{images.subtitle}}</span> </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+               {% endfor %}
+            {% endfor %}
+            </div>
+        {% endif %}
+        </div>
+    </div>
+</section>
+
+
+

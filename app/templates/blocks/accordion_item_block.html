@@ -1,0 +1,7 @@
+{% load wagtailcore_tags %}
+<li class="{% if is_first %}{{ active }}{% endif %}">
+    <div class="accordion__title text-left"> <span class="h5">{{ self.title }}</span> </div>
+    <div class="accordion__content">
+        {{ self.body }}
+    </div>
+</li>

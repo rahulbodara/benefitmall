@@ -1,0 +1,21 @@
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% image self.image original as image %}
+<div class="tab__title text-center">
+    <i class="icon icon--sm block icon-{{ self.icon }}"></i>
+    <span class="h5">{{ self.text.heading }}</span>
+</div>
+<div class="tab__content {{ self.layout }}">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <img src="{{ image.url }}" alt="{{ image.alt}}">
+            </div>
+            <div class="col-md-5 col-lg-4 {{ self.text.alignment }}">
+                <div class="mt--1">
+                    {% include_block self.text %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

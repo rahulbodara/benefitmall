@@ -1,0 +1,20 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$3fUdSHOwcBAU$r7Ls1y3ltlywUwo46KB+P3DPZDk3/MkGTKggFZ3Qb78=",
+    "last_login": "2018-08-16T04:15:57.423Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Insite",
+    "last_name": "Admin",
+    "email": "maintenance@insite.net",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2018-08-16T03:24:09.087Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

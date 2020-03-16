@@ -1,0 +1,11 @@
+{% load wagtailcore_tags %}
+{% load app_tags %}
+<section class="{{ self.alignment }} {{ self.padding }}">
+    <div class="container">
+		<div class="row">
+			<div class="col-md-12 col-lg-12">
+				{% format_paragraph self.body self.body_size %}
+			</div>
+		</div>
+	</div>
+</section>

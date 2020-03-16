@@ -1,0 +1,74 @@
+/* The container for the widget */
+.custom-radio-widget {
+  margin: .7em 0 0 0;
+  display: -webkit-box;  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;     /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;  /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  display: flex;         /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+/* The container for the radio option */
+.custom-radio-widget li.item label {
+  cursor: pointer;
+  display: inline;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.custom-radio-widget label input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Create a custom radio button */
+.custom-radio-widget label span {
+  font-family: Open Sans,Arial,sans-serif;
+  width: auto;
+  padding: .5em 1em;
+  font-size: .9em;
+  font-weight: 400;
+  vertical-align: middle;
+  display: inline-block;
+  background-color: #fff;
+  border: 1px solid #43b1b0;
+  border-left: none;
+  color: #43b1b0;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  outline: none;
+  box-sizing: border-box;
+  -webkit-font-smoothing: auto;
+  align-items: flex-start;
+  text-align: center;
+}
+
+/* Set border style for the first button */
+.custom-radio-widget li:first-child label span {
+  border-left: 1px solid #43b1b0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* Set border style for the last button */
+.custom-radio-widget li:last-child label span {
+  border-radius: 0 3px 3px 0;
+}
+
+/* On mouse-over, change background, border, and text color */
+.custom-radio-widget label:hover input ~ span {
+    background-color: #358c8b;
+    border-color: #358c8b;
+    color: #fff;
+}
+
+/* When the radio button is checked, change background, border, and text color */
+.custom-radio-widget label input:checked ~ span {
+    background-color: #43b1b0;
+    border-color: #43b1b0;
+    color: #fff;
+}

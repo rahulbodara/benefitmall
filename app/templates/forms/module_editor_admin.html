@@ -1,0 +1,129 @@
+{% include "wagtailadmin/block_forms/struct.html" %}
+<script>
+    // all fields of the block have a common prefix on the ID,
+    // which is available as the template variable 'prefix'.
+    // Retrieve the 'heldover' checkbox
+    var style_selection = $('#{{ prefix }}-background_style:checked').val();
+    var style_selector = $('#{{ prefix }}-background_style');
+    var media_selection = $('#{{ prefix }}-media_type:checked').val();
+    var media_selector = $('#{{ prefix }}-media_type');
+    var size_selection = $('#{{ prefix }}-layout_chooser:checked').val();
+    var size_selector = $('#{{ prefix }}-layout_chooser');
+
+    if(style_selection=='imagebg'){
+        $('#{{ prefix }}-background_image').closest('div.field').parent().show();
+        $('#{{ prefix }}-background_image_effect').closest('div.field').parent().show();
+        $('#{{ prefix }}-background_image_overlay').closest('div.field').parent().show();
+        $('#{{ prefix }}-background_image_invert').closest('div.field').parent().show();
+    }else{
+        $('#{{ prefix }}-background_image').closest('div.field').parent().hide();
+        $('#{{ prefix }}-background_image_effect').closest('div.field').parent().hide();
+        $('#{{ prefix }}-background_image_overlay').closest('div.field').parent().hide();
+        $('#{{ prefix }}-background_image_invert').closest('div.field').parent().hide();
+    }
+    style_selector.change(function(){
+        if($('#{{ prefix }}-background_style:checked').val()=='imagebg'){
+            $('#{{ prefix }}-background_image').closest('div.field').parent().show();
+            $('#{{ prefix }}-background_image_effect').closest('div.field').parent().show();
+            $('#{{ prefix }}-background_image_overlay').closest('div.field').parent().show();
+            $('#{{ prefix }}-background_image_invert').closest('div.field').parent().show();
+        }else{
+            $('#{{ prefix }}-background_image').closest('div.field').parent().hide();
+            $('#{{ prefix }}-background_image_effect').closest('div.field').parent().hide();
+            $('#{{ prefix }}-background_image_overlay').closest('div.field').parent().hide();
+            $('#{{ prefix }}-background_image_invert').closest('div.field').parent().hide();
+        }
+    });
+
+
+    //Video or Image
+    if(media_selection=='video'){
+        $('#{{ prefix }}-video').closest('div.field').parent().show();
+        $('#{{ prefix }}-image').closest('div.field').parent().hide();
+
+    }else{
+        $('#{{ prefix }}-video').closest('div.field').parent().hide();
+        $('#{{ prefix }}-image').closest('div.field').parent().show();
+
+    }
+    media_selector.change(function(){
+        if($('#{{ prefix }}-media_type:checked').val()=='video'){
+            $('#{{ prefix }}-video').closest('div.field').parent().show();
+            $('#{{ prefix }}-image').closest('div.field').parent().hide();
+
+        }else{
+            $('#{{ prefix }}-video').closest('div.field').parent().hide();
+            $('#{{ prefix }}-image').closest('div.field').parent().show();
+
+        }
+    });
+
+
+
+    //Cover Image
+    if(media_selection=='video' && size_selection=='max'){
+        $('#{{ prefix }}-image_cover').closest('div.field').parent().show();
+        $('#{{ prefix }}-video').closest('div.field').parent().show();
+        $('#{{ prefix }}-image').closest('div.field').parent().hide();
+
+    }
+    else if(media_selection=='video' && size_selection!='max'){
+        $('#{{ prefix }}-image_cover').closest('div.field').parent().hide();
+        $('#{{ prefix }}-video').closest('div.field').parent().show();
+        $('#{{ prefix }}-image').closest('div.field').parent().hide();
+    }
+    else{
+        $('#{{ prefix }}-image_cover').closest('div.field').parent().hide();
+        $('#{{ prefix }}-video').closest('div.field').parent().hide();
+        $('#{{ prefix }}-image').closest('div.field').parent().show();
+
+    }
+
+
+    media_selector.change(function(){
+        md = $('#{{ prefix }}-media_type:checked').val();
+        sz = $('#{{ prefix }}-layout_chooser:checked').val();
+        if(md=='video' && sz=='max'){
+            $('#{{ prefix }}-image_cover').closest('div.field').parent().show();
+            $('#{{ prefix }}-video').closest('div.field').parent().show();
+            $('#{{ prefix }}-image').closest('div.field').parent().hide();
+
+        }
+        else if(md=='video' && sz!='max'){
+            $('#{{ prefix }}-image_cover').closest('div.field').parent().hide();
+            $('#{{ prefix }}-video').closest('div.field').parent().show();
+            $('#{{ prefix }}-image').closest('div.field').parent().hide();
+        }
+        else{
+            $('#{{ prefix }}-image_cover').closest('div.field').parent().hide();
+            $('#{{ prefix }}-video').closest('div.field').parent().hide();
+            $('#{{ prefix }}-image').closest('div.field').parent().show();
+
+        }
+    });
+
+
+    size_selector.change(function(){
+        md = $('#{{ prefix }}-media_type:checked').val();
+        sz = $('#{{ prefix }}-layout_chooser:checked').val();
+        if(md=='video' && sz=='max'){
+            $('#{{ prefix }}-image_cover').closest('div.field').parent().show();
+            $('#{{ prefix }}-video').closest('div.field').parent().show();
+            $('#{{ prefix }}-image').closest('div.field').parent().hide();
+
+        }
+        else if(md=='video' && sz!='max'){
+            $('#{{ prefix }}-image_cover').closest('div.field').parent().hide();
+            $('#{{ prefix }}-video').closest('div.field').parent().show();
+            $('#{{ prefix }}-image').closest('div.field').parent().hide();
+        }
+        else{
+            $('#{{ prefix }}-image_cover').closest('div.field').parent().hide();
+            $('#{{ prefix }}-video').closest('div.field').parent().hide();
+            $('#{{ prefix }}-image').closest('div.field').parent().show();
+
+        }
+    });
+
+
+</script>

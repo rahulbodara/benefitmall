@@ -1,0 +1,15 @@
+-r base.txt
+
+# WSGI Handler
+# ------------------------------------------------
+gevent~=1.4
+gunicorn~=20.0
+
+# Static and Media Storage
+# ------------------------------------------------
+django-storages~=1.8
+
+
+# Email backends for Mailgun, Postmark, SendGrid and more
+# -------------------------------------------------------
+django-anymail~=7.0

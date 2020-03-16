@@ -1,0 +1,37 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+STEPS FOR STANDING UP A NEW PROJECT WITH STACK THEME BASE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+last updated: 10/9/19, mguerreo
+
+
+1. create new bitbucket repo for project: NAME IT PROJECT NAME WITH UNDERSCORES NOT DASHES - THIS MUST BE CONSISTENT
+2. clone project locally
+3. clone stack theme into another directory locally
+4. copy all except .git, .idea and .vagrant from stack-theme into new project
+5. global searh for "stack-theme" in the new project directory and replace with PROJECT NAME from step one
+6. create new Heroku pipline/app - add all applicable add ons (ex. Postgres, Bucketeer, Mailgun, Papertrail)
+7. Add postgres, papertrail, bucketeer, and mailgun
+8. Copy all environment settings into heroku environment
+
+Connect heroku: heroku git:remote --app davacoinc
+
+
+... 
+delete latest.dump from local copy
+
+Pull new backup from stack:
+	heroku pg:backups:capture --app stack-theme
+	heroku pg:backups:download --app stack-theme
+	python manage.py restore_db
+
+Run local instance
+
+Remove header and footer images from admin: Settings -> Header & Footer
+
+Delete all images from db:
+	python manage.py shell
+	from wagtail.images.models import Image
+	for i in Image.objects.all():
+		i.delete()
+
+Delete all pages but home

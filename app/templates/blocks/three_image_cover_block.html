@@ -1,0 +1,19 @@
+{% load wagtailimages_tags wagtailcore_tags %}
+{% image self.image_left original as image_left %}
+{% image self.image_center original as image_center %}
+{% image self.image_right original as image_right %}
+<section class="cover text-center {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+    <div class="container {{ self.background.size_mode }}">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <h1>{{self.title}}</h1>
+                <p class="lead"> {{self.text}}</p>
+                {% include_block self.link %}
+            </div>
+            <div class="col-md-12">
+                <div class="triptych border--round"> <img alt="Image" src="{{image_left.url}}"> <img alt="Image" src="{{image_center.url}}"> <img alt="Image" src="{{image_right.url}}"> </div>
+            </div>
+        </div>
+    </div>
+</section>

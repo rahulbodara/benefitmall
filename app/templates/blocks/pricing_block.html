@@ -1,0 +1,95 @@
+{% load wagtailimages_tags wagtailcore_tags %}
+{% image self.testimonial.image original as image %}
+{% if self.layout == 'feature_1' %}
+    <section class="{{ self.background.classes }} {{ self.switchable }}" {{ self.background.data_image_overlay }}>
+        {% include_block self.background %}
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-md-6 col-lg-5">
+                    <div class="switchable__text">
+                        <div class="switchable__text">
+                            <h2>{{self.header}}</h2>
+                            <p class="lead">{{self.small_text}}</p>
+                            <div class="testimonial testimonial-2">
+                                <div class="testimonial__body boxed boxed--border">
+                                    <p> {{self.testimonial.testimonial}}</p>
+                                </div>
+                                <div class="testimonial__image"> <img alt="Image" src="{{image.url}}">
+                                    <h5>{{self.testimonial.testimonial_name}}.</h5> <span>{{ self.testimonial.testimonial_location }}</span> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 col-12">
+                    <div class="pricing pricing-1 boxed boxed--lg boxed--border">
+                        <h3>{{self.title}}</h3> <span class="h2"><strong>${{ self.price }}</strong></span> <span class="type--fine-print">{{self.fine_print}}</span> <span class="label">Value</span>
+                        <hr>
+                        <ul>
+                            {% for feature in self.features %}
+                                <li><span class="checkmark bg--primary-1"></span><span>{{feature.spec}}</span></li>
+                            {% endfor %}
+                        </ul>
+                        {% if self.link_text and self.link_url %}
+                            <a class="btn btn--primary" href="{{ self.link_url }}"> <span class="btn__text">{{self.link_text}}</span> </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% elif self.layout == 'feature_2' %}
+    <section class="{{ self.background.classes }} {{ self.switchable }}" {{ self.background.data_image_overlay }}>
+        {% include_block self.background %}
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-md-6 col-lg-5">
+                    <div class="switchable__text">
+                        <div class="switchable__text">
+                            <h2>{{self.header}}</h2>
+                            <p class="lead">{{self.small_text}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 col-12">
+                    <div class="pricing pricing-1 boxed boxed--border boxed--lg text-center">
+                        <h4>{{self.title}}</h4> <span class="h1"><span class="pricing__dollar">$</span>{{self.price}}</span>
+                        <p> {{self.fine_print}}</p> <span class="label">Value</span>
+                        {% include_block self.button %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% else %}
+    <section class="{{ self.background.classes }} {{ self.switchable }}" {{ self.background.data_image_overlay }}>
+        {% include_block self.background %}
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-md-6 col-lg-5">
+                    <div class="switchable__text">
+                        <div class="switchable__text">
+                            <h2>{{self.header}}</h2>
+                            <p class="lead">{{ self.small_text }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="pricing pricing-2 boxed boxed--border boxed--lg row no-gutters"> <span class="label">Value</span>
+                        <div class="col-lg-6 col-12 text-center">
+                            <h5>{{self.title}}</h5> <span class="h1"><span class="pricing__dollar">$</span>{{self.price}}</span>
+                            <p class="type--fine-print">{{self.fine_print}}</p>
+                            {% include_block self.button %}
+                        </div>
+                        <div class="col-lg-6 col-12">
+                            <ul>
+                                {% for feature in self.features %}
+                                    <li><span class="checkmark bg--primary-1"></span><span>{{feature.spec}}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}

@@ -1,0 +1,44 @@
+{% load wagtailimages_tags %}
+{% load wagtailcore_tags %}
+<section class="{{ self.text.alignment }} {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+
+    <div class="main-container">
+        {% if self.slider_size == 'full' %}
+        <section>
+            <div class="container {{ self.background.size_mode }}">
+                <div class="row">
+                    <div class="col">
+                        <div class="slider slider--ken-burns" data-arrows="true" data-paging="true">
+                            <ul class="slides">
+                                {% for block in self.items %}
+                                    {% include_block block with size=self.slider_size %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if self.slider_size == 'inline' %}
+        <section>
+            <div class="container {{ self.background.size_mode }}">
+                <div class="row">
+                    <div class="col">
+                        <div class="slider slider--columns" data-arrows="true" data-paging="true">
+                            <ul class="slides">
+                            {% for block in self.items %}
+                                {% include_block block with size=self.slider_size %}
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+    </div>
+</section>
+

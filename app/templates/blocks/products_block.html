@@ -1,0 +1,38 @@
+{% load wagtailimages_tags %}
+<section class="{{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+    <div class="container {{ self.background.size_mode }}">
+        <div class="masonry">
+            <div class="masonry-filter-container text-center row justify-content-center align-items-center"> <span>Category:</span>
+                <div class="masonry-filter-holder">
+                    <div class="masonry__filters" data-filter-all-text="All Categories">
+                        <ul>
+                            <li class="active" data-masonry-filter="*">All Categories</li>
+                            {% for category in self.categories %}
+                                <li data-masonry-filter="{{category.filter}}">{{category.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="masonry__container row masonry--active">
+                {% for category in self.categories %}
+                    {% for product in category.products %}
+                        {% image product.image original as image %}
+                        <div class="masonry__item col-md-4"></div>
+                        <div class="masonry__item col-md-4 filter-{{category.filter}}" data-masonry-filter="{{category.name}}">
+                            <div class="product">
+                                <a {% if product.buy_link %}href="{{product.buy_link}}" target="_blank"{% endif %}> <img alt="Image" src="{{image.url}}"> </a>
+                                <a class="block" {% if product.buy_link %}href="{{product.buy_link}}" target="_blank"{% endif %}>
+                                    <div>
+                                        <h5>{{product.product}}</h5><span>{{product.purpose}}</span> </div>
+                                    <div> <span class="h4 inline-block">${{product.price}}</span> </div>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

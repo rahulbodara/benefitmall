@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% load app_tags %}
+
+{% block content %}
+<section class="space--sm">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="masonry-blog-list">
+
+                    {% if search_type == 'date' %}
+                    <p class="lead .type--bold .type--uppercase text-center">Showing {{ posts.count }} posts from {{ search_term }}</p>
+                    {% else %}
+                    <div class="masonry-filter-container text-center d-flex justify-content-center align-items-center">
+                        <span>Category:</span>
+                        <div class="masonry-filter-holder">
+                            <div class="masonry__filters">
+                                <ul>
+                                    {% if search_type != 'category' %}<li class="active">{% else %}<li>{% endif %}
+                                    	<a href="{% pageurl page %}">All</a>
+                                    </li>
+                                    {% for category in page.get_categories %}
+                                		{% if search_type == 'category' and search_term == category.slug %}<li class="active">{% else %}<li>{% endif %}
+                                			<a href="{% pageurl page %}category/{{ category.slug }}">{{ category.name }}</a>
+                                		</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <hr>
+
+					{% for post in paginated_posts %}
+                        <article class="masonry__item">
+                            <div class="article__title text-center">
+                                <a href="#">
+                                    <h2>{{ post.title }}</h2>
+                                </a>
+                                <span>{{ post.date|date:'F jS, Y' }}</span>
+                                {% if post.categories.exists %}
+	                                <span> in </span>
+			                        {% for category in post.categories.all %}
+			                            <span><a href="{% pageurl page %}category/{{ category.slug }}">{{ category }}</a>{% if not forloop.last %},{% endif %}</span>
+			                        {% endfor %}
+		                        {% endif %}
+                            </div>
+                            <div class="article__body">
+                            	{% image post.image original as image %}
+                                <a href="{{ post.url }}"><img src="{{ image.url }}" alt="{{ image.alt "></a>
+                                <p>{{ post.excerpt }}</p>
+                                <a href="{{ post.url }}">Continue reading »</a> 
+                            </div>
+                        </article>
+					{% endfor %}
+
+                    <div class="pagination">
+                    	{% if paginated_posts.has_previous %}
+                        <a class="pagination__prev" href="?page={{ paginated_posts.previous_page_number }}" title="Previous Page">« Previous</a>
+                        {% endif %}
+                        <ol>
+                        	{% for page_num in paginated_posts.paginator.page_range %}
+                            <li {% if page_num == paginated_posts.number %}class="pagination__current"{% endif %}><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                            {% endfor %}
+                        </ol>
+                        {% if paginated_posts.has_next %}
+                        <a class="pagination__next" href="?page={{ paginated_posts.next_page_number }}" title="Next Page">Next »</a> 
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

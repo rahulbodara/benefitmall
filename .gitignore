@@ -1,0 +1,8 @@
+__pycache__/
+.vagrant
+*.pyc
+*.pyo
+media/
+.idea/*
+assets/
+theme_src/

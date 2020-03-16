@@ -1,0 +1,27 @@
+<footer class="footer-7 text-center-xs">
+    <div class="container">
+        <div class="row">
+                <span class="type--fine-print">© <span class="update-year"></span> {{ copyright_text }}</span>
+            </div>
+            <div class="col-sm-6 text-right text-center-xs">
+                <ul class="social-list list-inline">
+                    {% if social_linkedin %}
+                        <li><a href="{{ social_linkedin }}"><i class="socicon socicon-linkedin icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_twitter %}
+                        <li><a href="{{ social_twitter }}"><i class="socicon socicon-twitter icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_facebook %}
+                        <li><a href="{{ social_facebook }}"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_instagram %}
+                        <li><a href="{{ social_instagram }}"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_youtube %}
+                        <li><a href="{{ social_youtube }}"><i class="socicon socicon-youtube icon icon--xs"></i></a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

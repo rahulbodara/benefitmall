@@ -1,0 +1,48 @@
+{% load wagtailcore_tags %}
+<footer class="space--sm footer-1 text-center-xs">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <ul class="list-inline list--hover">
+                    {% if footer_links %}
+                        {% for block in footer_links %}
+                            {% include_block block %}
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-sm-6 text-right text-center-xs">
+                <ul class="social-list list-inline list--hover">
+                    {% if social_linkedin %}
+                    <li><a href="{{ social_linkedin }}"><i class="socicon socicon-linkedin icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_twitter %}
+                        <li><a href="{{ social_twitter }}"><i class="socicon socicon-twitter icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_facebook %}
+                        <li><a href="{{ social_facebook }}"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_instagram %}
+                        <li><a href="{{ social_instagram }}"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
+                    {% endif %}
+                    {% if social_youtube %}
+                        <li><a href="{{ social_youtube }}"><i class="socicon socicon-youtube icon icon--xs"></i></a></li>
+                    {% endif %}
+                </ul>
+                {% for block in footer_buttons %}
+                    {% include_block block %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12"> <img alt="Image" class="logo" src="{{ logo_url }}">
+                <span class="type--fine-print">© <span class="update-year"></span> {{ copyright_text }}</span>
+                    {% if footer_utility_links %}
+                        {% for block in footer_utility_links %}
+                            {% include_block block %}
+                        {% endfor %}
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+</footer>

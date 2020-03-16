@@ -1,0 +1,15 @@
+{% load wagtailcore_tags %}
+<section class="{{ self.background.classes }} {{ self.alignment }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="accordion {{ self.style }}" style="width:100%">
+                    {% for block in self.items %}
+                        {% include_block block with is_first=forloop.first active=self.default_active %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

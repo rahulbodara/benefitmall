@@ -1,0 +1,13 @@
+{% load wagtailcore_tags %}
+<section class="text-center {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+    <div class="tabs-container {{ self.background.size_mode }}" data-content-align="left">
+        <ul class="tabs tabs--spaced">
+            {% for block in self.items %}
+                <li class="{% if forloop.first %}active{% endif %}">
+                    {% include_block block %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>

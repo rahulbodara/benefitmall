@@ -1,0 +1,42 @@
+{% load wagtailcore_tags %}
+<section class="text-center {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+
+    {% if self.outline == 'none' %}
+    <div class="container {{ self.background.size_mode }}">
+        <div class="cta cta--horizontal text-center-xs row">
+            <div class="col-md-4">
+                <{{ self.subhead_size }}>{{ self.header }}</{{ self.subhead_size }}>
+            </div>
+            <div class="col-md-5">
+                <p class="{{ self.body_size }}">{{ self.body }}</p>
+            </div>
+            <div class="col-md-3 text-right text-center-xs">
+                {% include_block self.link %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if self.outline == 'border' %}
+    <div class="container {{ self.background.size_mode }}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="cta cta-1 cta--horizontal boxed boxed--border text-center-xs">
+                    <div class="row justify-content-center p-5">
+                        <div class="col-lg-3">
+                            <{{ self.subhead_size }}>{{ self.header }}</{{ self.subhead_size }}>
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="{{ self.body_size }}">{{ self.body }}</p>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            {% include_block self.link %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</section>

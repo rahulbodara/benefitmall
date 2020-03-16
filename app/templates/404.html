@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load wagtailsettings_tags %}
+{% load wagtailcore_tags %}
+{% get_settings %}
+
+{% block body_class %}template-404{% endblock %}
+{% block content %}
+    <div class="nav-container"> </div>
+    <div class="main-container">
+        <section class="height-100 bg--primary text-center">
+            <div class="container pos-vertical-center">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="h1--large">{{ settings.app.ErrorPages.title_404 }}</h1>
+                        {{ settings.app.ErrorPages.body_404|safe }}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

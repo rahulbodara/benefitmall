@@ -1,0 +1,9 @@
+{% load wagtailcore_tags %}
+{% load app_tags %}
+<{{ self.heading_size }}>{{ self.heading }}</{{ self.heading_size }}>
+{% format_paragraph self.body self.body_size %}
+{% include_block self.link %}
+{% if self.caption %}
+    {% format_hr self.alignment %}
+    <p>{{ self.caption }}</p>
+{% endif %}

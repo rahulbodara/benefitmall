@@ -1,0 +1,50 @@
+{% load wagtailcore_tags %}
+<div>
+    <nav class="bar bar-toggle">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <div class="bar__module">
+                        <a href="/"> <img class="logo logo-dark" alt="logo" src="{{ logo_url }}"> <img class="logo logo-light" alt="logo" src="{{ logo_url }}"> </a>
+                    </div>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                    <div class="bar__module">
+                        <a class="menu-toggle pull-right" href="#" data-notification-link="sidebar-menu"> <i class="stack-interface stack-menu"></i> </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="notification pos-right pos-top side-menu bg--white" data-notification-link="sidebar-menu" data-animation="from-right">
+        <div class="side-menu__module pos-vertical-center text-right">
+            <ul class="menu-vertical">
+            {% if autonav %}
+                {% for link in header_links %}
+                    <li class="h4"><a href="{{ link.destination }}">{{ link.title }}</a></li>
+                {% endfor %}
+            {% else %}
+                {% for block in header_links %}
+                    {% include_block block.value.link %}
+                {% endfor %}
+            {% endif %}
+            </ul>
+        </div>
+        <div class="side-menu__module pos-bottom pos-absolute col-12 text-right">
+            <ul class="social-list list-inline list--hover">
+                {% if social_linkedin %}
+                <li><a href="{{ social_linkedin }}"><i class="socicon socicon-linkedin icon icon--xs"></i></a></li>
+                {% endif %}
+                {% if social_twitter %}
+                <li><a href="{{ social_twitter }}"><i class="socicon socicon-twitter icon icon--xs"></i></a></li>
+                {% endif %}
+                {% if social_facebook %}
+                <li><a href="{{ social_facebook }}"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
+                {% endif %}
+                {% if social_instagram %}
+                <li><a href="{{ social_instagram }}"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>

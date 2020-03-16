@@ -1,0 +1,65 @@
+{% load wagtailimages_tags %}
+{% load wagtailcore_tags %}
+{% image self.process_background_image original as bgimage %}
+<section class="text-center {% if self.process_layout == 'media' %}switchable {{ self.process_orientation }}{% endif %} {{ self.process_background.classes }}" {{ self.process_background.data_image_overlay }}>
+    {% include_block self.process_background %}
+    <div class="container">
+
+        {% if self.process_layout == 'vertical' %}
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="process-1">
+
+                        {% for block in self.process_items %}
+                            {% include_block block with layout=self.process_layout num=forloop.counter %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        {% elif self.process_layout == 'horizontal' %}
+            <div class="process-2 row">
+
+                {% for block in self.process_items %}
+                    {% include_block block with layout=self.process_layout num=forloop.counter %}
+                {% endfor %}
+
+            </div>
+        {% elif self.process_layout == 'boxes' %}
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8">
+                    <div class="row">
+
+                        {% for block in self.process_items %}
+                            {% include_block block with layout=self.process_layout num=forloop.counter %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        {% elif self.process_layout == 'media' %}
+            <div class="row justify-content-between">
+
+                <div class="col-md-6 text-center">
+                    {% include_block self.process_media with width='fixed' %}
+                </div>
+
+                <div class="col-md-6 col-lg-5">
+                    <ol class="process-3">
+
+                        {% for block in self.process_items %}
+                            {% include_block block with layout=self.process_layout num=forloop.counter %}
+                        {% endfor %}
+
+                    </ol>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+</section>
+
+
+
+
+

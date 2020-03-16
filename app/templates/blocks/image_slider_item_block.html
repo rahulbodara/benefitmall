@@ -1,0 +1,16 @@
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% image self.image original as image %}
+<html lang="en">
+
+{% if size == 'full' %}
+    <li> <img alt="{{ image.alt }}" src="{{ image.url }}"> </li>
+{% endif %}
+
+
+{% if size == 'inline' %}
+    <li class="col-md-4 col-6">
+        <a href="{{ image.url }}" data-lightbox="Gallery 1"> <img alt="{{ image.alt }}" src="{{ image.url }}"> </a>
+    </li>
+{% endif %}
+</html>

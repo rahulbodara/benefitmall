@@ -1,0 +1,7 @@
+{% if self.mode == 'imagebg' %}
+	{% load wagtailimages_tags %}
+	{% image self.background_image original as bg_image %}
+	<div class="background-image-holder">
+	    <img src="{{ bg_image.url }}" alt="{{ bg_image.alt }} (background)">
+	</div>
+{% endif %}
