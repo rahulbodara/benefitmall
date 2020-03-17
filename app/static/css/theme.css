@@ -4662,6 +4662,7 @@ section.parallax .row .background-image-holder {
 /*! -- Stack Titles -- */
 .breadcrumbs {
   list-style: none;
+  margin-bottom: 0;
 }
 .breadcrumbs li {
   font-size: 0.85714286em;
@@ -4669,6 +4670,7 @@ section.parallax .row .background-image-holder {
 }
 .breadcrumbs li:not(:last-child) {
   margin-right: 1.08333333em;
+  margin-bottom: 0;
 }
 .breadcrumbs li:not(:last-child):after {
   content: '\00bb';

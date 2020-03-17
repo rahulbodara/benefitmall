@@ -1,7 +1,9 @@
 from django import template
 from django.template.loader import render_to_string
 from app.wagtail_hooks import HeaderFooter
+from site_settings.wagtail_hooks import SiteSettings
 from wagtail.core.models import Site
+from wagtail.core.models import Page
 register = template.Library()
 
 
@@ -96,5 +98,18 @@ def render_footer(context):
     return render_to_string('footer/'+header_footer.footer_type, context=footer_context, request=context['request'])
 
 
+@register.simple_tag(takes_context=True)
+def render_breadcrumbs(context, calling_page: Page):
+    site = context['request'].site
+    site_root = site.root_page
+    site_settings = SiteSettings.for_site(site=site)
+    if not site_settings.show_breadcrumbs:
+        return ''
 
+    menuitems = [m for m in calling_page.get_ancestors(True)]
+    menuitems = menuitems[1:]
+    breadcrumb_context = {
+        'menuitems': menuitems,
+    }
 
+    return render_to_string('navigation/breadcrumbs.html', context=breadcrumb_context, request=context['request'])

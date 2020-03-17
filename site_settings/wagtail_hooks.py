@@ -29,6 +29,10 @@ class SiteSettings(BaseSetting):
         verbose_name='Apple Touch Icon',
         help_text='The apple touch icon should be 114 x 114 or 144 x 144, and a png file.',
         related_name='touch_icon')
+    show_breadcrumbs = models.BooleanField(
+        default=False,
+        verbose_name='Show Breadcrumbs',
+        help_text='Check this box if you want breadcrumbs on this site.')
 
     # Progressive Web App Tab
     pwa_use_manifest = models.BooleanField(
@@ -92,6 +96,7 @@ class SiteSettings(BaseSetting):
         MultiFieldPanel([
             ImageChooserPanel('favicon_ico'),
             ImageChooserPanel('apple_touch_icon'),
+            FieldPanel('show_breadcrumbs'),
             FieldPanel('robots_txt'),
         ], heading='Configuration', classname='collapsible'),
     ]

@@ -1,0 +1,29 @@
+<section class=" space--0 breadcrumb--section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ol class="breadcrumbs">
+                    {% for menuitem in menuitems %}
+                        {% if forloop.counter0 == 0 %}
+                            <li>
+                                <a href="/" class="home-link" rel="home">
+                                    Home
+                                </a>
+                            </li>
+                        {% elif forloop.last %}
+                            <li class="active">
+                                {{ menuitem.title }}
+                            </li>
+                        {% else %}
+                            <li class="active">
+                                <a href="{{ menuitem.url }}">
+                                    {{ menuitem.title }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
