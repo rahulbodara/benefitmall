@@ -50,6 +50,8 @@ def get_header_links(context, calling_page):
 def render_header(context, calling_page):
     if not calling_page:
         return ''
+    if 'request' not in context:
+        return ''
 
     header_footer = HeaderFooter.for_site(site=get_current_site(context))
 
@@ -79,7 +81,10 @@ def render_header(context, calling_page):
 
 @register.simple_tag(takes_context=True)
 def render_footer(context):
-    header_footer = HeaderFooter.for_site(site=context.request.site)
+    if 'request' not in context:
+        return ''
+
+    header_footer = HeaderFooter.for_site(site=get_current_site(context))
 
     footer_context = {
         'footer_links': header_footer.footer_links,
@@ -102,6 +107,8 @@ def render_footer(context):
 @register.simple_tag(takes_context=True)
 def render_breadcrumbs(context, calling_page: Page):
     if not calling_page:
+        return ''
+    if 'request' not in context:
         return ''
 
     site = context['request'].site
