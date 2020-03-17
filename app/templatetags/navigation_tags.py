@@ -110,6 +110,8 @@ def render_breadcrumbs(context, calling_page: Page):
         return ''
 
     menuitems = [m for m in calling_page.get_ancestors(True)][1:]
+    if len(menuitems) <= 1:
+        return ''
     breadcrumb_context = {
         'menuitems': menuitems,
     }
