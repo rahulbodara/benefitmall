@@ -40,7 +40,6 @@ def get_links_recursive(context, parent, calling_page):
             menuitem.children = get_links_recursive(context, menuitem, calling_page)
     return menuitems
 
-
 def get_header_links(context, calling_page):
     site_root = get_current_site(context).root_page
     menuitems = get_links_recursive(context, site_root, calling_page)
@@ -49,6 +48,9 @@ def get_header_links(context, calling_page):
 
 @register.simple_tag(takes_context=True)
 def render_header(context, calling_page):
+    if not calling_page:
+        return ''
+
     header_footer = HeaderFooter.for_site(site=get_current_site(context))
 
     if header_footer.header_automatic_nav:
@@ -94,20 +96,20 @@ def render_footer(context):
         'social_youtube': header_footer.social_youtube,
     }
 
-
     return render_to_string('footer/'+header_footer.footer_type, context=footer_context, request=context['request'])
 
 
 @register.simple_tag(takes_context=True)
 def render_breadcrumbs(context, calling_page: Page):
+    if not calling_page:
+        return ''
+
     site = context['request'].site
-    site_root = site.root_page
     site_settings = SiteSettings.for_site(site=site)
     if not site_settings.show_breadcrumbs:
         return ''
 
-    menuitems = [m for m in calling_page.get_ancestors(True)]
-    menuitems = menuitems[1:]
+    menuitems = [m for m in calling_page.get_ancestors(True)][1:]
     breadcrumb_context = {
         'menuitems': menuitems,
     }

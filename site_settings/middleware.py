@@ -164,7 +164,6 @@ class CaseInsensitiveURLMiddleware:
 
         response = self.get_response(request)
 
-
         if response.status_code == 404 or response.status_code == 500:
             header = 'Page Not Found' if response.status_code==404 else 'Server Error'
             subheader = 'The page you requested was not found.' if response.status_code==404 else 'There was an error processing your request.'

@@ -1,6 +1,6 @@
 from .base import *
 
-DEBUG = True
+DEBUG = False
 
 #SECRET_KEY = '8*p^q5c)7^&6wi62p^n$a#t+9et(##28k$&m^jrinf!wqmq)%2'
 from dotenv import load_dotenv

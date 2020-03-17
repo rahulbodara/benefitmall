@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'wagtailfontawesome',
     'taggit',
     'site_settings',
+    'widget_tweaks',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,8 +58,8 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     'site_settings.middleware.SecurityMiddleware',
-    'site_settings.middleware.SiteSettingsMiddleware',
     'site_settings.middleware.CaseInsensitiveURLMiddleware',
+    'site_settings.middleware.SiteSettingsMiddleware',
     'wagtail.core.middleware.SiteMiddleware',
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
     'honeypot.middleware.HoneypotMiddleware',
@@ -179,4 +180,4 @@ HONEYPOT_FIELD_NAME = 'official_title'
 WAGTAIL_ENABLE_UPDATE_CHECK = False
 
 # Disable this to avoid loading over http
-# WAGTAIL_GRAVATAR_PROVIDER_URL = None
+WAGTAIL_GRAVATAR_PROVIDER_URL = None
