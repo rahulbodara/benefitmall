@@ -29,6 +29,8 @@ def get_current_site(self, context=None):
 def get_links_recursive(context, parent, calling_page):
     menuitems = parent.get_children().live().in_menu().specific()
     for menuitem in menuitems:
+        calling_page_url = calling_page.url
+        menuitem_url = menuitem.url
         menuitem.active = (calling_page.url.startswith(menuitem.url) if calling_page.url else False)
         menuitem.destination = menuitem.url
         menuitem.show_dropdown = has_menu_children(menuitem)

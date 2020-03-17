@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
 {% load static wagtailcore_tags widget_tweaks %}
-
 {% block content %}
     {% for block in self.text_above %}
         {% include_block block %}
