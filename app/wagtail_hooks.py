@@ -240,9 +240,9 @@ class EventAdmin(ModelAdmin):
     model = Event
     menu_label = 'Events'
     menu_icon = 'date'
-    list_display = ('event_title', 'event_type', 'location_type', )
+    list_display = ('event_title', 'event_type', 'location_type', 'start_datetime', )
     list_filter = ('location_type', 'event_type', 'address_city', 'address_state', )
-    search_fields = ('event_title', 'address_city', 'address_state', )
+    search_fields = ('event_title', 'address_city', 'address_state', 'description', )
 
 
 modeladmin_register(EventAdmin)
