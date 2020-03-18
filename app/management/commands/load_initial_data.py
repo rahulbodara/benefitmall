@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
         # Django loaddata
         print(color.BOLD + color.CYAN + 'RUNNING loaddata...' + color.END)
-        call_command('loaddata', 'app/management/initial_user_data.json')
+        # call_command('loaddata', 'app/management/initial_user_data.json')
         call_command('loaddata', 'app/management/initial_icon_data.json')
 
         # Rename the current site root.

@@ -21,6 +21,7 @@ from wagtail.core.fields import RichTextField
 from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES
 from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
 
+from app.models.events import Event
 
 @register_setting(icon='cogs')
 class HeaderFooter(BaseSetting):
@@ -229,8 +230,19 @@ def register_icon_reference_menu_item():
     return MenuItem('Icon Reference', reverse('icon-reference'), classnames='icon icon-view', order=9998)
 
 
-@register_setting(icon = 'download')
-class ErrorPages(BaseSetting):
-    title_404 = models.TextField(default='404 not found', null=True, blank=True)
-    body_404 = RichTextField(null=True, blank=True)
+# @register_setting(icon = 'download')
+# class ErrorPages(BaseSetting):
+#     title_404 = models.TextField(default='404 not found', null=True, blank=True)
+#     body_404 = RichTextField(null=True, blank=True)
 
+
+class EventAdmin(ModelAdmin):
+    model = Event
+    menu_label = 'Events'
+    menu_icon = 'date'
+    list_display = ('event_title', 'event_type', 'location_type', )
+    list_filter = ('location_type', 'event_type', 'address_city', 'address_state', )
+    search_fields = ('event_title', 'address_city', 'address_state', )
+
+
+modeladmin_register(EventAdmin)

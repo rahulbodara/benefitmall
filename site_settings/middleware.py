@@ -163,24 +163,24 @@ class CaseInsensitiveURLMiddleware:
                 return redirect(lowercase_path, permanent=True)
 
         response = self.get_response(request)
+        if not settings.DEBUG:
+            if response.status_code == 404 or response.status_code == 500:
+                header = 'Page Not Found' if response.status_code==404 else 'Server Error'
+                subheader = 'The page you requested was not found.' if response.status_code==404 else 'There was an error processing your request.'
+                if request and request.site:
+                    root = request.site.root_page
+                else:
+                    root = Site.objects.first().root_page
+                try:
+                    error_page = Page.objects.child_of(root).get(title=str(response.status_code)).specific
+                except Page.DoesNotExist as ex:
+                    new_error_page = DefaultPage(title=str(response.status_code))
+                    root.add_child(instance=new_error_page)
+                    new_error_page.save()
+                    error_page = new_error_page
 
-        if response.status_code == 404 or response.status_code == 500:
-            header = 'Page Not Found' if response.status_code==404 else 'Server Error'
-            subheader = 'The page you requested was not found.' if response.status_code==404 else 'There was an error processing your request.'
-            if request and request.site:
-                root = request.site.root_page
-            else:
-                root = Site.objects.first().root_page
-            try:
-                error_page = Page.objects.child_of(root).get(title=str(response.status_code)).specific
-            except Page.DoesNotExist as ex:
-                new_error_page = DefaultPage(title=str(response.status_code))
-                root.add_child(instance=new_error_page)
-                new_error_page.save()
-                error_page = new_error_page
+                content = render_to_string('app/default_page.html', context={'page': error_page}, request=request)
 
-            content = render_to_string('app/default_page.html', context={'page': error_page}, request=request)
-
-            return HttpResponseNotFound(content) if response.status_code==404 else HttpResponseServerError(content)
+                return HttpResponseNotFound(content) if response.status_code==404 else HttpResponseServerError(content)
 
         return response
