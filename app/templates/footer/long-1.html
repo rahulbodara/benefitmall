@@ -9,14 +9,14 @@
         {% endif %}
         </div>
         <div class="row">
-            <div class="col-sm-6"> <span class="type--fine-print">© <span class="update-year"></span> {{ copyright_text }}</span>
+            <div class="col-sm-8"> <span class="type--fine-print">© <span class="update-year"></span> {{ copyright_text }}</span>
                 {% if footer_utility_links %}
                     {% for block in footer_utility_links %}
                         {% include_block block %}
                     {% endfor %}
                 {% endif %}
             </div>
-            <div class="col-sm-6 text-right text-left-xs">
+            <div class="col-sm-4 text-right text-left-xs">
                 <ul class="social-list list-inline list--hover">
                     {% if social_linkedin %}
                         <li><a href="{{ social_linkedin }}"><i class="socicon socicon-linkedin icon icon--xs"></i></a></li>
