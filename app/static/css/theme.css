@@ -4747,7 +4747,7 @@ section.parallax .row .background-image-holder {
   font-family: 'Open Sans', 'Roboto', 'Helvetica', Sans-Serif;
 }
 .bar .logo {
-  max-height: 2.7em;
+  max-height: 2.5em;
   max-width: none;
 }
 .menu-horizontal > li > a,
@@ -4776,10 +4776,6 @@ section.parallax .row .background-image-holder {
   .bar-2 .menu-horizontal > li:not(:first-child),
   .bar-1 .menu-horizontal > li:not(:first-child) {
     margin-left: 0.92857143em;
-  }
-  .bar-2 .bar__module,
-  .bar-1 .bar__module {
-    margin-bottom: 1.85714286em;
   }
   .bar-2 .row div[class*='col-']:last-child .bar__module:last-child,
   .bar-1 .row div[class*='col-']:last-child .bar__module:last-child {
