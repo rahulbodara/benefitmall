@@ -10,7 +10,7 @@ from .testimonial_photo_block import TestimonialPhotoBlock
 from .tabbed_images_block import TabbedImagesBlock
 from .image_feature_block import ImageFeatureBlock
 from .icon_feature_block import IconFeatureBlock
-from .cta_horizontal_block import CtaHorizontalBlock
+from .cta_block import CtaHorizontalBlock
 from .three_column_block import ThreeColumnBlock
 from .three_column_item_block import ThreeColumnItemBlock
 from .image_block import ImageBlock

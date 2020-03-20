@@ -209,3 +209,7 @@ PRICING_FEATURE_CHOICES = (
     ('feature_2', 'Feature 2'),
     ('feature_3', 'Feature 3'),
 )
+CTA_LAYOUT_CHOICES = (
+    ('horizontal', 'Horizontal'),
+    ('button', 'Button'),
+)
