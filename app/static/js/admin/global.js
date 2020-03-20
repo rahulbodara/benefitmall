@@ -190,6 +190,35 @@ $(function () {
     });
     /**************************************************************************************************/
 
+    /**************************************************************************************************/
+     function ctaBlockToggler(elem){
+        var value = $(elem).find('input:checked').val();
+        var container = $(elem).closest('.cta-block');
+
+        if (value === 'horizantal') {
+            container.find('.fieldname-page').parent().closest('.field').hide();
+            container.find('.fieldname-subhead_size').parent().closest('.field').show();
+            container.find('.fieldname-body').parent().closest('.field').show();
+            container.find('.fieldname-body').parent().closest('.field').addClass('required');
+            container.find('.link-block').closest('.field').show();
+            container.find('.fieldname-body_size').parent().closest('.field').show();
+            container.find('.fieldname-outline').parent().closest('.field').show();
+        } else {
+            container.find('.fieldname-page').parent().closest('.field').show();
+            container.find('.fieldname-subhead_size').parent().closest('.field').hide();
+            container.find('.fieldname-body').parent().closest('.field').hide();
+            container.find('.fieldname-body').parent().closest('.field').removeClass('required');
+            container.find('.link-block').closest('.field').hide();
+            container.find('.fieldname-body_size').parent().closest('.field').hide();
+            container.find('.fieldname-outline').parent().closest('.field').hide();
+        }
+
+    }
+
+    $('body').on('change', '.cta-block .fieldname-layout', function() {
+       ctaBlockToggler(this);
+    });
+    /**************************************************************************************************/
 
     /**************************************************************************************************/
      function pricingBlockToggler(elem){
@@ -257,6 +286,11 @@ $(function () {
         $('.pricing-block .fieldname-layout').each(function() {
            pricingBlockToggler(this);
         });
+        // ctaBlockToggler call on observed mutation
+        $('.cta-block .fieldname-layout').each(function() {
+           ctaBlockToggler(this);
+        });
+
     });
 
     // General listener for added/removed nodes on body
