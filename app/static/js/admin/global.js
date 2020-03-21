@@ -195,7 +195,7 @@ $(function () {
         var value = $(elem).find('input:checked').val();
         var container = $(elem).closest('.cta-block');
 
-        if (value === 'horizantal') {
+        if (value === 'horizontal') {
             container.find('.fieldname-page').parent().closest('.field').hide();
             container.find('.fieldname-subhead_size').parent().closest('.field').show();
             container.find('.fieldname-body').parent().closest('.field').show();
