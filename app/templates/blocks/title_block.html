@@ -1,11 +1,28 @@
 {% load wagtailcore_tags %}
-<section class="{{ self.text.alignment }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
-    {% include_block self.background %}
-    <div class="container {{ self.background.size_mode }}">
-		<div class="row">
-			<div class="col-md-12 col-lg-12">
-				{% include_block self.text %}
-			</div>
-		</div>
-	</div>
-</section>
+{% if self.layout == 'full' %}
+    <section class="{{ self.text.alignment }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+        {% include_block self.background %}
+        <div class="container {{ self.background.size_mode }}">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    {% include_block self.text %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% else %}
+    <section class="space--sm {{self.switchable}}">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="height-50  border--round {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+                        {% include_block self.background %}
+                        <div class="pos-vertical-center col-md-6 boxed boxed--lg bg--none">
+                            {% include_block self.text %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}

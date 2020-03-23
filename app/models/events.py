@@ -19,14 +19,25 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/$')
 	def posts_by_date(self, request, year=None, month=None, day=None, *args, **kwargs):
 		context = super().get_context(request, **kwargs)
-		events = Event.objects.all()
+		if year and month and day:
+			events = Event.objects.filter(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day)
+		elif year and month:
+			events = Event.objects.filter(start_datetime__year=year, start_datetime__month=month)
+		elif year:
+			events = Event.objects.filter(start_datetime__year=year)
+		else:
+			events = Event.objects.all()
 		context['events'] = events
 		return TemplateResponse(request, "app/event_index_page.html", context)
 
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
 	def post_by_date_slug(self, request, year, month, day, slug, *args, **kwargs):
 		context = super().get_context(request, **kwargs)
-		event = Event.objects.get(event_slug=slug)
+		try:
+			event = Event.objects.get(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day, event_slug=slug)
+		except Event.DoesNotExist:
+			raise Http404
+
 		context['event'] = event
 		if not event:
 			raise Http404
@@ -43,10 +54,10 @@ class Event(models.Model):
 		('in_person', 'In Person'),
 	)
 	TYPE_CHOICES = (
-		('benefits_meeting', 'Benefits Meeting'),
-		('benefits_training', 'Benefits Training'),
-		('webcast', 'Compliance Webcast'),
-		('tradeshow', 'Tradeshow'),
+		('Benefits Meeting', 'Benefits Meeting'),
+		('Benefits Training', 'Benefits Training'),
+		('Compliance Webcast', 'Compliance Webcast'),
+		('Tradeshow', 'Tradeshow'),
 	)
 	event_slug = models.SlugField(max_length=255, verbose_name='URL Name', null=True, blank=True)
 
@@ -105,6 +116,6 @@ class Event(models.Model):
 def my_handler(sender, instance=None, raw=False, **kwargs):
 	event = instance
 	if not event.event_slug:
-		slug_str = "%s %s" % (event.event_title, event.start_datetime.strftime('%Y-%m-%d'))
+		slug_str = "%s %s" % (event.event_title, event.pk)
 		slug = slugify(slug_str)
 		event.event_slug = slug
