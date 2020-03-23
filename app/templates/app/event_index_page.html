@@ -2,8 +2,27 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-    <h2>{{ events }}</h2>
-{% for block in page.body %}
+<section>
+    <div class="container">
+        {% for event in events %}
+        <div class="row">
+            <div class="col-md-4">
+                <a href="/resources/events/{{ event.start_datetime|date:'Y' }}/{{ event.start_datetime|date:'m' }}/{{ event.start_datetime|date:'d' }}/{{ event.event_slug }}">
+                    {{ event.event_title }}
+                </a>
+            </div>
+            <div class="col-md-4">
+                {{ event.start_datetime|date:"D M jS, Y @ P" }}
+            </div>
+            <div class="col-md-4">
+                {{ event.event_type }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</section>
+
+    {% for block in page.body %}
     {% include_block block %}
 {% endfor %}
 {% endblock %}
