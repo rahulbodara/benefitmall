@@ -1,7 +1,41 @@
 from django.db import models
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
+from app.models.pages import DefaultPage
+from wagtail.core.models import Page, Http404, TemplateResponse
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.utils.text import slugify
 
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+
+
+class EventIndexPage(RoutablePageMixin, DefaultPage):
+	template = "app/event_index_page.html"
+
+	@route(r'^$')
+	@route(r'^(\d{4})/$')
+	@route(r'^(\d{4})/(\d{2})/$')
+	@route(r'^(\d{4})/(\d{2})/(\d{2})/$')
+	def posts_by_date(self, request, year=None, month=None, day=None, *args, **kwargs):
+		context = super().get_context(request, **kwargs)
+		events = Event.objects.all()
+		context['events'] = events
+		return TemplateResponse(request, "app/event_index_page.html", context)
+
+	@route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
+	def post_by_date_slug(self, request, year, month, day, slug, *args, **kwargs):
+		context = super().get_context(request, **kwargs)
+		event = Event.objects.get(event_slug=slug)
+		context['event'] = event
+		if not event:
+			raise Http404
+		return TemplateResponse(request, "app/event_detail_page.html", context)
+
+	@classmethod
+	def can_create_at(cls, parent):
+		# Only allow one child instance
+		return super(EventIndexPage, cls).can_create_at(parent) and not cls.objects.exists()
 
 class Event(models.Model):
 	LOCATION_TYPE_CHOICES = (
@@ -14,6 +48,8 @@ class Event(models.Model):
 		('webcast', 'Compliance Webcast'),
 		('tradeshow', 'Tradeshow'),
 	)
+	event_slug = models.SlugField(max_length=255, verbose_name='URL Name', null=True, blank=True)
+
 	event_title = models.CharField(max_length=255, verbose_name='Title')
 	event_type = models.CharField(max_length=24, choices=TYPE_CHOICES, default='', verbose_name='Event Type')
 	description = RichTextField(default='', verbose_name='Description')
@@ -43,7 +79,7 @@ class Event(models.Model):
 				FieldPanel('duration'),
 			]),
 			FieldPanel('description'),
-		], heading="Event",),
+		], heading="Event"),
 		MultiFieldPanel([
 			FieldPanel('location_type'),
 			FieldPanel('address_line_1'),
@@ -51,7 +87,10 @@ class Event(models.Model):
 			FieldPanel('address_city'),
 			FieldPanel('address_state'),
 			FieldPanel('address_zipcode'),
-		], heading="Location", ),
+		], heading="Location", classname='collapsible'),
+		MultiFieldPanel([
+			FieldPanel('event_slug'),
+		], heading="URL", classname='collapsible collapsed'),
 
 	]
 
@@ -60,3 +99,12 @@ class Event(models.Model):
 
 	class Meta:
 		ordering = ['start_datetime']
+
+
+@receiver(pre_save, sender=Event)
+def my_handler(sender, instance=None, raw=False, **kwargs):
+	event = instance
+	if not event.event_slug:
+		slug_str = "%s %s" % (event.event_title, event.start_datetime.strftime('%Y-%m-%d'))
+		slug = slugify(slug_str)
+		event.event_slug = slug
