@@ -221,6 +221,28 @@ $(function () {
     /**************************************************************************************************/
 
     /**************************************************************************************************/
+     function titleBlockToggler(elem){
+        var value = $(elem).find('input:checked').val();
+        var container = $(elem).closest('.title-block');
+
+        if (value === 'fixed') {
+            container.find('.fieldname-switchable').parent().closest('.field').show();
+
+        } else {
+            container.find('.fieldname-switchable').parent().closest('.field').hide();
+
+        }
+
+    }
+
+    $('body').on('change', '.title-block .fieldname-layout', function() {
+       titleBlockToggler(this);
+    });
+    /**************************************************************************************************/
+
+
+
+    /**************************************************************************************************/
      function pricingBlockToggler(elem){
         var value = $(elem).find('input:checked').val();
         var container = $(elem).closest('.pricing-block');
@@ -290,6 +312,11 @@ $(function () {
         $('.cta-block .fieldname-layout').each(function() {
            ctaBlockToggler(this);
         });
+        // ctaBlockToggler call on observed mutation
+        $('.title-block .fieldname-layout').each(function() {
+           titleBlockToggler(this);
+        });
+
 
     });
 
