@@ -21,17 +21,17 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		self.additional_breadcrumbs = []
 		if year and month and day:
 			events = Event.objects.filter(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day)
-			self.additional_breadcrumbs.append({'title':year, 'url': '/resources/events/'+year+'/'})
-			self.additional_breadcrumbs.append({'title':month, 'url': '/resources/events/'+year+'/'+month+'/'})
-			self.additional_breadcrumbs.append({'title':day, 'url': '/resources/events/'+year+'/'+month+'/'+day+'/'})
+			# self.additional_breadcrumbs.append({'title':year, 'url': '/resources/events/'+year+'/'})
+			# self.additional_breadcrumbs.append({'title':month, 'url': '/resources/events/'+year+'/'+month+'/'})
+			# self.additional_breadcrumbs.append({'title':day, 'url': '/resources/events/'+year+'/'+month+'/'+day+'/'})
 
 		elif year and month:
 			events = Event.objects.filter(start_datetime__year=year, start_datetime__month=month)
-			self.additional_breadcrumbs.append({'title':year, 'url': '/resources/events/'+year+'/'})
-			self.additional_breadcrumbs.append({'title':month, 'url': '/resources/events/'+year+'/'+month+'/'})
+			# self.additional_breadcrumbs.append({'title':year, 'url': '/resources/events/'+year+'/'})
+			# self.additional_breadcrumbs.append({'title':month, 'url': '/resources/events/'+year+'/'+month+'/'})
 		elif year:
 			events = Event.objects.filter(start_datetime__year=year)
-			self.additional_breadcrumbs.append({'title':year, 'url': '/resources/events/'+year+'/'})
+			# self.additional_breadcrumbs.append({'title':year, 'url': '/resources/events/'+year+'/'})
 		else:
 			events = Event.objects.all()
 		context['events'] = events
@@ -43,9 +43,9 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		self.additional_breadcrumbs = []
 		try:
 			event = Event.objects.get(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day, event_slug=slug)
-			self.additional_breadcrumbs.append({'title':year, 'url': '/resources/events/'+year+'/'})
-			self.additional_breadcrumbs.append({'title':month, 'url': '/resources/events/'+year+'/'+month+'/'})
-			self.additional_breadcrumbs.append({'title':day, 'url': '/resources/events/'+year+'/'+month+'/'+day+'/'})
+			# self.additional_breadcrumbs.append({'title':year, 'url': '/resources/events/'+year+'/'})
+			# self.additional_breadcrumbs.append({'title':month, 'url': '/resources/events/'+year+'/'+month+'/'})
+			# self.additional_breadcrumbs.append({'title':day, 'url': '/resources/events/'+year+'/'+month+'/'+day+'/'})
 			self.additional_breadcrumbs.append({'title':event.event_title, 'url': '/resources/events/'+year+'/'+month+'/'+day+'/'+slug+'/'})
 
 		except Event.DoesNotExist:
