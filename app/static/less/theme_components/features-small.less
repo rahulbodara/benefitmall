@@ -1,6 +1,12 @@
 /*! -- Stack Features Small -- */
 
+
+
 .feature{
+	&.large-overlay{
+		padding: 10em 3em 10em 3em;
+
+	}
 	&:not(.boxed){
 		margin-bottom: 60px;
 	}
@@ -94,7 +100,7 @@ section.text-center .feature-6{
 	.row{
 		div[class*='col-']{
 			&:nth-child(1):nth-last-child(3),&:nth-child(2):nth-last-child(2),&:nth-child(3):last-child{
-				.feature{
+				.feature:not(.large-overlay){
 					margin-bottom: 0;
 				}
 			}

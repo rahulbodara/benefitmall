@@ -2,41 +2,37 @@
 {% load wagtailimages_tags %}
 {% image self.image original as image %}
 
-{% if layout == 'none' %}
-<div class="col-md-4">
-    <div class="feature">
-        <img src="{{ image.url }}" alt="{{ image.alt }}" class="border--round">
-        <h4>{{ self.header }}</h4>
-        <p>{{ self.text }}</p>
-        {% include_block self.link %}
-    </div>
-</div>
-{% endif %}
-
-{% if layout == 'dark' %}
-<div class="col-md-4">
-    <div class="feature feature-1">
-        <img src="{{ image.url }}" alt="{{ image.alt }}">
-        <div class="feature__body boxed boxed--border">
-            <h5>{{ self.header }}</h5>
-            <p> {{ self.text }} </p>
-            {% include_block self.link %}
-        </div>
-    </div>
-</div>
-{% endif %}
-
 {% if layout == 'border' %}
-<div class="col-md-4">
-    <div class="feature feature-1">
-        <img src="{{ image.url }}" alt="{{ image.alt }}">
-        <div class="feature__body boxed boxed--lg boxed--border">
-            <h3>{{ self.header }}</h3>
-            <p class="lead">{{ self.text }}</p>
+    <div class="{{ cols }}">
+        <div class="feature feature-1">
+            <img src="{{ image.url }}" alt="{{ image.alt }}">
+            <div class="feature__body boxed boxed--border">
+                <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
+                <p class="{{ body_size }}"> {{ self.text }} </p>
+                {% include_block self.link %}
+            </div>
+        </div>
+    </div>
+{% elif layout == 'overlay' %}
+    <div class="{{ cols }}">
+        <div class="feature large-overlay text-center imagebg {{ invert }}" data-overlay="{{ overlay }}">
+            <div class="background-image-holder">
+                <img alt="{{ image.alt }}" src="{{ image.url }}">
+            </div>
+            <{{heading_size}} class="pos-vertical-center {% if invert %}text-dark{% endif %}">{{ self.header }}</{{heading_size}}>
+            {% if self.text %}
+            <p class="{{ body_size }} pos-vertical-center {% if invert %}text-dark{% endif %}"> {{ self.text }} </p>
+            {% endif %}
             {% include_block self.link %}
         </div>
     </div>
-</div>
+{% else %}
+    <div class="{{ cols }}">
+        <div class="feature">
+            <img src="{{ image.url }}" alt="{{ image.alt }}">
+            <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
+            <p class="{{ body_size }}">{{ self.text }}</p>
+            {% include_block self.link %}
+        </div>
+    </div>
 {% endif %}
-
-
