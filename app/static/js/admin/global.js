@@ -268,7 +268,26 @@ $(function () {
     /**************************************************************************************************/
 
 
+    /**************************************************************************************************/
+     function imageFeatureBlockToggler(elem){
+        var value = $(elem).find('input:checked').val();
+        var container = $(elem).closest('.image-feature-block');
 
+        if (value === 'overlay') {
+            container.find('.fieldname-image_invert').parent().closest('.field').show();
+            container.find('.fieldname-image_overlay').parent().closest('.field').show();
+        }
+        else{
+            container.find('.fieldname-image_invert').parent().closest('.field').hide();
+            container.find('.fieldname-image_overlay').parent().closest('.field').hide();
+        }
+
+    }
+
+    $('body').on('change', '.image-feature-block .fieldname-layout', function() {
+       imageFeatureBlockToggler(this);
+    });
+    /**************************************************************************************************/
 
 
     /**************************************************************************************************/
@@ -312,9 +331,13 @@ $(function () {
         $('.cta-block .fieldname-layout').each(function() {
            ctaBlockToggler(this);
         });
-        // ctaBlockToggler call on observed mutation
+        // titleBlockToggler call on observed mutation
         $('.title-block .fieldname-layout').each(function() {
            titleBlockToggler(this);
+        });
+        // imageFreatureBlockToggler call on observed mutation
+        $('.image-feature-block .fieldname-layout').each(function() {
+           imageFeatureBlockToggler(this);
         });
 
 
