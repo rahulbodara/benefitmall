@@ -22,6 +22,7 @@ from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES
 from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
 
 from app.models.events import Event, EventRegistration
+from app.models.news import News
 
 @register_setting(icon='cogs')
 class HeaderFooter(BaseSetting):
@@ -270,3 +271,14 @@ class EventsAdminGroup(ModelAdminGroup):
 
 modeladmin_register(EventsAdminGroup)
 
+
+class NewsAdmin(ModelAdmin):
+    model = News
+    menu_label = 'Press Releases'
+    menu_icon = 'fa-newspaper-o'
+    list_display = ('news_title', 'news_datetime', )
+    list_filter = ('news_datetime', )
+    search_fields = ('news_title', 'body', )
+
+
+modeladmin_register(NewsAdmin)

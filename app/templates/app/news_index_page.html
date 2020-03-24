@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<section>
+    <div class="container">
+        {% for news in articles %}
+        <div class="row">
+            <div class="col-md-4">
+                <a href="/news-press/{{ news.news_datetime|date:'Y' }}/{{ news.news_datetime|date:'m' }}/{{ news.news_datetime|date:'d' }}/{{ news.news_slug }}">
+                    {{ news.news_title }}
+                </a>
+            </div>
+            <div class="col-md-4">
+                {{ news.news_datetime|date:"D M jS, Y @ P" }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</section>
+
+    {% for block in page.body %}
+    {% include_block block %}
+{% endfor %}
+{% endblock %}
