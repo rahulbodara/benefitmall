@@ -10,7 +10,7 @@ class MultiTextBlock(StructBlock):
     alignment = CustomChoiceBlock(choices=HORIZONTAL_ALIGNMENT_CHOICES, default=HORIZONTAL_ALIGNMENT_CHOICES[0][0], required=False, widget=CustomRadioSelect)
     heading = CharBlock()
     heading_size = CustomChoiceBlock(choices=HEADING_SIZE_CHOICES, default=HEADING_SIZE_CHOICES[0][0], required=False, widget=CustomRadioSelect, label='Heading Size')
-    body = RichTextBlock(required=False, features=['bold', 'italic', 'ol', 'ul', 'link', 'document-link'])
+    body = RichTextBlock(required=False, features=['h3', 'h4', 'h5', 'bold', 'italic', 'ol', 'ul', 'link', 'document-link'])
     body_size = CustomChoiceBlock(choices=PARAGRAPH_SIZE_CHOICES, default=PARAGRAPH_SIZE_CHOICES[1][0], required=False, widget=CustomRadioSelect, label='Body Size')
     link = LinkBlock()
     caption = TextBlock(required=False)

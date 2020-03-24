@@ -4035,6 +4035,10 @@ h1:not(:last-child),
   margin-bottom: 0.59090909em;
 }
 @media all and (min-width: 768px) {
+  h1,
+  .h1 {
+    font-weight: 600;
+  }
   h1.h1--large,
   .h1.h1--large {
     font-weight: 200;
@@ -4057,10 +4061,12 @@ h1:not(:last-child),
 }
 h2,
 .h2 {
+  font-weight: 600;
   margin-bottom: 0.78787879em;
 }
 h3,
 .h3 {
+  font-weight: 600;
   margin-bottom: 1.04em;
 }
 h3 strong,
@@ -4750,7 +4756,7 @@ section.parallax .row .background-image-holder {
   font-family: 'Open Sans', 'Roboto', 'Helvetica', Sans-Serif;
 }
 .bar .logo {
-  max-height: 2.5em;
+  max-height: 51px;
   max-width: none;
 }
 .menu-horizontal > li > a,
@@ -4787,11 +4793,16 @@ section.parallax .row .background-image-holder {
 }
 .bar-1 .menu-horizontal > li > .dropdown__trigger,
 .bar-1 .menu-horizontal > li > a {
-  font-size: 0.85714286em;
+  font-size: 1em;
   line-height: 2.16666667em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.5px;
+  color: #007BC3;
+  opacity: 1;
+}
+.bar-1 .menu-horizontal > li:not(:hover) > a {
+  color: #000000;
 }
 @media all and (min-width: 1024px) {
   .bar-1 .bar__module + .bar__module {
@@ -9351,6 +9362,13 @@ footer.footer-7 {
 @media all and (max-width: 767px) {
   footer .social-list {
     margin: 1.85714286em 0;
+    text-align: center;
+  }
+  footer.footer-2 .row > div {
+    margin-bottom: 2.5em;
+  }
+  footer.footer-2 .row h6 {
+    margin-bottom: 0.5em;
   }
   .footer-4 form {
     margin: 1.85714286em 0;
