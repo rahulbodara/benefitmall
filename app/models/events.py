@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
 from app.models.pages import DefaultPage
@@ -60,6 +61,7 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 	def can_create_at(cls, parent):
 		# Only allow one child instance
 		return super(EventIndexPage, cls).can_create_at(parent) and not cls.objects.exists()
+
 
 class Event(models.Model):
 	LOCATION_TYPE_CHOICES = (
@@ -132,3 +134,27 @@ def my_handler(sender, instance=None, raw=False, **kwargs):
 		slug_str = "%s %s" % (event.event_title, event.pk)
 		slug = slugify(slug_str)
 		event.event_slug = slug
+
+
+class EventRegistration(models.Model):
+	event = models.ForeignKey(Event,on_delete=models.PROTECT, null=True, blank=True, related_name='registered_event')
+	first_name = models.CharField(max_length=255, default='', verbose_name='First Name')
+	last_name = models.CharField(max_length=255, default='', verbose_name='Last Name')
+	company = models.CharField(max_length=255, default='', verbose_name='Company')
+	email = models.EmailField()
+	phone = models.CharField(max_length=16, default='', verbose_name='Phone')
+	address1 = models.CharField(max_length=255, default='', null=True, blank=True, verbose_name='Address Line 1')
+	address2 = models.CharField(max_length=255, default='', null=True, blank=True, verbose_name='Address Line 2')
+	city = models.CharField(max_length=255, default='', null=True, blank=True, verbose_name='City')
+	state = models.CharField(max_length=16, default='', null=True, blank=True, verbose_name='State')
+	postalcode = models.CharField(max_length=16, default='', verbose_name='Postal Code')
+
+	def __str__(self):
+		return "{} {} {} {}".format(self.event.event_title, self.first_name, self.last_name, self.event.start_datetime)
+
+
+class ArticleForm(ModelForm):
+	class Meta:
+		model = EventRegistration
+		fields = ['event', 'first_name', 'last_name', 'company', 'email', 'phone', 'address1', 'address2', 'city', 'state', 'postalcode']
+

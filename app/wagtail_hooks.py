@@ -21,7 +21,7 @@ from wagtail.core.fields import RichTextField
 from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES
 from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
 
-from app.models.events import Event
+from app.models.events import Event, EventRegistration
 
 @register_setting(icon='cogs')
 class HeaderFooter(BaseSetting):
@@ -245,4 +245,28 @@ class EventAdmin(ModelAdmin):
     search_fields = ('event_title', 'address_city', 'address_state', 'description', )
 
 
-modeladmin_register(EventAdmin)
+class EventRegistrationAdmin(ModelAdmin):
+    model = EventRegistration
+    menu_label = 'Event Registrations'
+    menu_icon = 'group'
+
+    list_display = ('get_title', 'get_date', 'first_name', 'last_name', 'postalcode')
+
+    def get_title(self, obj: EventRegistration):
+        return obj.event.event_title
+    get_title.short_description = 'Event Name'
+    get_title.admin_order_field = 'Event Name'
+
+    def get_date(self, obj: EventRegistration):
+        return obj.event.start_datetime.strftime('%m/%d/%Y')
+    get_date.short_description = 'Event date'
+    get_date.admin_order_field = 'EVent Date'
+
+
+class EventsAdminGroup(ModelAdminGroup):
+    menu_label = 'Events'
+    menu_icon = 'date'
+    items = (EventAdmin, EventRegistrationAdmin)
+
+modeladmin_register(EventsAdminGroup)
+
