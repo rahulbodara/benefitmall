@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
 
+    'salesforce',
+
 ]
 
 MIDDLEWARE = [
@@ -99,8 +101,20 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': PROJECT_NAME,
+    },
+    'salesforce': {
+        'ENGINE': 'salesforce.backend',
+        'CONSUMER_KEY': '3MVG9ahGHqp.k2_ysR5QacRbHlHN1WYdbcrNhiVY4aE48SzvpJWORIlSZnCR20LCgPE7BAIfPAZBt3sGyLPNP',
+        'CONSUMER_SECRET': 'DBCE6F4E5A79087E022DE97FE435DE8157D13FEC28AF66205A9A2611E24C9695',
+        'USER': 'insitein@benefitmall.com.devkasu',
+        'PASSWORD': 'Test@415sQk1D2vzH26ZwTBltnQxvnbD',
+        'HOST': 'https://test.salesforce.com',
     }
 }
+
+DATABASE_ROUTERS = [
+    "salesforce.router.ModelRouter"
+]
 
 
 # Password validation
