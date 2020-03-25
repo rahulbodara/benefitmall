@@ -45,7 +45,6 @@ def get_header_links(context, calling_page):
     menuitems = get_links_recursive(context, site_root, calling_page)
     return menuitems
 
-
 @register.simple_tag(takes_context=True)
 def render_header(context, calling_page):
     if not calling_page:
@@ -67,6 +66,9 @@ def render_header(context, calling_page):
         'autonav': header_footer.header_automatic_nav,
         'header_links': header_links,
         'header_buttons': header_buttons,
+        'header_utility_nav': header_footer.header_utility_nav,
+        'utility_text': header_footer.utility_text,
+        'utility_links': header_footer.utility_links,
         'header_banner_text_1': header_footer.header_banner_text_1,
         'header_banner_text_2': header_footer.header_banner_text_2,
         'copyright_text': header_footer.copyright_text,
@@ -127,3 +129,22 @@ def render_breadcrumbs(context, calling_page: Page):
     }
 
     return render_to_string('navigation/breadcrumbs.html', context=breadcrumb_context, request=context['request'])
+
+@register.simple_tag(takes_context=True)
+def render_utility(context, calling_page):
+    if not calling_page:
+        return ''
+    if 'request' not in context:
+        return ''
+
+    header_footer = HeaderFooter.for_site(site=get_current_site(context))
+
+    utility_links = header_footer.utility_links
+
+    utility_context = {
+        'header_utility_nav': header_footer.header_utility_nav,
+        'utility_text': header_footer.utility_text,
+        'utility_links': utility_links,
+    }
+
+    return render_to_string('navigation/utility_nav.html', context=utility_context, request=context['request'])

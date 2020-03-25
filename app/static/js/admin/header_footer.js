@@ -188,6 +188,35 @@ $(function () {
 
     /**************************************************************************************************/
     // Toggler for Auto Nav selector
+    function utilityNavToggler(elem){
+        var value = elem.is(':checked');
+        var container = $(elem).closest('ul.fields');
+
+        // Loop through link items and toggle display and class
+        if (value) {
+            var items = ['id_utility_text', 'utility_links-list'];
+            $.each(items, function(index, item) {
+                container.find('#'+item).closest('li').show()
+            }.bind(this));
+        } else {
+            var items = [value, 'id_utility_text', 'utility_links-list'];
+            $.each(items, function(index, item) {
+                container.find('#'+item).closest('li').hide()
+            }.bind(this));
+        }
+
+    }
+
+    // utilityNavToggler call on load
+    utilityNavToggler($('#id_header_utility_nav'));
+    // autoNavToggler call on change
+    $('body').on('change', '#id_header_utility_nav', function() {
+       utilityNavToggler($(this));
+    });
+    /**************************************************************************************************/
+
+    /**************************************************************************************************/
+    // Toggler for Auto Nav selector
     function autoNavToggler(elem){
         var value = elem.is(':checked');
         var container = $(elem).closest('ul.fields');
@@ -223,7 +252,6 @@ $(function () {
     /**************************************************************************************************/
 
 
-
     /**************************************************************************************************/
     // General function called from observer
     var observer = new MutationObserver(function(mutations) {
@@ -236,6 +264,9 @@ $(function () {
         });
         $('#id_footer_type').each(function() {
            footerTypeToggler($(this));
+        });
+        $('#id_header_utility_nav').each(function() {
+           utilityNavToggler($(this));
         });
     });
 
