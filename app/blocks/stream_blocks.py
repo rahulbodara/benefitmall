@@ -1,4 +1,4 @@
-from wagtail.core.blocks import StreamBlock
+from wagtail.core.blocks import StreamBlock, CharBlock
 
 # content
 from .wysiwyg_block import WYSIWYGBlock
@@ -26,6 +26,7 @@ from .products_block import ProductsBlock
 from .video_cover_block import VideoCoverBlock
 from .three_image_cover_block import ThreeImageCoverBlock
 from .pricing_block import PricingBlock
+from .link_block import LinkBlock
 # settings
 from .settings.header_block import HeaderBlock
 from .header_footer.header_block import HeaderLinkBlock, HeaderButtonBlock
@@ -65,6 +66,9 @@ class HeaderLinkStreamBlock(StreamBlock):
 
 class HeaderButtonStreamBlock(StreamBlock):
     header_button_block = HeaderButtonBlock()
+
+class HeaderUtilityStreamBlock(StreamBlock):
+    utility_link = LinkBlock()
 
 
 class FooterLinkStreamBlock(StreamBlock):

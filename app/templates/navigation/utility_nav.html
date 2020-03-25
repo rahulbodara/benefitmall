@@ -1,0 +1,23 @@
+{% load wagtailcore_tags %}
+<div class="bar bar-3 bar--sm bg--secondary">
+	<div class="container">
+		<div class="row d-flex align-items-center">
+            <div class="col-md-6">
+                <div class="bar__module">
+                    <span class="type--fade top-bar-blurb">{{ utility_text }}</span>
+                </div>
+            </div>
+			<div class="col-md-6 text-right text-left-xs text-left-sm">
+				<div class="bar__module">
+					<ul class="menu-horizontal">
+                        {% for block in utility_links %}
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                                   {% include_block block %}
+                            </li>
+                        {% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div><!--end of row-->
+	</div><!--end of container-->
+</div>
