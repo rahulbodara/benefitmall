@@ -30,7 +30,7 @@ from .pricing_block import PricingBlock
 from .settings.header_block import HeaderBlock
 from .header_footer.header_block import HeaderLinkBlock, HeaderButtonBlock
 from .header_footer.footer_block import FooterLinkBlock, FooterButtonBlock, FooterUtilityLinkBlock, FooterCategoryBlock
-
+from .salesforce.lead_form_block import LeadFormBlock
 
 class DefaultStreamBlock(StreamBlock):
     wysiwyg_block = WYSIWYGBlock()
@@ -57,6 +57,7 @@ class DefaultStreamBlock(StreamBlock):
     video_cover_block = VideoCoverBlock()
     three_image_cover_block = ThreeImageCoverBlock()
     pricing_block = PricingBlock()
+    lead_from_block = LeadFormBlock()
 
 class HeaderLinkStreamBlock(StreamBlock):
     header_link_block = HeaderLinkBlock()
