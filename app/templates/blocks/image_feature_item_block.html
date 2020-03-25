@@ -15,15 +15,23 @@
     </div>
 {% elif layout == 'overlay' %}
     <div class="{{ cols }}">
-        <div class="feature large-overlay text-center imagebg {{ invert }}" data-overlay="{{ overlay }}">
+        <div class="feature large-overlay text-center imagebg d-flex align-items-center justify-content-center {{ invert }}" data-overlay="{{ overlay }}">
             <div class="background-image-holder">
                 <img alt="{{ image.alt }}" src="{{ image.url }}">
             </div>
-            <{{heading_size}} class="pos-vertical-center {% if invert %}text-dark{% endif %}">{{ self.header }}</{{heading_size}}>
-            {% if self.text %}
-            <p class="{{ body_size }} pos-vertical-center {% if invert %}text-dark{% endif %}"> {{ self.text }} </p>
-            {% endif %}
-            {% include_block self.link %}
+            <div>
+                <{{heading_size}} class="pos-vertical-center {% if invert %}text-dark{% endif %}">{{ self.header }}</{{heading_size}}>
+                {% if self.text %}
+                <p class="{{ body_size }} pos-vertical-center {% if invert %}text-dark{% endif %}"> {{ self.text }} </p>
+                {% endif %}
+                <a href="{{ self.link.href_prefix }}{{ self.link.href }}" class="{{ self.link.link_format }}">
+                    {% if self.link.link_format == '' %}
+                        <span class='pos-vertical-center'>{{ self.link.link_text }}</span>
+                    {% else %}
+                        <span class='btn__text'>{{ self.link.link_text }}</span>
+                    {% endif %}
+                </a>
+            </div>
         </div>
     </div>
 {% else %}
