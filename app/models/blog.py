@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 import datetime
+
 from datetime import date
 
 from django import forms
@@ -215,3 +216,5 @@ class BlogCategory(models.Model):
     class Meta:
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
+
+
