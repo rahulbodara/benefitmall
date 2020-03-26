@@ -28,6 +28,7 @@ from app.widgets.custom_radio_select import CustomRadioSelect
 
 from app.models.events import EventPage, EventRegistration
 from app.models.news import News
+from app.models.notifications import Notification
 
 
 @register_setting(icon='cogs')
@@ -334,3 +335,15 @@ class NewsAdmin(ModelAdmin):
     search_fields = ('news_title', 'body', )
 
 modeladmin_register(NewsAdmin)
+
+
+class NotificationAdmin(ModelAdmin):
+    model = Notification
+    menu_label = 'Notifications'
+    menu_icon = 'fa-bell'
+    list_display = ('header', 'starttime', 'endtime')
+    list_filter = ('starttime', )
+    search_fields = ('header', 'body', )
+
+modeladmin_register(NotificationAdmin)
+

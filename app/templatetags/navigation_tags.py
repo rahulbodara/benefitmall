@@ -4,6 +4,8 @@ from app.wagtail_hooks import HeaderFooter
 from site_settings.wagtail_hooks import SiteSettings
 from wagtail.core.models import Site
 from wagtail.core.models import Page
+from app.models.notifications import Notification
+from datetime import datetime
 register = template.Library()
 
 
@@ -150,3 +152,24 @@ def render_utility(context, calling_page):
     }
 
     return render_to_string('navigation/utility_nav.html', context=utility_context, request=context['request'])
+
+
+@register.simple_tag(takes_context=True)
+def render_notification(context, calling_page):
+    if not calling_page:
+        return ''
+    if 'request' not in context:
+        return ''
+
+
+
+    if not Notification.objects.filter(starttime__lte=datetime.now(), endtime__gte=datetime.now()).exists():
+        return ''
+    else:
+        notifications = Notification.objects.filter(starttime__lte=datetime.now(), endtime__gte=datetime.now()).first()
+
+    notification_context = {
+        'notification': notifications,
+    }
+
+    return render_to_string('navigation/notification.html', context=notification_context, request=context['request'])
