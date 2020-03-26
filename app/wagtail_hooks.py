@@ -18,8 +18,10 @@ from app.views import IconReference
 from app.models import Icon
 
 from wagtail.core.fields import RichTextField
-from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES
+from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES, BACKGROUND_MODE_CHOICES_NO_IMAGE
 from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, HeaderUtilityStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
+from app.blocks.custom_choice_block import CustomChoiceBlock
+from app.widgets.custom_radio_select import CustomRadioSelect
 
 from app.models.events import Event, EventRegistration
 from app.models.news import News
@@ -104,7 +106,9 @@ class HeaderFooter(BaseSetting):
     header_automatic_nav = models.BooleanField(verbose_name='Automatic Nav', default=True, help_text='Automatically populate the nav with top-level menu pages')
     header_links = StreamField(HeaderLinkStreamBlock(required=False), verbose_name='Links', blank=True, null=True, help_text='Populate the nav with custom links')
     header_buttons = StreamField(HeaderButtonStreamBlock(required=False), verbose_name='Buttons', blank=True, null=True, help_text='Populate the nav with custom buttons')
-    header_utility_nav = models.BooleanField(verbose_name='Utility Nav', default=True, help_text='Add Utility Nav Bar')
+    header_utility_nav = models.BooleanField(verbose_name='Utility Nav', default=False, help_text='Add Utility Nav Bar')
+    utility_background_color = models.CharField(choices=BACKGROUND_MODE_CHOICES_NO_IMAGE, default=BACKGROUND_MODE_CHOICES_NO_IMAGE[0][0], max_length=50)
+    utility_switched = models.BooleanField(verbose_name='Switch Utility Nav', default=False, help_text='Switch link side and text side')
     utility_text = models.CharField(blank=True, null=True, verbose_name='Utility Text', max_length=150)
     utility_links = StreamField(HeaderUtilityStreamBlock(required=False), verbose_name='Utility Links', blank=True, null=True, help_text='Populate the utility nav with links and text')
     header_banner_text_1 = models.CharField(
@@ -125,6 +129,8 @@ class HeaderFooter(BaseSetting):
             StreamFieldPanel('header_links'),
             StreamFieldPanel('header_buttons'),
             FieldPanel('header_utility_nav'),
+            FieldPanel('utility_background_color'),
+            FieldPanel('utility_switched'),
             FieldPanel('utility_text'),
             StreamFieldPanel('utility_links'),
             FieldPanel('header_banner_text_1'),

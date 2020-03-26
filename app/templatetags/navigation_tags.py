@@ -143,6 +143,8 @@ def render_utility(context, calling_page):
 
     utility_context = {
         'header_utility_nav': header_footer.header_utility_nav,
+        'utility_background_color': header_footer.utility_background_color,
+        'utility_switched': header_footer.utility_switched,
         'utility_text': header_footer.utility_text,
         'utility_links': utility_links,
     }
