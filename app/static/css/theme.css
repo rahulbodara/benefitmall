@@ -4607,7 +4607,22 @@ p.lead img {
 .imagebg h6 {
   position: relative;
 }
-.imagebg:not(.image--light) span {
+.imagebg.image--light span,
+.imagebg.image--light p,
+.imagebg.image--light h1,
+.imagebg.image--light h2,
+.imagebg.image--light h3,
+.imagebg.image--light h4,
+.imagebg.image--light h5 {
+  color: #000000;
+}
+.imagebg:not(.image--light) span,
+.imagebg:not(.image--light) p,
+.imagebg:not(.image--light) h1,
+.imagebg:not(.image--light) h2,
+.imagebg:not(.image--light) h3,
+.imagebg:not(.image--light) h4,
+.imagebg:not(.image--light) h5 {
   color: #fff;
 }
 .imagebg.border--round {
