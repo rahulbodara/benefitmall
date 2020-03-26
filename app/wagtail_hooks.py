@@ -1,9 +1,12 @@
+import csv
 from django.conf import settings
 from django.conf.urls import url
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.html import format_html
 from django.db import models
+from django.contrib.admin.utils import quote
+from django.http import HttpResponse
 
 from wagtail.core import hooks
 from wagtail.admin.menu import MenuItem
@@ -23,8 +26,9 @@ from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBl
 from app.blocks.custom_choice_block import CustomChoiceBlock
 from app.widgets.custom_radio_select import CustomRadioSelect
 
-from app.models.events import Event, EventRegistration
+from app.models.events import EventPage, EventRegistration
 from app.models.news import News
+
 
 @register_setting(icon='cogs')
 class HeaderFooter(BaseSetting):
@@ -243,45 +247,82 @@ def register_icon_reference_menu_item():
     return MenuItem('Icon Reference', reverse('icon-reference'), classnames='icon icon-view', order=9998)
 
 
-# @register_setting(icon = 'download')
-# class ErrorPages(BaseSetting):
-#     title_404 = models.TextField(default='404 not found', null=True, blank=True)
-#     body_404 = RichTextField(null=True, blank=True)
-
-
-class EventAdmin(ModelAdmin):
-    model = Event
+class EventPageAdmin(ModelAdmin):
+    model = EventPage
     menu_label = 'Events'
     menu_icon = 'date'
-    list_display = ('event_title', 'event_type', 'location_type', 'start_datetime', )
+    exclude_from_explorer = True
+    list_display = ('get_title', 'event_type', 'location_type', 'start_datetime', 'registrations')
     list_filter = ('location_type', 'event_type', 'address_city', 'address_state', )
-    search_fields = ('event_title', 'address_city', 'address_state', 'description', )
+    search_fields = ('title', 'address_city', 'address_state', 'description', )
+
+    def get_title(self, obj):
+        edit_url = self.url_helper.get_action_url('edit', quote(obj.pk))
+        return format_html('<h2><a href="{}">{}</a></h2>'.format(edit_url, obj))
+    get_title.short_description = 'Title'
+    get_title.admin_order_field = 'Title'
+
+    def registrations(self, obj):
+        reg_count = EventRegistration.objects.filter(event=obj.id).count()
+        csv_link = ''
+        return format_html('{} &nbsp; <a href="/admin/app/eventregistration/?event__id__exact={}" class="button button-small bicolor icon icon-list-ul">View List</a> <a href="/admin/app/event/registrations-download/{}/" class="button button-small bicolor icon icon-download">Download CSV</a>'.format(reg_count, obj.id, obj.id))
+    registrations.short_description = 'Registrations'
+    registrations.admin_order_field = 'registrations'
+
+    def get_extra_class_names_for_field_col(self, obj, field_name):
+        if field_name == 'field-get_title':
+            return ['title']
+        return ['title']
+
+modeladmin_register(EventPageAdmin)
 
 
 class EventRegistrationAdmin(ModelAdmin):
     model = EventRegistration
     menu_label = 'Event Registrations'
     menu_icon = 'group'
+    list_display = ('get_event', 'get_date', 'first_name', 'last_name', 'postalcode', 'created_at')
+    search_fields = ('first_name', 'last_name', 'company', 'email')
 
-    list_display = ('get_title', 'get_date', 'first_name', 'last_name', 'postalcode')
+    def get_event(self, obj):
+        edit_url = self.url_helper.get_action_url('edit', quote(obj.pk))
+        return format_html('<h2><a href="{}">{}</a></h2>'.format(edit_url, obj.event))
+    get_event.short_description = 'Event'
+    get_event.admin_order_field = 'event'
 
-    def get_title(self, obj: EventRegistration):
-        return obj.event.event_title
-    get_title.short_description = 'Event Name'
-    get_title.admin_order_field = 'Event Name'
+    def get_date(self, obj):
+        return obj.event.start_datetime
+    get_date.short_description = 'Event Date'
+    get_date.admin_order_field = 'event_date'
 
-    def get_date(self, obj: EventRegistration):
-        return obj.event.start_datetime.strftime('%m/%d/%Y')
-    get_date.short_description = 'Event date'
-    get_date.admin_order_field = 'EVent Date'
+    def get_extra_class_names_for_field_col(self, obj, field_name):
+        if field_name == 'field-get_event':
+            return ['title']
+        return ['title']
+
+modeladmin_register(EventRegistrationAdmin)
 
 
-class EventsAdminGroup(ModelAdminGroup):
-    menu_label = 'Events'
-    menu_icon = 'date'
-    items = (EventAdmin, EventRegistrationAdmin)
+# Hide Event Registrations menu
+@hooks.register('construct_main_menu')
+def hide_event_registrations_menu(request, menu_items):
+    menu_items[:] = [item for item in menu_items if 'eventregistration' not in item.url]
 
-modeladmin_register(EventsAdminGroup)
+# Add Event Registrations Download URL
+@hooks.register('register_admin_urls')
+def event_registrations_download():
+    return [url(r'^app/event/registrations-download/(?P<event_id>[0-9]+)/$', generate_event_registrations_csv, name='event_registrations_download')]
+
+# Generate Event Registrations CSV
+def generate_event_registrations_csv(request, event_id):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Benefit_Mall_Event_Registration.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Event', 'Event Date', 'First Name', 'Last Name', 'Company', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Postal Code'])
+    for reg in EventRegistration.objects.filter(event__id=event_id):
+        writer.writerow([reg.event.title, reg.event.start_datetime.strftime('%Y-%d-%m %I:%M %p'), reg.first_name, reg.last_name, reg.company, reg.email, reg.phone, reg.address1, reg.address2, reg.city, reg.state, reg.postalcode])
+    return response
 
 
 class NewsAdmin(ModelAdmin):
@@ -291,6 +332,5 @@ class NewsAdmin(ModelAdmin):
     list_display = ('news_title', 'news_datetime', )
     list_filter = ('news_datetime', )
     search_fields = ('news_title', 'body', )
-
 
 modeladmin_register(NewsAdmin)
