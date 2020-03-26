@@ -2,7 +2,11 @@
 {% load wagtailcore_tags app_tags %}
 
 {% block content %}
-<section class="switchable switchable--switch">
+{% for block in page.body %}
+    {% include_block block %}
+{% endfor %}
+
+    <section class="switchable switchable--switch">
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-md-5">
