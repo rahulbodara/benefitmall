@@ -6020,7 +6020,8 @@ p .material-icons:first-child {
   padding: 5em;
 }
 .feature:not(.boxed) {
-  margin-bottom: 60px;
+  margin-bottom: 30px;
+  top: 30px;
 }
 .feature.feature--featured:after {
   content: '';
