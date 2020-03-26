@@ -2,27 +2,111 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-<section>
-    <div class="container">
-        {% for event in events %}
-        <div class="row">
-            <div class="col-md-4">
-                <a href="/resources/events/{{ event.start_datetime|date:'Y' }}/{{ event.start_datetime|date:'m' }}/{{ event.start_datetime|date:'d' }}/{{ event.event_slug }}">
-                    {{ event.event_title }}
-                </a>
-            </div>
-            <div class="col-md-4">
-                {{ event.start_datetime|date:"D M jS, Y @ P" }}
-            </div>
-            <div class="col-md-4">
-                {{ event.event_type }}
-            </div>
-        </div>
-    {% endfor %}
-    </div>
-</section>
-
-    {% for block in page.body %}
+{% for block in page.body %}
     {% include_block block %}
 {% endfor %}
+
+<style>
+    .calendar {
+        text-align: center;
+        width: 185px;
+        max-width: 185px;
+        height: 170px;
+        max-height: 170px;
+        border: 1px solid gray;
+        border-radius: 15px;
+        background: #FF4D4D;
+    }
+    .calendar .month {
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 10px;
+    }
+    .calendar .date {
+        padding: 10px;
+        margin: 0;
+        background-color: white;
+    }
+    .calendar .date .weekday {
+        font-size: 20px;
+        line-height: 20px;
+        padding: 0;
+        margin: 0 0 5px 0;
+
+    }
+    .calendar .date .day {
+        font-size: 50px;
+        line-height: 50px;
+        padding: 0;
+        margin: 0 0 0 0;
+    }
+</style>
+
+{% for event in events %}
+    {% if event.is_active %}
+<section class="space--sm {% if not forloop.counter|divisibleby:2 %} bg--secondary{% endif %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="text-block">
+                    <div class="calendar">
+                        <div class="month">{{ event.start_datetime|date:'F' }}</div>
+                        <div class="date">
+                            <div class="weekday">{{ event.start_datetime|date:'D' }}</div>
+                            <div class="day">{{ event.start_datetime|date:'j' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="text-block">
+                    <h3><a href="{{ event.get_url }}">{{ event.title }}</a></h3>
+                    <h5>{{ event.event_type }}</h5>
+                    <br>
+                    <h4>
+                        {{ event.start_datetime|date:'g:i A' }} - {{ event.get_end_datetime|date:'g:i A' }} CT<br>
+                        Location: {{ event.get_location_type_display }}
+                    </h4>
+                    <br>
+                    <a href="{{ event.get_url }}" class="btn btn--sm btn--primary type--uppercase"><span class="btn__text">Register for Event</span></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="text-block">
+                    {{ event.description|richtext }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    {% endif %}
+{% endfor %}
+
+{% if events.paginator.num_pages > 1 %}
+    <section class="space--xxs">
+        <div class="container">
+            <div class="pagination">
+                {% if events.has_previous %}
+                    <a style="float:none;" href="?page={{ events.previous_page_number }}" class="pagination__prev">« Prev</a>
+                {% endif %}
+                
+                {% for page_num in events.paginator.page_range %}
+                    <ol>
+                        {% if page_num == events.number %}
+                            <li class="pagination__current">{{ page_num }}</li>
+                        {% else %}
+                            <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                        {% endif %}
+                    </ol>
+                {% endfor %}
+
+                {% if events.has_next %}
+                    <a style="float:none;" href="?page={{ events.next_page_number }}" class="pagination__next">Next »</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endif %}
+
 {% endblock %}

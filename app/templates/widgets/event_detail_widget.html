@@ -1,0 +1,7 @@
+{% with id=widget.attrs.id %}
+	<h1>
+		<a href="/admin/app/event/edit/1/">{{ event }}</a> (ID: {{event.id}})<br>
+		<span style="font-weight:normal;">{{ event.start_datetime }}</span><br>
+	</h1>
+	<input type="hidden" name="event" value="{{ event.id }}">
+{% endwith %}
