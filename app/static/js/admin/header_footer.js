@@ -194,12 +194,12 @@ $(function () {
 
         // Loop through link items and toggle display and class
         if (value) {
-            var items = ['id_utility_text', 'utility_links-list'];
+            var items = ['id_utility_switched', 'id_utility_background_color','id_utility_text', 'utility_links-list'];
             $.each(items, function(index, item) {
                 container.find('#'+item).closest('li').show()
             }.bind(this));
         } else {
-            var items = [value, 'id_utility_text', 'utility_links-list'];
+            var items = [value, 'id_utility_switched', 'id_utility_background_color', 'id_utility_text', 'utility_links-list'];
             $.each(items, function(index, item) {
                 container.find('#'+item).closest('li').hide()
             }.bind(this));
