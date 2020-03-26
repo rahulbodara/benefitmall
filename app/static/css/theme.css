@@ -6022,9 +6022,6 @@ p .material-icons:first-child {
 .feature h4 {
   margin-bottom: 0.34210526em;
 }
-.feature h4 + p {
-  max-width: 22.28571429em;
-}
 .feature i + h5 {
   margin-top: 1.85714286em;
 }
