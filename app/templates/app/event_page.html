@@ -33,7 +33,7 @@
                     <p><strong>What Happens Next</strong><br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc accuan eget.</p>
                 {% else %}
                     {% if event.is_active %}
-                        <form action="" method="post" class="row mx-0" data-recaptcha-sitekey="6LewhCIUAAAAACSwFvBDhgtTbw6EnW6e9dip8o2u">
+                        <form action="" method="post" class="row mx-0">
                             <h3 style="font-weight:100">Register for Event</h3>
 
                             {% csrf_token %}
@@ -60,10 +60,6 @@
                                 {% endif %}
                             {% endfor %}
                             <input type="hidden" name="event" value="{{ event.id }}">
-
-                            <div class="col-md-12">
-                                <div class="recaptcha"></div>
-                            </div>
 
                             <div class="col-md-5 col-lg-4 col-6">
                                 <button type="submit" class="btn btn--primary type--uppercase">Register</button>
