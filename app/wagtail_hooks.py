@@ -45,6 +45,14 @@ class HeaderFooter(BaseSetting):
         'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
         help_text='Logo used in header. Recommended transparent PNG',
         related_name='footer_logo')
+    featured_event_bg = models.ForeignKey(
+        'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
+        help_text='Banner displayed behind the featured event. 1110x700 pixels',
+        related_name='featured_event_bg')
+    featured_news_bg = models.ForeignKey(
+        'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
+        help_text='Banner displayed behind the featured press release. 1110x700 pixels',
+        related_name='featured_news_bg')
     social_facebook = models.CharField(
         null=True, blank=True, default='',
         max_length=250,
@@ -88,6 +96,11 @@ class HeaderFooter(BaseSetting):
             ImageChooserPanel('footer_logo'),
 
         ], heading='Logos', classname='collapsible'),
+        MultiFieldPanel([
+            ImageChooserPanel('featured_event_bg'),
+            ImageChooserPanel('featured_news_bg'),
+
+        ], heading='Featured Items', classname='collapsible'),
         MultiFieldPanel([
             FieldPanel('social_facebook'),
             FieldPanel('social_instagram'),
