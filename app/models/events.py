@@ -7,6 +7,7 @@ from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
 from app.models.pages import DefaultPage
 from wagtail.core.models import Page, Http404, TemplateResponse
+from wagtail.search import index
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
@@ -44,15 +45,12 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		try:
 			# Return linked page
 			events = paginator.page(request.GET.get('page'))
-			print('======= LINKED PAGE')
 		except PageNotAnInteger:
 			# Return first page
 			events = paginator.page(1)
-			print('======= FIRST PAGE')
 		except EmptyPage:
 			# Return last page
 			events = paginator.page(paginator.num_pages)
-			print('======= LAST PAGE')
 
 		context['events'] = events
 		return TemplateResponse(request, self.get_template(request), context)
@@ -163,14 +161,18 @@ class EventPage(RoutablePageMixin, DefaultPage):
 	parent_page_types = ['app.EventIndexPage']
 	subpage_types = []
 
+	search_fields = DefaultPage.search_fields + [
+		index.SearchField('description'),
+	]
+
 	class Meta:
 		verbose_name = 'Event'
 		verbose_name_plural = 'Events'
 		ordering = ['start_datetime']
 
 	@route(r'^$')
-	def hide_default_view(self, request, *args, **kwargs):
-		raise Http404
+	def redirect_to_detail_view(self, request, *args, **kwargs):
+		return redirect(self.get_url())
 
 	@route(r'^calendar/$')
 	def generate_ics(self, request, *args, **kwargs):

@@ -19,6 +19,10 @@ class SiteSettings(BaseSetting):
         null=True, blank=True, default='User-agent: *\nDisallow: /',
         verbose_name='Robots.txt',
         help_text='Enter your robots.tx crawler instructions here')
+    show_search = models.BooleanField(
+        default=False,
+        verbose_name='Show Search',
+        help_text='Check this box if you want global search on this site.')
     favicon_ico = models.ForeignKey(
         Image, models.SET_NULL, blank=True, null=True,
         help_text='The favicon must be 16x16 pixels or 32x32 pixels, using either 8-bit or 24-bit colors. The format of the image must be one of PNG (a W3C standard), GIF, or ICO.',
@@ -98,6 +102,7 @@ class SiteSettings(BaseSetting):
             ImageChooserPanel('apple_touch_icon'),
             FieldPanel('show_breadcrumbs'),
             FieldPanel('robots_txt'),
+            FieldPanel('show_search'),
         ], heading='Configuration', classname='collapsible'),
     ]
 

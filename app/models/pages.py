@@ -7,6 +7,7 @@ from wagtail.core.fields import StreamField, RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel, TabbedInterface, ObjectList, InlinePanel, FieldRowPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField, FORM_FIELD_CHOICES
 from wagtail.contrib.forms.forms import FormBuilder
+from wagtail.search import index
 
 from modelcluster.fields import ParentalKey
 
@@ -30,6 +31,9 @@ class DefaultPage(AbstractBasePage):
         AbstractBasePage.meta_panels,
     ])
 
+    search_fields = AbstractBasePage.search_fields + [
+        index.SearchField('body'),
+    ]
 
 class FormField(AbstractFormField):
     page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
@@ -69,6 +73,11 @@ class FormPage(AbstractBaseEmailForm):
         ObjectList(content_panels, heading='Content'),
         AbstractBasePage.meta_panels,
     ])
+
+    search_fields = AbstractBaseEmailForm.search_fields + [
+        index.SearchField('text_above'),
+        index.SearchField('text_below'),
+    ]
 
     form_builder = CustomFormBuilder
 
