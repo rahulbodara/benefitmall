@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="height-50  border--round space--sm {%  if bg_img %}imagebg{% endif %} image--light" data-overlay="6">
+                <div class="height-50  border--round space--sm {% if bg_img %}imagebg image--light{% endif %}" data-overlay="6">
 
                     {% if bg_img %}
                         {% image bg_img original as image %}
