@@ -45,15 +45,12 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		try:
 			# Return linked page
 			events = paginator.page(request.GET.get('page'))
-			print('======= LINKED PAGE')
 		except PageNotAnInteger:
 			# Return first page
 			events = paginator.page(1)
-			print('======= FIRST PAGE')
 		except EmptyPage:
 			# Return last page
 			events = paginator.page(paginator.num_pages)
-			print('======= LAST PAGE')
 
 		context['events'] = events
 		return TemplateResponse(request, self.get_template(request), context)
