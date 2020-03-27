@@ -1,4 +1,4 @@
-{% load static wagtailuserbar navigation_tags %}
+{% load static wagtailuserbar navigation_tags sitesettings wagtailuserbar %}
 <!doctype html>
 <html lang="en">
     <head>
@@ -28,6 +28,8 @@
         {% endblock %}
     </head>
     <body class="dropdowns--hover " data-smooth-scroll-offset='64'>
+        {% wagtailuserbar %}
+        {% render_search_modal %}
 		<!-- NAV CONTAINER -->
         <div class="nav-container">
             {% render_notification page %}

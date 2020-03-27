@@ -10,6 +10,7 @@ from wagtail.admin.edit_handlers import (
 )
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.search import index
 
 
 class AbstractBasePage(Page):
@@ -58,6 +59,11 @@ class AbstractBasePage(Page):
     ]
     # Add in publish dates
     meta_panels = ObjectList(promote_panels + Page.settings_panels, heading='Meta', classname='settings')
+
+    search_fields = Page.search_fields + [
+        index.SearchField('search_description'),
+        index.SearchField('meta_keywords'),
+    ]
 
     class Meta:
         abstract = True
@@ -108,6 +114,11 @@ class AbstractBaseEmailForm(AbstractEmailForm):
     ]
     # Add in publish dates
     meta_panels = ObjectList(promote_panels + Page.settings_panels, heading='Meta', classname='settings')
+
+    search_fields = Page.search_fields + [
+        index.SearchField('search_description'),
+        index.SearchField('meta_keywords'),
+    ]
 
     class Meta:
         abstract = True

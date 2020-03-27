@@ -1,4 +1,4 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags sitesettings %}
 <div>
     <div class="bar bar--sm visible-xs">
         <div class="container">
@@ -50,6 +50,7 @@
                                     {% include_block block.value.link %}
                                 {% endfor %}
                             {% endif %}
+                            {% render_search_button %}
                         </ul>
                     </div>
                     {% if header_buttons %}

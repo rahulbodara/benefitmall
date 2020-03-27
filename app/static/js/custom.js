@@ -26,4 +26,28 @@ $(function () {
         $(item).replaceWith('<figure class="'+classes+'">'+image+'<figcaption>'+alt+'</figcaption></figure>');
     });
     /**************************************************************************************************/
+
+
+    /**************************************************************************************************/
+    // Set focus to search box
+    var search_box = $('.notification.search-box');
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.attributeName === "class") {
+                $('input[name="q"]').focus()
+            }
+        });
+    });
+    observer.observe(search_box[0], {
+        attributes: true
+    });
+
+    // Handle search submit
+    $('input[name="q"]').keypress(function (e) {
+        if (e.which == 13) {
+            window.location.href = '/search/?q=' + this.value;
+            return false;
+        }
+    });
+    /**************************************************************************************************/
 });

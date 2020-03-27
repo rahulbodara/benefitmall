@@ -1,4 +1,6 @@
 from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse, JsonResponse, Http404
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from wagtail.core.models import Page, TemplateResponse
 from site_settings.wagtail_hooks import SiteSettings
 import json
 
@@ -48,3 +50,33 @@ def pwa_manifest(request):
         raise Http404
         # return HttpResponseNotFound()
 
+
+def search(request):
+    site_settings = SiteSettings.for_site(site=request.site)
+    if site_settings.show_search:
+        context = {}
+        query = request.GET.get('q', None)
+        results = []
+
+        if query:
+            all_results = Page.objects.live().search(query)
+
+            paginator = Paginator(all_results, 10)
+
+            try:
+                # Return linked page
+                results = paginator.page(request.GET.get('page'))
+            except PageNotAnInteger:
+                # Return first page
+                results = paginator.page(1)
+            except EmptyPage:
+                # Return last page
+                results = paginator.page(paginator.num_pages)
+
+        context['page'] = Page.objects.get(slug='home')
+        context['results'] = results
+        context['results_count'] = len(results)
+        context['query'] = query
+        return TemplateResponse(request, "search/search_results.html", context)
+    else:
+        raise Http404
