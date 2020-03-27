@@ -1,10 +1,20 @@
 from django import template
 from django.utils.html import format_html
+from wagtail.core.models import Site
+from app.wagtail_hooks import HeaderFooter
 
 from app.models import BlogPage
-
+from app.models.events import EventPage
 
 register = template.Library()
+
+
+def get_current_site(self, context=None):
+    if context and context.request:
+        site = context['request'].site
+    else:
+        site = Site.objects.first()
+    return site
 
 
 @register.simple_tag()
@@ -53,3 +63,29 @@ def get_recent_posts(current_page):
     Return 3 most recent blog posts, excluding current page.
     """
     return BlogPage.objects.live().exclude(id=current_page.id).order_by('-date')[:3]
+
+
+@register.inclusion_tag('templatetags/featured_event.html', takes_context=True)
+def featured_event(context):
+    """
+    Return closest event to now, excluding current page.
+    """
+    header_footer = HeaderFooter.for_site(site=get_current_site(context))
+    return {
+        'event': EventPage.objects.live().order_by('-start_datetime').first(),
+        'bg_img': header_footer.featured_event_bg,
+        }
+
+
+@register.inclusion_tag('templatetags/featured_news.html', takes_context=True)
+def featured_news(context):
+    """
+    Return closest event to now, excluding current page.
+    """
+    # header_footer = HeaderFooter.for_site(site=get_current_site(context))
+    # return {
+    #     'news': NewsPage.objects.live().order_by('-start_datetime').first(),
+    #     'bg_img': header_footer.featured_news_bg,
+    #     }
+    return {'news': None}
+
