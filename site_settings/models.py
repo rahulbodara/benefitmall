@@ -12,6 +12,8 @@ from wagtail.core.fields import RichTextField, StreamField
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.search import index
 
+from .views import get_page_meta_data
+
 
 class AbstractBasePage(Page):
     # SEO Metadata Fields
@@ -64,6 +66,11 @@ class AbstractBasePage(Page):
         index.SearchField('search_description'),
         index.SearchField('meta_keywords'),
     ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request)
+        context.update(get_page_meta_data(request, self))
+        return context
 
     class Meta:
         abstract = True
@@ -119,6 +126,11 @@ class AbstractBaseEmailForm(AbstractEmailForm):
         index.SearchField('search_description'),
         index.SearchField('meta_keywords'),
     ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request)
+        context.update(get_page_meta_data(request, self))
+        return context
 
     class Meta:
         abstract = True
