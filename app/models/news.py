@@ -2,59 +2,69 @@ from django.db import models
 from django.forms import ModelForm
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
-from app.models.pages import DefaultPage
+from app.models.pages import DefaultPage, AbstractBasePage
 from wagtail.core.models import Page, Http404, TemplateResponse
-from django.db.models.signals import pre_save
+from wagtail.search import index
 from django.dispatch import receiver
+from django.shortcuts import redirect
 from django.utils.text import slugify
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 
 class NewsIndexPage(RoutablePageMixin, DefaultPage):
-	template = "app/news_index_page.html"
+	subpage_types = ['app.NewsPage']
+
+	class Meta:
+		verbose_name = 'News Index Page'
+		verbose_name_plural = 'News Index Pages'
+
 	@route(r'^$')
 	@route(r'^(\d{4})/$')
 	@route(r'^(\d{4})/(\d{2})/$')
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/$')
-	def posts_by_date(self, request, year=None, month=None, day=None, *args, **kwargs):
+	def news_list(self, request, year=None, month=None, day=None, *args, **kwargs):
 		context = super().get_context(request, **kwargs)
 		self.additional_breadcrumbs = []
-		if year and month and day:
-			articles = News.objects.filter(news_datetime__year=year, news_datetime__month=month, news_datetime__day=day)
-			# self.additional_breadcrumbs.append({'title':year, 'url': '/news-press/'+year+'/'})
-			# self.additional_breadcrumbs.append({'title':month, 'url': '/news-press/'+year+'/'+month+'/'})
-			# self.additional_breadcrumbs.append({'title':day, 'url': '/news-press/'+year+'/'+month+'/'+day+'/'})
 
-		elif year and month:
-			articles = News.objects.filter(news_datetime__year=year, news_datetime__month=month)
-			# self.additional_breadcrumbs.append({'title':year, 'url': '/news-press/'+year+'/'})
-			# self.additional_breadcrumbs.append({'title':month, 'url': '/news-press/'+year+'/'+month+'/'})
-		elif year:
-			articles = News.objects.filter(news_datetime__year=year)
-			# self.additional_breadcrumbs.append({'title':year, 'url': '/news-press/'+year+'/'})
-		else:
-			articles = News.objects.all()
-		context['articles'] = articles
-		return TemplateResponse(request, "app/news_index_page.html", context)
+		all_news = NewsPage.objects.all()
+		if year:
+			all_news = all_news.filter(news_datetime__year=year)
+		if month:
+			all_news = all_news.filter(news_datetime__month=month)
+		if day:
+			all_news = all_news.filter(news_datetime__day=day)
+
+		paginator = Paginator(all_news, 10)
+
+		try:
+			# Return linked page
+			news = paginator.page(request.GET.get('page'))
+		except PageNotAnInteger:
+			# Return first page
+			news = paginator.page(1)
+		except EmptyPage:
+			# Return last page
+			news = paginator.page(paginator.num_pages)
+
+		context['news'] = news
+		return TemplateResponse(request, self.get_template(request), context)
 
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
-	def post_by_date_slug(self, request, year, month, day, slug, *args, **kwargs):
+	def news_page_detail(self, request, year, month, day, slug, *args, **kwargs):
 		context = super().get_context(request, **kwargs)
-		self.additional_breadcrumbs = []
+
+		# Get news item
 		try:
-			article = News.objects.get(news_datetime__year=year, news_datetime__month=month, news_datetime__day=day, news_slug=slug)
-			# self.additional_breadcrumbs.append({'title':year, 'url': '/news-press/'+year+'/'})
-			# self.additional_breadcrumbs.append({'title':month, 'url': '/news-press/'+year+'/'+month+'/'})
-			# self.additional_breadcrumbs.append({'title':day, 'url': '/news-press/'+year+'/'+month+'/'+day+'/'})
-			self.additional_breadcrumbs.append({'title':article.news_title, 'url': '/news-press/'+year+'/'+month+'/'+day+'/'+slug+'/'})
-		except News.DoesNotExist:
+			slug_items = slug.split('-')
+			news_page = NewsPage.objects.get(news_datetime__year=year, news_datetime__month=month, news_datetime__day=day, id=slug_items[-1])
+			self.additional_breadcrumbs = [({'title':news_page.title, 'url': news_page.get_url()})]
+		except NewsPage.DoesNotExist:
 			raise Http404
 
-		context['article'] = article
-		if not article:
-			raise Http404
-		return TemplateResponse(request, "app/news_detail_page.html", context)
+		context['page'] = news_page
+		return TemplateResponse(request, "app/news_page.html", context)
 
 	@classmethod
 	def can_create_at(cls, parent):
@@ -62,35 +72,34 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 		return super(NewsIndexPage, cls).can_create_at(parent) and not cls.objects.exists()
 
 
-class News(models.Model):
-	news_slug = models.SlugField(max_length=255, verbose_name='URL Name', null=True, blank=True)
-	news_title = models.CharField(max_length=255, verbose_name='Title')
+class NewsPage(RoutablePageMixin, DefaultPage):
 	news_datetime = models.DateTimeField(verbose_name='Date & Time', help_text="The date and time of the press release.")
-	body = RichTextField(default='', verbose_name='Body')
 
-	panels = [
-		MultiFieldPanel([
-			FieldPanel('news_title'),
-			FieldPanel('news_datetime'),
-			FieldPanel('body'),
-		], heading="Press Release"),
-		MultiFieldPanel([
-			FieldPanel('news_slug'),
-		], heading="URL", classname='collapsible collapsed'),
-
+	content_panels = Page.content_panels + [
+		FieldPanel('news_datetime'),
+		StreamFieldPanel('body'),
 	]
 
-	def __str__(self):
-		return self.news_title
+    # Tabs
+	edit_handler = TabbedInterface([
+		ObjectList(content_panels, heading='Content'),
+		AbstractBasePage.meta_panels,
+	])
+
+	parent_page_types = ['app.NewsIndexPage']
+	subpage_types = []
 
 	class Meta:
+		verbose_name = 'Press Release'
+		verbose_name_plural = 'Press Releases'
 		ordering = ['news_datetime']
 
+	@route(r'^$')
+	def redirect_to_detail_view(self, request, *args, **kwargs):
+		return redirect(self.get_url())
 
-@receiver(pre_save, sender=News)
-def my_handler(sender, instance=None, raw=False, **kwargs):
-	news = instance
-	if not news.news_slug:
-		slug_str = "%s %s" % (news.news_title, news.pk)
-		slug = slugify(slug_str)
-		news.news_slug = slug
+	def __str__(self):
+		return self.title
+
+	def get_url(self):
+		return '{}{}{}/'.format(self.get_parent().url, self.news_datetime.strftime('%Y/%m/%d/'), slugify(self.title + ' ' + str(self.id)))

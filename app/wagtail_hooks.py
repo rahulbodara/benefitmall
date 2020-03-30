@@ -27,7 +27,7 @@ from app.blocks.custom_choice_block import CustomChoiceBlock
 from app.widgets.custom_radio_select import CustomRadioSelect
 
 from app.models.events import EventPage, EventRegistration
-from app.models.news import News
+from app.models.news import NewsPage
 from app.models.notifications import Notification
 
 
@@ -339,15 +339,16 @@ def generate_event_registrations_csv(request, event_id):
     return response
 
 
-class NewsAdmin(ModelAdmin):
-    model = News
+class NewsPageAdmin(ModelAdmin):
+    model = NewsPage
     menu_label = 'Press Releases'
     menu_icon = 'fa-newspaper-o'
-    list_display = ('news_title', 'news_datetime', )
+    exclude_from_explorer = True
+    list_display = ('title', 'news_datetime', )
     list_filter = ('news_datetime', )
-    search_fields = ('news_title', 'body', )
+    search_fields = ('title', 'body', )
 
-modeladmin_register(NewsAdmin)
+modeladmin_register(NewsPageAdmin)
 
 
 class NotificationAdmin(ModelAdmin):
