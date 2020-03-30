@@ -12,6 +12,8 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
+from site_settings.views import get_page_meta_data
+
 
 class NewsIndexPage(RoutablePageMixin, DefaultPage):
 	subpage_types = ['app.NewsPage']
@@ -64,6 +66,7 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 			raise Http404
 
 		context['page'] = news_page
+		context.update(get_page_meta_data(request, news_page))
 		return TemplateResponse(request, "app/news_page.html", context)
 
 	@classmethod
@@ -103,3 +106,8 @@ class NewsPage(RoutablePageMixin, DefaultPage):
 
 	def get_url(self):
 		return '{}{}{}/'.format(self.get_parent().url, self.news_datetime.strftime('%Y/%m/%d/'), slugify(self.title + ' ' + str(self.id)))
+
+	def get_full_url(self, request=None):
+		url_parts = self.get_url_parts(request=request)
+		site_id, root_url, page_path = url_parts
+		return root_url + self.get_url()

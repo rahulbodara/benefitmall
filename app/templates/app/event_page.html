@@ -14,25 +14,25 @@
                     <div class="container">
                         <div class="wpb_text_column wpb_content_element ">
                             <div class="wpb_wrapper">
-                                <h3>{{ event.title }}</h3>
-                                <h4>{{ event.get_event_type_display }}</h4>
+                                <h3>{{ page.title }}</h3>
+                                <h4>{{ page.get_event_type_display }}</h4>
                                 <hr>
-                                <h4>{{ event.start_datetime|date:"F d, Y" }} &bull; {{ event.start_datetime|date:"P" }}</h4>
-                                <p><b>Location:</b> {{ event.get_location_type_display }}<br></p>
+                                <h4>{{ page.start_datetime|date:"F d, Y" }} &bull; {{ page.start_datetime|date:"P" }}</h4>
+                                <p><b>Location:</b> {{ page.get_location_type_display }}<br></p>
 
                             </div>
                         </div>
                     </div>
                 </div>
-                <p>{{ event.description|safe }}</p>
-                <p><a href="{{ event.url }}calendar/">Add to Calendar</a></p>
+                <p>{{ page.description|richtext }}</p>
+                <p><a href="{{ page.url }}calendar/">Add to Calendar</a></p>
             </div>
             <div class="col-md-6 col-12">
                 {% if registered == 'true' %}
                     <h3 style="font-weight:100">Thanks for registering!</h3>
                     <p><strong>What Happens Next</strong><br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc accuan eget.</p>
                 {% else %}
-                    {% if event.is_active %}
+                    {% if page.is_active %}
                         <form action="" method="post" class="row mx-0">
                             <h3 style="font-weight:100">Register for Event</h3>
 
@@ -59,7 +59,7 @@
                                     </div>
                                 {% endif %}
                             {% endfor %}
-                            <input type="hidden" name="event" value="{{ event.id }}">
+                            <input type="hidden" name="event" value="{{ page.id }}">
 
                             <div class="col-md-5 col-lg-4 col-6">
                                 <button type="submit" class="btn btn--primary type--uppercase">Register</button>

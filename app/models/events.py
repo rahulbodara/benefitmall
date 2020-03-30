@@ -20,6 +20,8 @@ from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from app.models.pages import AbstractBasePage
 from app.widgets.event_detail_widget import EventDetailWidget
 
+from site_settings.views import get_page_meta_data
+
 
 class EventIndexPage(RoutablePageMixin, DefaultPage):
 	subpage_types = ['app.EventPage']
@@ -63,8 +65,8 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		try:
 			slug_items = slug.split('-')
 			event = EventPage.objects.get(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day, id=slug_items[-1])
-			self.additional_breadcrumbs = [({'title':event.title, 'url': self.url+year+'/'+month+'/'+day+'/'+slug+'/'})]
-		except Event.DoesNotExist:
+			self.additional_breadcrumbs = [({'title':event.title, 'url': event.get_url()})]
+		except EventPage.DoesNotExist:
 			raise Http404
 
 		registered = request.GET.get('registered', None)
@@ -95,8 +97,9 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 			form = EventRegistrationForm()
 
 		context['form'] = form
-		context['event'] = event
 		context['registered'] = registered
+		context['page'] = event
+		context.update(get_page_meta_data(request, event))
 		return TemplateResponse(request, "app/event_page.html", context)
 
 	@classmethod
@@ -247,6 +250,11 @@ class EventPage(RoutablePageMixin, DefaultPage):
 
 	def get_url(self):
 		return '{}{}{}/'.format(self.get_parent().url, self.start_datetime.strftime('%Y/%m/%d/'), slugify(self.title + ' ' + str(self.id)))
+
+	def get_full_url(self, request=None):
+		url_parts = self.get_url_parts(request=request)
+		site_id, root_url, page_path = url_parts
+		return root_url + self.get_url()
 
 	def get_end_datetime(self):
 		hours, minutes = str(self.duration).split('.')
