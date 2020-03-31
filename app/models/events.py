@@ -14,7 +14,10 @@ from django.utils.text import slugify
 from django.shortcuts import redirect
 from django.core.mail import send_mail
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.forms.utils import ErrorList
+from django.core.exceptions import ValidationError
 
+from wagtail.admin.widgets import AdminTagWidget
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from app.models.pages import AbstractBasePage
@@ -24,6 +27,23 @@ from site_settings.views import get_page_meta_data
 
 
 class EventIndexPage(RoutablePageMixin, DefaultPage):
+	email_enabled_global = models.BooleanField(verbose_name='Send Registration Emails', default=False, help_text='Check to enable sending registration emails. This is the default global setting for all events, but can be individually configured per event.')
+	email_recipients_global = models.CharField(verbose_name='Email Recipients', max_length=200, blank=True, null=True, help_text='Add registration email recipients separated by commas. This is the default global setting for all events.')
+
+	content_panels = Page.content_panels + [
+		MultiFieldPanel([
+			FieldPanel('email_enabled_global'),
+			FieldPanel('email_recipients_global', widget=AdminTagWidget),
+		], heading='Global Email Settings', classname='collapsible collapsed'),
+		FieldPanel('body'),
+	]
+
+    # Tabs
+	edit_handler = TabbedInterface([
+		ObjectList(content_panels, heading='Content'),
+		AbstractBasePage.meta_panels,
+	])
+
 	subpage_types = ['app.EventPage']
 
 	@route(r'^$')
@@ -75,24 +95,32 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 			form = EventRegistrationForm(request.POST)
 			if form.is_valid():
 				form.save()
-				cleaned_data = form.cleaned_data
-				
-				# Prepare registration email
-				mail_message = ''
-				for field, value in cleaned_data.items():
-					if value:
-						mail_message += '{}: {} <br>'.format(field.upper(), value)
 
-				# Send registration email
-				send_mail(
-					subject='Event Registration',
-					message=mail_message,
-					html_message=mail_message,
-					from_email='test@test.com',
-					recipient_list=['phorn@insite.net'],
-					fail_silently=False
-				)
-				return redirect('{}{}/{}/{}/{}/?registration=complete'.format(self.url, year, month, day, slug))
+				# If send email enabled
+				if event.email_setting == 'enabled' or (event.email_setting == '' and self.email_enabled_global):
+					
+					# Get recipients
+					if event.email_recipients:
+						recipients = event.email_recipients
+					else:
+						recipients = self.email_recipients_global
+
+					# Prepare message
+					mail_message = ''
+					for field, value in form.cleaned_data.items():
+						if value:
+							mail_message += '{}: {} \n'.format(field.upper(), value)
+
+					# Send email
+					send_mail(
+						subject='Event Registration',
+						message=mail_message,
+						html_message=mail_message.replace('\n', '<br>'),
+						from_email='noreply@' + request.site.hostname,
+						recipient_list=recipients.split(','),
+						fail_silently=False
+					)
+				return redirect('{}{}/{}/{}/{}/?registered=yes'.format(self.url, year, month, day, slug))
 		else:
 			form = EventRegistrationForm()
 
@@ -101,6 +129,14 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		context['page'] = event
 		context.update(get_page_meta_data(request, event))
 		return TemplateResponse(request, "app/event_page.html", context)
+
+	def clean(self):
+		super().clean()
+		errors = {}
+		if self.email_enabled_global and not self.email_recipients_global:
+			errors['email_recipients_global'] = ErrorList(['Email Recipients is required when Send Registration Emails is enabled'])
+		if len(errors) > 0:
+			raise ValidationError(errors)
 
 	@classmethod
 	def can_create_at(cls, parent):
@@ -119,6 +155,11 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		('Compliance Webcast', 'Compliance Webcast'),
 		('Tradeshow', 'Tradeshow'),
 	)
+	EMAIL_SETTING_CHOICES = (
+		('', '-- Use Default Global Setting --'),
+		('enabled', 'Enabled'),
+		('disabled', 'Disabled'),
+	)
 
 	event_type = models.CharField(max_length=24, choices=TYPE_CHOICES, default='', verbose_name='Event Type')
 	description = RichTextField(default='', verbose_name='Description')
@@ -132,9 +173,15 @@ class EventPage(RoutablePageMixin, DefaultPage):
 	duration = models.DecimalField(decimal_places=2, max_digits=4, default=1, null=True, blank=True, help_text="In hours", verbose_name='Duration')
 	cost = models.CharField(max_length=50, default='Free', help_text="If adding a price, please use the currency symbol, e.g. $, £, etc.")
 
-	content_panels = [
+	email_setting = models.CharField(verbose_name='Send Registration Email', max_length=20, choices=EMAIL_SETTING_CHOICES, default='', blank=True, help_text='Select a setting for sending registration emails. This overrides the default global setting')
+	email_recipients = models.CharField(verbose_name='Email Recipients', max_length=200, null=True, blank=True, help_text='Add registration email recipients separated by commas. This overrides the default global setting.')
+
+	content_panels = Page.content_panels + [
 		MultiFieldPanel([
-			FieldPanel('title'),
+			FieldPanel('email_setting'),
+			FieldPanel('email_recipients', widget=AdminTagWidget),
+		], heading="Email Settings", classname='collapsible collapsed'),
+		MultiFieldPanel([
 			FieldRowPanel([
 				FieldPanel('event_type'),
 				FieldPanel('cost'),
@@ -244,6 +291,15 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		response = HttpResponse(content, content_type='text/calendar')
 		response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
 		return response
+
+	def clean(self):
+		super().clean()
+		errors = {}
+		events = EventIndexPage.objects.first()
+		if self.email_setting == 'enabled' and not (self.email_recipients or events.email_recipients_global):
+			errors['email_recipients'] = ErrorList(['Email Recipients is required here or globally when Send Registration Emails is enabled'])
+		if len(errors) > 0:
+			raise ValidationError(errors)
 
 	def __str__(self):
 		return self.title

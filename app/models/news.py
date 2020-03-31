@@ -38,7 +38,13 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 		if day:
 			all_news = all_news.filter(news_datetime__day=day)
 
-		paginator = Paginator(all_news, 10)
+		latest_news = None
+		other_news = None
+		if all_news.count() > 0:
+			latest_news = all_news[0]
+			other_news = all_news[1:]
+
+		paginator = Paginator(other_news, 10)
 
 		try:
 			# Return linked page
@@ -50,6 +56,7 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 			# Return last page
 			news = paginator.page(paginator.num_pages)
 
+		context['latest_news'] = latest_news
 		context['news'] = news
 		return TemplateResponse(request, self.get_template(request), context)
 
