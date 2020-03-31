@@ -1,4 +1,4 @@
-URL endpoint: https://benefitmall--DevKasu.cs17.my.salesforce.com/services/apexrest/CarrierAccounts/
+URL endpoint: https://benefitmall--DevKasu.cs17.my.salesforce.com/services/apexrest/CarrierAccounts/services/apexrest/CarrierAccounts/
 
 User Name: insitein@benefitmall.com.devkasu
 
@@ -9,3 +9,5 @@ Security token: sQk1D2vzH26ZwTBltnQxvnbD
 ClientID: 3MVG9ahGHqp.k2_ysR5QacRbHlHN1WYdbcrNhiVY4aE48SzvpJWORIlSZnCR20LCgPE7BAIfPAZBt3sGyLPNP
 
 Client Secret: DBCE6F4E5A79087E022DE97FE435DE8157D13FEC28AF66205A9A2611E24C9695
+
+When getting access code, append security token to the password and use that as the password.
