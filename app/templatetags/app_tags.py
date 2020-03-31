@@ -75,17 +75,3 @@ def featured_event(context):
         'event': EventPage.objects.live().order_by('-start_datetime').first(),
         'bg_img': header_footer.featured_event_bg,
         }
-
-
-@register.inclusion_tag('templatetags/featured_news.html', takes_context=True)
-def featured_news(context):
-    """
-    Return closest event to now, excluding current page.
-    """
-    # header_footer = HeaderFooter.for_site(site=get_current_site(context))
-    # return {
-    #     'news': NewsPage.objects.live().order_by('-start_datetime').first(),
-    #     'bg_img': header_footer.featured_news_bg,
-    #     }
-    return {'news': None}
-
