@@ -191,6 +191,7 @@ WIDTH_CHOICES = (
 IMAGE_SLIDER_CHOICES = (
     ('inline', 'Inline'),
     ('full', 'Full'),
+    ('logo', 'Logo'),
 )
 PROCESS_BLOCK_LAYOUT_CHOICES = (
     ('horizontal','Horizontal'),
