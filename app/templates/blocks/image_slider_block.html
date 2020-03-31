@@ -5,7 +5,6 @@
 
     <div class="main-container">
         {% if self.slider_size == 'full' %}
-        <section>
             <div class="container {{ self.background.size_mode }}">
                 <div class="row">
                     <div class="col">
@@ -19,11 +18,7 @@
                     </div>
                 </div>
             </div>
-        </section>
-        {% endif %}
-
-        {% if self.slider_size == 'inline' %}
-        <section>
+        {% elif self.slider_size == 'inline' %}
             <div class="container {{ self.background.size_mode }}">
                 <div class="row">
                     <div class="col">
@@ -37,7 +32,20 @@
                     </div>
                 </div>
             </div>
-        </section>
+        {% elif self.slider_size == 'logo' %}
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="slider slider--inline-arrows slider--arrows-hover text-center" data-arrows="true">
+                                <ul class="slides">
+                                    {% for block in self.items %}
+                                        {% include_block block with size=self.slider_size %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         {% endif %}
     </div>
 </section>
