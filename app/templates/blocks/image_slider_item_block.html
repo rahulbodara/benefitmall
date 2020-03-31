@@ -1,7 +1,6 @@
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
 {% image self.image original as image %}
-<html lang="en">
 
 {% if size == 'full' %}
     <li> <img alt="{{ image.alt }}" src="{{ image.url }}"> </li>
@@ -13,4 +12,10 @@
         <a href="{{ image.url }}" data-lightbox="Gallery 1"> <img alt="{{ image.alt }}" src="{{ image.url }}"> </a>
     </li>
 {% endif %}
-</html>
+
+{% if size == 'logo' %}
+    <li class="col-md-3 col-6">
+        <img alt="{{ image.alt }}" class="image--xxs" src="{{ image.url }}">
+    </li>
+
+{% endif %}
