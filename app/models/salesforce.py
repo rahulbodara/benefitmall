@@ -2548,23 +2548,23 @@ class DatasetExportPart(models.Model):
 
 
 
-class DeclinedEventRelation(models.Model):
-    relation = models.ForeignKey(Calendar, models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)  # Reference to tables [Calendar, User]
-    event = models.ForeignKey('Event', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    responded_date = models.DateTimeField(verbose_name='Response Date', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    response = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='declinedeventrelation_createdby_set', sf_read_only=models.READ_ONLY)
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='declinedeventrelation_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
-    system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    type = models.CharField(max_length=50, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    class Meta(models.Model.Meta):
-        db_table = 'DeclinedEventRelation'
-        verbose_name = 'Declined Event Relation'
-        verbose_name_plural = 'Declined Event Relations'
-        # keyPrefix = 'None'
+# class DeclinedEventRelation(models.Model):
+#     relation = models.ForeignKey(Calendar, models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)  # Reference to tables [Calendar, User]
+#     event = models.ForeignKey('Event', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     responded_date = models.DateTimeField(verbose_name='Response Date', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     response = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='declinedeventrelation_createdby_set', sf_read_only=models.READ_ONLY)
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='declinedeventrelation_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+#     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     type = models.CharField(max_length=50, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     class Meta(models.Model.Meta):
+#         db_table = 'DeclinedEventRelation'
+#         verbose_name = 'Declined Event Relation'
+#         verbose_name_plural = 'Declined Event Relations'
+#         # keyPrefix = 'None'
 
 
 
