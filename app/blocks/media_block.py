@@ -10,7 +10,7 @@ from .custom_choice_block import CustomChoiceBlock
 
 class MediaBlock(StructBlock):
     mode = CustomChoiceBlock(choices=MEDIA_MODE_CHOICES, default=MEDIA_MODE_CHOICES[0][0], required=False, widget=CustomRadioSelect)
-    image = ImageChooserBlock()
+    image = ImageChooserBlock(required=False)
     video_source = CustomChoiceBlock(choices=VIDEO_SOURCE_CHOICES, default=VIDEO_SOURCE_CHOICES[0][0], required=False, widget=CustomRadioSelect, label='Video Source')
     video_id = CharBlock(required=False, label='Video ID', help_text='Enter the video source ID from YouTube or Vimeo. Should only consist of alphanumeric characters. Ex: 86036070')
     corners = CustomChoiceBlock(choices=MEDIA_CORNERS_CHOICES, default=MEDIA_CORNERS_CHOICES[0][0], required=False, widget=CustomRadioSelect, label='Corners')

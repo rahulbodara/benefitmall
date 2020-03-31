@@ -4607,7 +4607,22 @@ p.lead img {
 .imagebg h6 {
   position: relative;
 }
-.imagebg:not(.image--light) span {
+.imagebg.image--light span,
+.imagebg.image--light p,
+.imagebg.image--light h1,
+.imagebg.image--light h2,
+.imagebg.image--light h3,
+.imagebg.image--light h4,
+.imagebg.image--light h5 {
+  color: #000000;
+}
+.imagebg:not(.image--light) span,
+.imagebg:not(.image--light) p,
+.imagebg:not(.image--light) h1,
+.imagebg:not(.image--light) h2,
+.imagebg:not(.image--light) h3,
+.imagebg:not(.image--light) h4,
+.imagebg:not(.image--light) h5 {
   color: #fff;
 }
 .imagebg.border--round {
@@ -6005,7 +6020,8 @@ p .material-icons:first-child {
   padding: 5em;
 }
 .feature:not(.boxed) {
-  margin-bottom: 60px;
+  margin-bottom: 30px;
+  top: 30px;
 }
 .feature.feature--featured:after {
   content: '';
@@ -6021,9 +6037,6 @@ p .material-icons:first-child {
 }
 .feature h4 {
   margin-bottom: 0.34210526em;
-}
-.feature h4 + p {
-  max-width: 22.28571429em;
 }
 .feature i + h5 {
   margin-top: 1.85714286em;

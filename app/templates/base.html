@@ -1,17 +1,8 @@
-{% load static wagtailuserbar navigation_tags %}
+{% load static wagtailuserbar navigation_tags sitesettings wagtailuserbar %}
 <!doctype html>
 <html lang="en">
     <head>
-        {{ GTM_HEADER }}
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>{{ meta_title }}</title>
-        {{ PAGE_METADATA }}
-        {{ FAVICON }}
-        {{ APPLE_TOUCH_ICON }}
-        {{ PWA_MANIFEST }}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% include 'includes/meta_data.html' %}
         <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
         <link href="{% static 'css/stack-interface.css' %}" rel="stylesheet" type="text/css" media="all" />
         <link href="{% static 'css/socicon.css' %}" rel="stylesheet" type="text/css" media="all" />
@@ -28,6 +19,9 @@
         {% endblock %}
     </head>
     <body class="dropdowns--hover " data-smooth-scroll-offset='64'>
+        {% include 'includes/gtm_noscript.html' %}
+        {% wagtailuserbar %}
+        {% render_search_modal %}
 		<!-- NAV CONTAINER -->
         <div class="nav-container">
             {% render_notification page %}

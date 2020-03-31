@@ -27,7 +27,7 @@ from app.blocks.custom_choice_block import CustomChoiceBlock
 from app.widgets.custom_radio_select import CustomRadioSelect
 
 from app.models.events import EventPage, EventRegistration
-from app.models.news import News
+from app.models.news import NewsPage
 from app.models.notifications import Notification
 
 
@@ -45,6 +45,14 @@ class HeaderFooter(BaseSetting):
         'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
         help_text='Logo used in header. Recommended transparent PNG',
         related_name='footer_logo')
+    featured_event_bg = models.ForeignKey(
+        'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
+        help_text='Banner displayed behind the featured event. 1110x700 pixels',
+        related_name='featured_event_bg')
+    featured_news_bg = models.ForeignKey(
+        'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
+        help_text='Banner displayed behind the featured press release. 1110x700 pixels',
+        related_name='featured_news_bg')
     social_facebook = models.CharField(
         null=True, blank=True, default='',
         max_length=250,
@@ -88,6 +96,11 @@ class HeaderFooter(BaseSetting):
             ImageChooserPanel('footer_logo'),
 
         ], heading='Logos', classname='collapsible'),
+        MultiFieldPanel([
+            ImageChooserPanel('featured_event_bg'),
+            ImageChooserPanel('featured_news_bg'),
+
+        ], heading='Featured Items', classname='collapsible'),
         MultiFieldPanel([
             FieldPanel('social_facebook'),
             FieldPanel('social_instagram'),
@@ -326,15 +339,16 @@ def generate_event_registrations_csv(request, event_id):
     return response
 
 
-class NewsAdmin(ModelAdmin):
-    model = News
+class NewsPageAdmin(ModelAdmin):
+    model = NewsPage
     menu_label = 'Press Releases'
     menu_icon = 'fa-newspaper-o'
-    list_display = ('news_title', 'news_datetime', )
+    exclude_from_explorer = True
+    list_display = ('title', 'news_datetime', )
     list_filter = ('news_datetime', )
-    search_fields = ('news_title', 'body', )
+    search_fields = ('title', 'body', )
 
-modeladmin_register(NewsAdmin)
+modeladmin_register(NewsPageAdmin)
 
 
 class NotificationAdmin(ModelAdmin):

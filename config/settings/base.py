@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'wagtail.contrib.modeladmin',
     'wagtail.contrib.redirects',
     'wagtail.contrib.settings',
+    'wagtail.contrib.postgres_search',
     'wagtail.embeds',
     'wagtail.sites',
     'wagtail.users',
@@ -82,8 +83,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'wagtail.contrib.settings.context_processors.settings',
-                'site_settings.context_processors.site_settings',
-                'site_settings.context_processors.meta_data',
+                'site_settings.context_processors.get_site_meta_data',
             ],
         },
     },
@@ -181,3 +181,14 @@ WAGTAIL_ENABLE_UPDATE_CHECK = False
 
 # Disable this to avoid loading over http
 WAGTAIL_GRAVATAR_PROVIDER_URL = None
+
+WAGTAILSEARCH_BACKENDS = {
+    'default': {
+        'BACKEND': 'wagtail.contrib.postgres_search.backend',
+        'INDEX': 'wagtail',
+        'TIMEOUT': 5,
+        'OPTIONS': {},
+        'INDEX_SETTINGS': {},
+        'ATOMIC_REBUILD': True,
+    }
+}
