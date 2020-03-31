@@ -117,7 +117,7 @@ OUTLINE_CHOICES = (
 IMAGE_FEATURE_CHOICES = (
     ('none', 'None'),
     ('border', 'Bordered'),
-    ('dark','Dark'),
+    ('overlay','Text Overlay'),
 )
 
 BIO_LAYOUT_CHOICES = (
@@ -191,6 +191,7 @@ WIDTH_CHOICES = (
 IMAGE_SLIDER_CHOICES = (
     ('inline', 'Inline'),
     ('full', 'Full'),
+    ('logo', 'Logo'),
 )
 PROCESS_BLOCK_LAYOUT_CHOICES = (
     ('horizontal','Horizontal'),
@@ -208,4 +209,13 @@ PRICING_FEATURE_CHOICES = (
     ('feature_1', 'Feature 1'),
     ('feature_2', 'Feature 2'),
     ('feature_3', 'Feature 3'),
+)
+CTA_LAYOUT_CHOICES = (
+    ('horizontal', 'Horizontal'),
+    ('button', 'Button'),
+)
+COLUMNS_BREAKPOINT_CHOICES = (
+    ('col-md-6 col-sm-12', '2'),
+    ('col-md-4 col-sm-12', '3'),
+    ('col-md-3 col-sm-6 col-xs-12', '4'),
 )

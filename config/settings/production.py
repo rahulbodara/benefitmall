@@ -32,6 +32,16 @@ MIDDLEWARE = WHITENOISE_MIDDLEWARE + MIDDLEWARE
 DATABASES['default'] = env.db('DATABASE_URL')
 
 
+# ANYMAIL
+# ------------------------------------------------------------------------------
+# https://anymail.readthedocs.io/en/stable/installation/#installing-anymail
+INSTALLED_APPS += ['anymail']  # noqa F405
+EMAIL_BACKEND = 'anymail.backends.sendgrid.EmailBackend'
+# https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
+ANYMAIL = {
+    'SENDGRID_API_KEY': env('SENDGRID_API_KEY')
+}
+
 # SECURITY SETTINGS - THESE SHOULD ALWAYS BE IN PRODUCTION
 # ------------------------------------------------------------------------------
 SECURE_HSTS_SECONDS = 31536000

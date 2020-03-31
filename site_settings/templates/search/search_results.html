@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags sitesettings %}
+
+{% block content %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 style="margin-bottom:0;">Search Results</h3>
+                {% if results %}
+                    <strong>{{ results_count }}</strong> {% if results_count > 1 %}results{% else %}result{% endif %} matching <strong>{{ query }}</strong>
+                    <hr>
+                    <ul class="results-list">
+                        {% for result in results %}
+                            <li>
+                                <a href="{{ result.url }}">
+                                    <h4>{{ result }}</h4>
+                                    <span>{% get_page_type result %}</span>
+                                </a>
+                                <p>
+                                    {{ result.search_description|default:'This page has no search description.' }}<br>
+                                    <a href="{{ result.url }}" class="color--primary" style="font-style:italic;">{{ result.get_full_url }}</a>
+                                </p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    No results found.
+                {% endif %}
+
+                {% if results.paginator.num_pages > 1 %}
+                    <div class="pagination">
+                        {% if results.has_previous %}
+                            <a style="float:none;" href="?q={{ query }}&page={{ results.previous_page_number }}" class="pagination__prev">« Prev</a>
+                        {% endif %}
+                        
+                        {% for page_num in results.paginator.page_range %}
+                            <ol>
+                                {% if page_num == results.number %}
+                                    <li class="pagination__current">{{ page_num }}</li>
+                                {% else %}
+                                    <li><a href="?q={{ query }}&page={{ page_num }}">{{ page_num }}</a></li>
+                                {% endif %}
+                            </ol>
+                        {% endfor %}
+
+                        {% if results.has_next %}
+                            <a style="float:none;" href="?q={{ query }}&page={{ results.next_page_number }}" class="pagination__next">Next »</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

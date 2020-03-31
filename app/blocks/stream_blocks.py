@@ -1,4 +1,4 @@
-from wagtail.core.blocks import StreamBlock
+from wagtail.core.blocks import StreamBlock, CharBlock
 
 # content
 from .wysiwyg_block import WYSIWYGBlock
@@ -10,7 +10,7 @@ from .testimonial_photo_block import TestimonialPhotoBlock
 from .tabbed_images_block import TabbedImagesBlock
 from .image_feature_block import ImageFeatureBlock
 from .icon_feature_block import IconFeatureBlock
-from .cta_horizontal_block import CtaHorizontalBlock
+from .cta_block import CtaHorizontalBlock
 from .three_column_block import ThreeColumnBlock
 from .three_column_item_block import ThreeColumnItemBlock
 from .image_block import ImageBlock
@@ -26,11 +26,12 @@ from .products_block import ProductsBlock
 from .video_cover_block import VideoCoverBlock
 from .three_image_cover_block import ThreeImageCoverBlock
 from .pricing_block import PricingBlock
+from .link_block import LinkBlock
 # settings
 from .settings.header_block import HeaderBlock
 from .header_footer.header_block import HeaderLinkBlock, HeaderButtonBlock
 from .header_footer.footer_block import FooterLinkBlock, FooterButtonBlock, FooterUtilityLinkBlock, FooterCategoryBlock
-
+from .salesforce.lead_form_block import LeadFormBlock
 
 class DefaultStreamBlock(StreamBlock):
     wysiwyg_block = WYSIWYGBlock()
@@ -57,6 +58,7 @@ class DefaultStreamBlock(StreamBlock):
     video_cover_block = VideoCoverBlock()
     three_image_cover_block = ThreeImageCoverBlock()
     pricing_block = PricingBlock()
+    lead_from_block = LeadFormBlock()
 
 class HeaderLinkStreamBlock(StreamBlock):
     header_link_block = HeaderLinkBlock()
@@ -64,6 +66,9 @@ class HeaderLinkStreamBlock(StreamBlock):
 
 class HeaderButtonStreamBlock(StreamBlock):
     header_button_block = HeaderButtonBlock()
+
+class HeaderUtilityStreamBlock(StreamBlock):
+    utility_link = LinkBlock()
 
 
 class FooterLinkStreamBlock(StreamBlock):

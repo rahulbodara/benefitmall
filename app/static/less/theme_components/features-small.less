@@ -1,8 +1,15 @@
 /*! -- Stack Features Small -- */
 
+
+
 .feature{
+	&.large-overlay{
+		min-height: 30em;
+		padding: 5em;
+	}
 	&:not(.boxed){
-		margin-bottom: 60px;
+		margin-bottom: 30px;
+		top: 30px;
 	}
 	&.feature--featured{
 		&:after{
@@ -21,7 +28,7 @@
 	h4{
 		margin-bottom: 0.342105263157895em;
 		+ p{
-			max-width: @base-line-height*12;
+			//max-width: @base-line-height*12;
 		}
 	}
 	i+h5{
@@ -94,7 +101,7 @@ section.text-center .feature-6{
 	.row{
 		div[class*='col-']{
 			&:nth-child(1):nth-last-child(3),&:nth-child(2):nth-last-child(2),&:nth-child(3):last-child{
-				.feature{
+				.feature:not(.large-overlay){
 					margin-bottom: 0;
 				}
 			}

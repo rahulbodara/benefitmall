@@ -1,0 +1,39 @@
+{% load wagtailcore_tags %}
+{% if header_utility_nav %}
+    <div class="bar bar-3 bar--sm {{ utility_background_color }}">
+        <div class="container">
+            <div class="row d-flex align-items-center">
+                <div class="col-md-6">
+                    <div class="bar__module">
+                        {% if utility_switched %}
+                            <ul class="menu-horizontal">
+                                {% for block in utility_links %}
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                                           {% include_block block %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                             <span class="type--fade top-bar-blurb {% if utility_background_color == 'bg--dark' %} text-white {% endif %}">{% if utility_text %}{{ utility_text }}{% endif %}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 text-right text-left-xs text-left-sm">
+                    <div class="bar__module">
+                        {% if utility_switched %}
+                             <span class="type--fade top-bar-blurb {% if utility_background_color == 'bg--dark' %} text-white {% endif %}">{% if utility_text %}{{ utility_text }}{% endif %}</span>
+                        {% else %}
+                            <ul class="menu-horizontal">
+                                {% for block in utility_links %}
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                                           {% include_block block %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div><!--end of row-->
+        </div><!--end of container-->
+    </div>
+{% endif %}

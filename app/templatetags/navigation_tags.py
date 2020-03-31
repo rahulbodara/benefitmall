@@ -4,6 +4,8 @@ from app.wagtail_hooks import HeaderFooter
 from site_settings.wagtail_hooks import SiteSettings
 from wagtail.core.models import Site
 from wagtail.core.models import Page
+from app.models.notifications import Notification
+from datetime import datetime
 register = template.Library()
 
 
@@ -45,7 +47,6 @@ def get_header_links(context, calling_page):
     menuitems = get_links_recursive(context, site_root, calling_page)
     return menuitems
 
-
 @register.simple_tag(takes_context=True)
 def render_header(context, calling_page):
     if not calling_page:
@@ -67,6 +68,9 @@ def render_header(context, calling_page):
         'autonav': header_footer.header_automatic_nav,
         'header_links': header_links,
         'header_buttons': header_buttons,
+        'header_utility_nav': header_footer.header_utility_nav,
+        'utility_text': header_footer.utility_text,
+        'utility_links': header_footer.utility_links,
         'header_banner_text_1': header_footer.header_banner_text_1,
         'header_banner_text_2': header_footer.header_banner_text_2,
         'copyright_text': header_footer.copyright_text,
@@ -119,8 +123,53 @@ def render_breadcrumbs(context, calling_page: Page):
     menuitems = [m for m in calling_page.get_ancestors(True)][1:]
     if len(menuitems) <= 1:
         return ''
+    if calling_page.specific.__class__.__name__ == 'EventIndexPage' or calling_page.specific.__class__.__name__ == 'NewsIndexPage':
+        menuitems.extend(calling_page.specific.additional_breadcrumbs)
+
     breadcrumb_context = {
         'menuitems': menuitems,
     }
 
     return render_to_string('navigation/breadcrumbs.html', context=breadcrumb_context, request=context['request'])
+
+@register.simple_tag(takes_context=True)
+def render_utility(context, calling_page):
+    if not calling_page:
+        return ''
+    if 'request' not in context:
+        return ''
+
+    header_footer = HeaderFooter.for_site(site=get_current_site(context))
+
+    utility_links = header_footer.utility_links
+
+    utility_context = {
+        'header_utility_nav': header_footer.header_utility_nav,
+        'utility_background_color': header_footer.utility_background_color,
+        'utility_switched': header_footer.utility_switched,
+        'utility_text': header_footer.utility_text,
+        'utility_links': utility_links,
+    }
+
+    return render_to_string('navigation/utility_nav.html', context=utility_context, request=context['request'])
+
+
+@register.simple_tag(takes_context=True)
+def render_notification(context, calling_page):
+    if not calling_page:
+        return ''
+    if 'request' not in context:
+        return ''
+
+
+
+    if not Notification.objects.filter(starttime__lte=datetime.now(), endtime__gte=datetime.now()).exists():
+        return ''
+    else:
+        notifications = Notification.objects.filter(starttime__lte=datetime.now(), endtime__gte=datetime.now()).first()
+
+    notification_context = {
+        'notification': notifications,
+    }
+
+    return render_to_string('navigation/notification.html', context=notification_context, request=context['request'])

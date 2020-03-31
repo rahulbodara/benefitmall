@@ -1,9 +1,12 @@
+import csv
 from django.conf import settings
 from django.conf.urls import url
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.html import format_html
 from django.db import models
+from django.contrib.admin.utils import quote
+from django.http import HttpResponse
 
 from wagtail.core import hooks
 from wagtail.admin.menu import MenuItem
@@ -18,10 +21,15 @@ from app.views import IconReference
 from app.models import Icon
 
 from wagtail.core.fields import RichTextField
-from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES
-from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
+from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES, BACKGROUND_MODE_CHOICES_NO_IMAGE
+from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, HeaderUtilityStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
+from app.blocks.custom_choice_block import CustomChoiceBlock
+from app.widgets.custom_radio_select import CustomRadioSelect
 
-from app.models.events import Event
+from app.models.events import EventPage, EventRegistration
+from app.models.news import NewsPage
+from app.models.notifications import Notification
+
 
 @register_setting(icon='cogs')
 class HeaderFooter(BaseSetting):
@@ -37,6 +45,14 @@ class HeaderFooter(BaseSetting):
         'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
         help_text='Logo used in header. Recommended transparent PNG',
         related_name='footer_logo')
+    featured_event_bg = models.ForeignKey(
+        'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
+        help_text='Banner displayed behind the featured event. 1110x700 pixels',
+        related_name='featured_event_bg')
+    featured_news_bg = models.ForeignKey(
+        'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
+        help_text='Banner displayed behind the featured press release. 1110x700 pixels',
+        related_name='featured_news_bg')
     social_facebook = models.CharField(
         null=True, blank=True, default='',
         max_length=250,
@@ -81,6 +97,11 @@ class HeaderFooter(BaseSetting):
 
         ], heading='Logos', classname='collapsible'),
         MultiFieldPanel([
+            ImageChooserPanel('featured_event_bg'),
+            ImageChooserPanel('featured_news_bg'),
+
+        ], heading='Featured Items', classname='collapsible'),
+        MultiFieldPanel([
             FieldPanel('social_facebook'),
             FieldPanel('social_instagram'),
             FieldPanel('social_twitter'),
@@ -103,6 +124,11 @@ class HeaderFooter(BaseSetting):
     header_automatic_nav = models.BooleanField(verbose_name='Automatic Nav', default=True, help_text='Automatically populate the nav with top-level menu pages')
     header_links = StreamField(HeaderLinkStreamBlock(required=False), verbose_name='Links', blank=True, null=True, help_text='Populate the nav with custom links')
     header_buttons = StreamField(HeaderButtonStreamBlock(required=False), verbose_name='Buttons', blank=True, null=True, help_text='Populate the nav with custom buttons')
+    header_utility_nav = models.BooleanField(verbose_name='Utility Nav', default=False, help_text='Add Utility Nav Bar')
+    utility_background_color = models.CharField(choices=BACKGROUND_MODE_CHOICES_NO_IMAGE, default=BACKGROUND_MODE_CHOICES_NO_IMAGE[0][0], max_length=50)
+    utility_switched = models.BooleanField(verbose_name='Switch Utility Nav', default=False, help_text='Switch link side and text side')
+    utility_text = models.CharField(blank=True, null=True, verbose_name='Utility Text', max_length=150)
+    utility_links = StreamField(HeaderUtilityStreamBlock(required=False), verbose_name='Utility Links', blank=True, null=True, help_text='Populate the utility nav with links and text')
     header_banner_text_1 = models.CharField(
         null=True, blank=True, default='',
         max_length=250,
@@ -120,6 +146,11 @@ class HeaderFooter(BaseSetting):
             FieldPanel('header_automatic_nav'),
             StreamFieldPanel('header_links'),
             StreamFieldPanel('header_buttons'),
+            FieldPanel('header_utility_nav'),
+            FieldPanel('utility_background_color'),
+            FieldPanel('utility_switched'),
+            FieldPanel('utility_text'),
+            StreamFieldPanel('utility_links'),
             FieldPanel('header_banner_text_1'),
             FieldPanel('header_banner_text_2')
         ], heading='Navigation', classname='collapsible'),
@@ -230,19 +261,103 @@ def register_icon_reference_menu_item():
     return MenuItem('Icon Reference', reverse('icon-reference'), classnames='icon icon-view', order=9998)
 
 
-# @register_setting(icon = 'download')
-# class ErrorPages(BaseSetting):
-#     title_404 = models.TextField(default='404 not found', null=True, blank=True)
-#     body_404 = RichTextField(null=True, blank=True)
-
-
-class EventAdmin(ModelAdmin):
-    model = Event
+class EventPageAdmin(ModelAdmin):
+    model = EventPage
     menu_label = 'Events'
     menu_icon = 'date'
-    list_display = ('event_title', 'event_type', 'location_type', 'start_datetime', )
+    exclude_from_explorer = True
+    list_display = ('get_title', 'event_type', 'location_type', 'start_datetime', 'registrations')
     list_filter = ('location_type', 'event_type', 'address_city', 'address_state', )
-    search_fields = ('event_title', 'address_city', 'address_state', 'description', )
+    search_fields = ('title', 'address_city', 'address_state', 'description', )
+
+    def get_title(self, obj):
+        edit_url = self.url_helper.get_action_url('edit', quote(obj.pk))
+        return format_html('<h2><a href="{}">{}</a></h2>'.format(edit_url, obj))
+    get_title.short_description = 'Title'
+    get_title.admin_order_field = 'Title'
+
+    def registrations(self, obj):
+        reg_count = EventRegistration.objects.filter(event=obj.id).count()
+        csv_link = ''
+        return format_html('{} &nbsp; <a href="/admin/app/eventregistration/?event__id__exact={}" class="button button-small bicolor icon icon-list-ul">View List</a> <a href="/admin/app/event/registrations-download/{}/" class="button button-small bicolor icon icon-download">Download CSV</a>'.format(reg_count, obj.id, obj.id))
+    registrations.short_description = 'Registrations'
+    registrations.admin_order_field = 'registrations'
+
+    def get_extra_class_names_for_field_col(self, obj, field_name):
+        if field_name == 'field-get_title':
+            return ['title']
+        return ['title']
+
+modeladmin_register(EventPageAdmin)
 
 
-modeladmin_register(EventAdmin)
+class EventRegistrationAdmin(ModelAdmin):
+    model = EventRegistration
+    menu_label = 'Event Registrations'
+    menu_icon = 'group'
+    list_display = ('get_event', 'get_date', 'first_name', 'last_name', 'postalcode', 'created_at')
+    search_fields = ('first_name', 'last_name', 'company', 'email')
+
+    def get_event(self, obj):
+        edit_url = self.url_helper.get_action_url('edit', quote(obj.pk))
+        return format_html('<h2><a href="{}">{}</a></h2>'.format(edit_url, obj.event))
+    get_event.short_description = 'Event'
+    get_event.admin_order_field = 'event'
+
+    def get_date(self, obj):
+        return obj.event.start_datetime
+    get_date.short_description = 'Event Date'
+    get_date.admin_order_field = 'event_date'
+
+    def get_extra_class_names_for_field_col(self, obj, field_name):
+        if field_name == 'field-get_event':
+            return ['title']
+        return ['title']
+
+modeladmin_register(EventRegistrationAdmin)
+
+
+# Hide Event Registrations menu
+@hooks.register('construct_main_menu')
+def hide_event_registrations_menu(request, menu_items):
+    menu_items[:] = [item for item in menu_items if 'eventregistration' not in item.url]
+
+# Add Event Registrations Download URL
+@hooks.register('register_admin_urls')
+def event_registrations_download():
+    return [url(r'^app/event/registrations-download/(?P<event_id>[0-9]+)/$', generate_event_registrations_csv, name='event_registrations_download')]
+
+# Generate Event Registrations CSV
+def generate_event_registrations_csv(request, event_id):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Benefit_Mall_Event_Registration.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Event', 'Event Date', 'First Name', 'Last Name', 'Company', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Postal Code'])
+    for reg in EventRegistration.objects.filter(event__id=event_id):
+        writer.writerow([reg.event.title, reg.event.start_datetime.strftime('%Y-%d-%m %I:%M %p'), reg.first_name, reg.last_name, reg.company, reg.email, reg.phone, reg.address1, reg.address2, reg.city, reg.state, reg.postalcode])
+    return response
+
+
+class NewsPageAdmin(ModelAdmin):
+    model = NewsPage
+    menu_label = 'Press Releases'
+    menu_icon = 'fa-newspaper-o'
+    exclude_from_explorer = True
+    list_display = ('title', 'news_datetime', )
+    list_filter = ('news_datetime', )
+    search_fields = ('title', 'body', )
+
+modeladmin_register(NewsPageAdmin)
+
+
+class NotificationAdmin(ModelAdmin):
+    model = Notification
+    menu_label = 'Notifications'
+    menu_icon = 'fa-bell'
+    list_display = ('header', 'starttime', 'endtime')
+    list_filter = ('starttime', )
+    search_fields = ('header', 'body', )
+
+modeladmin_register(NotificationAdmin)
+

@@ -190,6 +190,57 @@ $(function () {
     });
     /**************************************************************************************************/
 
+    /**************************************************************************************************/
+     function ctaBlockToggler(elem){
+        var value = $(elem).find('input:checked').val();
+        var container = $(elem).closest('.cta-block');
+
+        if (value === 'horizontal') {
+            container.find('.fieldname-page').parent().closest('.field').hide();
+            container.find('.fieldname-subhead_size').parent().closest('.field').show();
+            container.find('.fieldname-body').parent().closest('.field').show();
+            container.find('.fieldname-body').parent().closest('.field').addClass('required');
+            container.find('.link-block').closest('.field').show();
+            container.find('.fieldname-body_size').parent().closest('.field').show();
+            container.find('.fieldname-outline').parent().closest('.field').show();
+        } else {
+            container.find('.fieldname-page').parent().closest('.field').show();
+            container.find('.fieldname-subhead_size').parent().closest('.field').hide();
+            container.find('.fieldname-body').parent().closest('.field').hide();
+            container.find('.fieldname-body').parent().closest('.field').removeClass('required');
+            container.find('.link-block').closest('.field').hide();
+            container.find('.fieldname-body_size').parent().closest('.field').hide();
+            container.find('.fieldname-outline').parent().closest('.field').hide();
+        }
+
+    }
+
+    $('body').on('change', '.cta-block .fieldname-layout', function() {
+       ctaBlockToggler(this);
+    });
+    /**************************************************************************************************/
+
+    /**************************************************************************************************/
+     function titleBlockToggler(elem){
+        var value = $(elem).find('input:checked').val();
+        var container = $(elem).closest('.title-block');
+
+        if (value === 'fixed') {
+            container.find('.fieldname-switchable').parent().closest('.field').show();
+
+        } else {
+            container.find('.fieldname-switchable').parent().closest('.field').hide();
+
+        }
+
+    }
+
+    $('body').on('change', '.title-block .fieldname-layout', function() {
+       titleBlockToggler(this);
+    });
+    /**************************************************************************************************/
+
+
 
     /**************************************************************************************************/
      function pricingBlockToggler(elem){
@@ -217,7 +268,26 @@ $(function () {
     /**************************************************************************************************/
 
 
+    /**************************************************************************************************/
+     function imageFeatureBlockToggler(elem){
+        var value = $(elem).find('input:checked').val();
+        var container = $(elem).closest('.image-feature-block');
 
+        if (value === 'overlay') {
+            container.find('.fieldname-image_invert').parent().closest('.field').show();
+            container.find('.fieldname-image_overlay').parent().closest('.field').show();
+        }
+        else{
+            container.find('.fieldname-image_invert').parent().closest('.field').hide();
+            container.find('.fieldname-image_overlay').parent().closest('.field').hide();
+        }
+
+    }
+
+    $('body').on('change', '.image-feature-block .fieldname-layout', function() {
+       imageFeatureBlockToggler(this);
+    });
+    /**************************************************************************************************/
 
 
     /**************************************************************************************************/
@@ -257,6 +327,20 @@ $(function () {
         $('.pricing-block .fieldname-layout').each(function() {
            pricingBlockToggler(this);
         });
+        // ctaBlockToggler call on observed mutation
+        $('.cta-block .fieldname-layout').each(function() {
+           ctaBlockToggler(this);
+        });
+        // titleBlockToggler call on observed mutation
+        $('.title-block .fieldname-layout').each(function() {
+           titleBlockToggler(this);
+        });
+        // imageFreatureBlockToggler call on observed mutation
+        $('.image-feature-block .fieldname-layout').each(function() {
+           imageFeatureBlockToggler(this);
+        });
+
+
     });
 
     // General listener for added/removed nodes on body
