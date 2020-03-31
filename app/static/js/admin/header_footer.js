@@ -187,7 +187,7 @@ $(function () {
     /**************************************************************************************************/
 
     /**************************************************************************************************/
-    // Toggler for Auto Nav selector
+    // Toggler for Utility Nav selector
     function utilityNavToggler(elem){
         var value = elem.is(':checked');
         var container = $(elem).closest('ul.fields');
