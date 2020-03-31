@@ -21,7 +21,7 @@ from wagtail.core.fields import RichTextField
 from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES
 from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
 
-from app.models.salesforce import Event
+from app.models.events import Event
 
 @register_setting(icon='cogs')
 class HeaderFooter(BaseSetting):

@@ -8,23 +8,23 @@
 from salesforce import models
 
 
-class AcceptedEventRelation(models.Model):
-    relation = models.ForeignKey('Calendar', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)  # Reference to tables [Calendar, User]
-    event = models.ForeignKey('Event', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    responded_date = models.DateTimeField(verbose_name='Response Date', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    response = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='acceptedeventrelation_createdby_set', sf_read_only=models.READ_ONLY)
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='acceptedeventrelation_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
-    system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    type = models.CharField(max_length=50, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    class Meta(models.Model.Meta):
-        db_table = 'AcceptedEventRelation'
-        verbose_name = 'Accepted Event Relation'
-        verbose_name_plural = 'Accepted Event Relations'
-        # keyPrefix = 'None'
+# class AcceptedEventRelation(models.Model):
+#     relation = models.ForeignKey('Calendar', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)  # Reference to tables [Calendar, User]
+#     event = models.ForeignKey('Event', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     responded_date = models.DateTimeField(verbose_name='Response Date', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     response = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='acceptedeventrelation_createdby_set', sf_read_only=models.READ_ONLY)
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='acceptedeventrelation_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+#     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     type = models.CharField(max_length=50, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     class Meta(models.Model.Meta):
+#         db_table = 'AcceptedEventRelation'
+#         verbose_name = 'Accepted Event Relation'
+#         verbose_name_plural = 'Accepted Event Relations'
+#         # keyPrefix = 'None'
 
 
 
@@ -1726,24 +1726,24 @@ class Community(models.Model):
 
 
 
-class ConferenceNumber(models.Model):
-    is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    name = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='conferencenumber_createdby_set', sf_read_only=models.READ_ONLY)
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='conferencenumber_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
-    system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    external_event = models.ForeignKey('ExternalEvent', models.DO_NOTHING, blank=True, null=True)  # Master Detail Relationship *
-    label = models.CharField(max_length=255, blank=True, null=True)
-    number = models.CharField(max_length=40, blank=True, null=True)
-    access_code = models.CharField(max_length=255, blank=True, null=True)
-    vendor = models.CharField(max_length=255, blank=True, null=True)
-    class Meta(models.Model.Meta):
-        db_table = 'ConferenceNumber'
-        verbose_name = 'Conference Number'
-        verbose_name_plural = 'Conference Numbers'
-        # keyPrefix = '0Ah'
+# class ConferenceNumber(models.Model):
+#     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     name = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='conferencenumber_createdby_set', sf_read_only=models.READ_ONLY)
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='conferencenumber_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+#     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     external_event = models.ForeignKey('ExternalEvent', models.DO_NOTHING, blank=True, null=True)  # Master Detail Relationship *
+#     label = models.CharField(max_length=255, blank=True, null=True)
+#     number = models.CharField(max_length=40, blank=True, null=True)
+#     access_code = models.CharField(max_length=255, blank=True, null=True)
+#     vendor = models.CharField(max_length=255, blank=True, null=True)
+#     class Meta(models.Model.Meta):
+#         db_table = 'ConferenceNumber'
+#         verbose_name = 'Conference Number'
+#         verbose_name_plural = 'Conference Numbers'
+#         # keyPrefix = '0Ah'
 
 
 
@@ -3070,171 +3070,171 @@ class EntitySubscription(models.Model):
 
 
 
-class Event(models.Model):
-    what = models.ForeignKey(Account, models.DO_NOTHING, related_name='event_what_set', blank=True, null=True)  # Reference to tables [Account, ListEmail] Master Detail Relationship *
-    subject = models.CharField(max_length=255, choices=[('Call', 'Call'), ('Email', 'Email'), ('Meeting', 'Meeting'), ('Send Letter', 'Send Letter'), ('Send Quote', 'Send Quote'), ('Pending Item', 'Pending Item'), ('After Payroll Solutions', 'After Payroll Solutions'), ('Audit', 'Audit'), ('Client Training', 'Client Training'), ('Specialized Training', 'Specialized Training'), ('Service Hand-Off', 'Service Hand-Off'), ('Other', 'Other')], blank=True, null=True)
-    location = models.CharField(max_length=255, blank=True, null=True)
-    is_all_day_event = models.BooleanField(verbose_name='All-Day Event', default=models.DefaultedOnCreate(False))
-    activity_date_time = models.DateTimeField(verbose_name='Due Date Time', blank=True, null=True)
-    activity_date = models.DateField(verbose_name='Due Date Only', blank=True, null=True)
-    duration_in_minutes = models.IntegerField(verbose_name='Duration', blank=True, null=True)
-    start_date_time = models.DateTimeField(blank=True, null=True)
-    end_date_time = models.DateTimeField(blank=True, null=True)
-    end_date = models.DateField(sf_read_only=models.READ_ONLY, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    account = models.ForeignKey(Account, models.DO_NOTHING, related_name='event_account_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    owner = models.ForeignKey(Calendar, models.DO_NOTHING)  # Reference to tables [Calendar, User]
-    type = models.CharField(max_length=40, default=models.DefaultedOnCreate('Other'), choices=[('Agent BMALL Visit', 'Agent BMALL Visit'), ('BDM Meeting', 'BDM Meeting'), ('Call', 'Call'), ('Client Visit', 'Client Visit'), ('Cold Call', 'Cold Call'), ('Drop Information', 'Drop Information'), ('Email', 'Email'), ('Established Partner Meeting', 'Established Partner Meeting'), ('Fax', 'Fax'), ('First Meeting', 'First Meeting'), ('Follow-up', 'Follow-up'), ('General Meeting', 'General Meeting'), ('Open Enrollment Meeting', 'Open Enrollment Meeting'), ('Other', 'Other'), ('Product Demo', 'Product Demo'), ('Proposal Meeting', 'Proposal Meeting'), ('Q2E internal training', 'Q2E internal training'), ('Q2E with broker', 'Q2E with broker'), ('Renewal Meeting', 'Renewal Meeting')], blank=True, null=True)
-    is_private = models.BooleanField(verbose_name='Private', default=models.DefaultedOnCreate(False))
-    show_as = models.CharField(max_length=40, verbose_name='Show Time As', default=models.DefaultedOnCreate('Busy'), choices=[('Busy', 'Busy'), ('OutOfOffice', 'Out of Office'), ('Free', 'Free')], blank=True, null=True)
-    is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    is_child = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    is_group_event = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    group_event_type = models.CharField(max_length=40, sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate('0'), choices=[('0', 'Non-group Event'), ('1', 'Group Event'), ('2', 'Proposed Event'), ('3', 'IsRecurrence2 Series Pattern')], blank=True, null=True)
-    created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='event_createdby_set', sf_read_only=models.READ_ONLY)
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='event_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
-    system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    is_archived = models.BooleanField(verbose_name='Archived', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    recurrence_activity = models.ForeignKey('self', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    is_recurrence = models.BooleanField(verbose_name='Create Recurring Series of Events', sf_read_only=models.NOT_UPDATEABLE, default=models.DefaultedOnCreate(False))
-    recurrence_start_date_time = models.DateTimeField(verbose_name='Recurrence Start', blank=True, null=True)
-    recurrence_end_date_only = models.DateField(verbose_name='Recurrence End', blank=True, null=True)
-    recurrence_time_zone_sid_key = models.CharField(max_length=40, verbose_name='Recurrence Time Zone', choices=[('Pacific/Kiritimati', '(GMT+14:00) Line Islands Time (Pacific/Kiritimati)'), ('Pacific/Chatham', '(GMT+13:45) Chatham Daylight Time (Pacific/Chatham)'), ('Pacific/Auckland', '(GMT+13:00) New Zealand Daylight Time (Pacific/Auckland)'), ('Pacific/Enderbury', '(GMT+13:00) Phoenix Islands Time (Pacific/Enderbury)'), ('Pacific/Tongatapu', '(GMT+13:00) Tonga Standard Time (Pacific/Tongatapu)'), ('Asia/Kamchatka', '(GMT+12:00) Petropavlovsk-Kamchatski Standard Time (Asia/Kamchatka)'), ('Pacific/Fiji', '(GMT+12:00) Fiji Standard Time (Pacific/Fiji)'), ('Pacific/Norfolk', '(GMT+12:00) Norfolk Island Time (Pacific/Norfolk)'), ('Australia/Lord_Howe', '(GMT+11:00) Lord Howe Daylight Time (Australia/Lord_Howe)'), ('Australia/Sydney', '(GMT+11:00) Australian Eastern Daylight Time (Australia/Sydney)'), ('Pacific/Guadalcanal', '(GMT+11:00) Solomon Islands Time (Pacific/Guadalcanal)'), ('Australia/Adelaide', '(GMT+10:30) Australian Central Daylight Time (Australia/Adelaide)'), ('Australia/Brisbane', '(GMT+10:00) Australian Eastern Standard Time (Australia/Brisbane)'), ('Australia/Darwin', '(GMT+09:30) Australian Central Standard Time (Australia/Darwin)'), ('Asia/Seoul', '(GMT+09:00) Korean Standard Time (Asia/Seoul)'), ('Asia/Tokyo', '(GMT+09:00) Japan Standard Time (Asia/Tokyo)'), ('Asia/Hong_Kong', '(GMT+08:00) Hong Kong Standard Time (Asia/Hong_Kong)'), ('Asia/Kuala_Lumpur', '(GMT+08:00) Malaysia Time (Asia/Kuala_Lumpur)'), ('Asia/Manila', '(GMT+08:00) Philippine Standard Time (Asia/Manila)'), ('Asia/Shanghai', '(GMT+08:00) China Standard Time (Asia/Shanghai)'), ('Asia/Singapore', '(GMT+08:00) Singapore Standard Time (Asia/Singapore)'), ('Asia/Taipei', '(GMT+08:00) Taipei Standard Time (Asia/Taipei)'), ('Australia/Perth', '(GMT+08:00) Australian Western Standard Time (Australia/Perth)'), ('Asia/Bangkok', '(GMT+07:00) Indochina Time (Asia/Bangkok)'), ('Asia/Ho_Chi_Minh', '(GMT+07:00) Indochina Time (Asia/Ho_Chi_Minh)'), ('Asia/Jakarta', '(GMT+07:00) Western Indonesia Time (Asia/Jakarta)'), ('Asia/Rangoon', '(GMT+06:30) Myanmar Time (Asia/Rangoon)'), ('Asia/Dhaka', '(GMT+06:00) Bangladesh Standard Time (Asia/Dhaka)'), ('Asia/Kathmandu', '(GMT+05:45) Nepal Time (Asia/Kathmandu)'), ('Asia/Colombo', '(GMT+05:30) India Standard Time (Asia/Colombo)'), ('Asia/Kolkata', '(GMT+05:30) India Standard Time (Asia/Kolkata)'), ('Asia/Karachi', '(GMT+05:00) Pakistan Standard Time (Asia/Karachi)'), ('Asia/Tashkent', '(GMT+05:00) Uzbekistan Standard Time (Asia/Tashkent)'), ('Asia/Yekaterinburg', '(GMT+05:00) Yekaterinburg Standard Time (Asia/Yekaterinburg)'), ('Asia/Kabul', '(GMT+04:30) Afghanistan Time (Asia/Kabul)'), ('Asia/Tehran', '(GMT+04:30) Iran Daylight Time (Asia/Tehran)'), ('Asia/Baku', '(GMT+04:00) Azerbaijan Standard Time (Asia/Baku)'), ('Asia/Dubai', '(GMT+04:00) Gulf Standard Time (Asia/Dubai)'), ('Asia/Tbilisi', '(GMT+04:00) Georgia Standard Time (Asia/Tbilisi)'), ('Asia/Yerevan', '(GMT+04:00) Armenia Standard Time (Asia/Yerevan)'), ('Africa/Nairobi', '(GMT+03:00) East Africa Time (Africa/Nairobi)'), ('Asia/Baghdad', '(GMT+03:00) Arabian Standard Time (Asia/Baghdad)'), ('Asia/Kuwait', '(GMT+03:00) Arabian Standard Time (Asia/Kuwait)'), ('Asia/Riyadh', '(GMT+03:00) Arabian Standard Time (Asia/Riyadh)'), ('Europe/Istanbul', '(GMT+03:00) Europe/Istanbul'), ('Europe/Minsk', '(GMT+03:00) Moscow Standard Time (Europe/Minsk)'), ('Europe/Moscow', '(GMT+03:00) Moscow Standard Time (Europe/Moscow)'), ('Africa/Cairo', '(GMT+02:00) Eastern European Standard Time (Africa/Cairo)'), ('Africa/Johannesburg', '(GMT+02:00) South Africa Standard Time (Africa/Johannesburg)'), ('Asia/Beirut', '(GMT+02:00) Eastern European Standard Time (Asia/Beirut)'), ('Asia/Jerusalem', '(GMT+02:00) Israel Standard Time (Asia/Jerusalem)'), ('Europe/Athens', '(GMT+02:00) Eastern European Standard Time (Europe/Athens)'), ('Europe/Bucharest', '(GMT+02:00) Eastern European Standard Time (Europe/Bucharest)'), ('Europe/Helsinki', '(GMT+02:00) Eastern European Standard Time (Europe/Helsinki)'), ('Africa/Algiers', '(GMT+01:00) Central European Standard Time (Africa/Algiers)'), ('Africa/Casablanca', '(GMT+01:00) Africa/Casablanca'), ('Europe/Amsterdam', '(GMT+01:00) Central European Standard Time (Europe/Amsterdam)'), ('Europe/Berlin', '(GMT+01:00) Central European Standard Time (Europe/Berlin)'), ('Europe/Brussels', '(GMT+01:00) Central European Standard Time (Europe/Brussels)'), ('Europe/Paris', '(GMT+01:00) Central European Standard Time (Europe/Paris)'), ('Europe/Prague', '(GMT+01:00) Central European Standard Time (Europe/Prague)'), ('Europe/Rome', '(GMT+01:00) Central European Standard Time (Europe/Rome)'), ('Europe/Dublin', '(GMT+00:00) Greenwich Mean Time (Europe/Dublin)'), ('Europe/Lisbon', '(GMT+00:00) Western European Standard Time (Europe/Lisbon)'), ('Europe/London', '(GMT+00:00) Greenwich Mean Time (Europe/London)'), ('GMT', '(GMT+00:00) Greenwich Mean Time (GMT)'), ('America/Scoresbysund', '(GMT-01:00) East Greenland Standard Time (America/Scoresbysund)'), ('Atlantic/Azores', '(GMT-01:00) Azores Standard Time (Atlantic/Azores)'), ('Atlantic/Cape_Verde', '(GMT-01:00) Cape Verde Standard Time (Atlantic/Cape_Verde)'), ('Atlantic/South_Georgia', '(GMT-02:00) South Georgia Time (Atlantic/South_Georgia)'), ('America/St_Johns', '(GMT-02:30) Newfoundland Daylight Time (America/St_Johns)'), ('America/Argentina/Buenos_Aires', '(GMT-03:00) Argentina Standard Time (America/Argentina/Buenos_Aires)'), ('America/Halifax', '(GMT-03:00) Atlantic Daylight Time (America/Halifax)'), ('America/Santiago', '(GMT-03:00) Chile Summer Time (America/Santiago)'), ('America/Sao_Paulo', '(GMT-03:00) Brasilia Standard Time (America/Sao_Paulo)'), ('Atlantic/Bermuda', '(GMT-03:00) Atlantic Daylight Time (Atlantic/Bermuda)'), ('America/Caracas', '(GMT-04:00) Venezuela Time (America/Caracas)'), ('America/Indiana/Indianapolis', '(GMT-04:00) Eastern Daylight Time (America/Indiana/Indianapolis)'), ('America/New_York', '(GMT-04:00) Eastern Daylight Time (America/New_York)'), ('America/Puerto_Rico', '(GMT-04:00) Atlantic Standard Time (America/Puerto_Rico)'), ('America/Bogota', '(GMT-05:00) Colombia Standard Time (America/Bogota)'), ('America/Chicago', '(GMT-05:00) Central Daylight Time (America/Chicago)'), ('America/Lima', '(GMT-05:00) Peru Standard Time (America/Lima)'), ('America/Panama', '(GMT-05:00) Eastern Standard Time (America/Panama)'), ('America/Denver', '(GMT-06:00) Mountain Daylight Time (America/Denver)'), ('America/El_Salvador', '(GMT-06:00) Central Standard Time (America/El_Salvador)'), ('America/Mexico_City', '(GMT-06:00) Central Standard Time (America/Mexico_City)'), ('America/Los_Angeles', '(GMT-07:00) Pacific Daylight Time (America/Los_Angeles)'), ('America/Mazatlan', '(GMT-07:00) Mexican Pacific Standard Time (America/Mazatlan)'), ('America/Phoenix', '(GMT-07:00) Mountain Standard Time (America/Phoenix)'), ('America/Tijuana', '(GMT-07:00) Pacific Daylight Time (America/Tijuana)'), ('America/Anchorage', '(GMT-08:00) Alaska Daylight Time (America/Anchorage)'), ('Pacific/Pitcairn', '(GMT-08:00) Pitcairn Time (Pacific/Pitcairn)'), ('America/Adak', '(GMT-09:00) Hawaii-Aleutian Daylight Time (America/Adak)'), ('Pacific/Gambier', '(GMT-09:00) Gambier Time (Pacific/Gambier)'), ('Pacific/Marquesas', '(GMT-09:30) Marquesas Time (Pacific/Marquesas)'), ('Pacific/Honolulu', '(GMT-10:00) Hawaii-Aleutian Standard Time (Pacific/Honolulu)'), ('Pacific/Niue', '(GMT-11:00) Niue Time (Pacific/Niue)'), ('Pacific/Pago_Pago', '(GMT-11:00) Samoa Standard Time (Pacific/Pago_Pago)')], blank=True, null=True)
-    recurrence_type = models.CharField(max_length=40, choices=[('RecursDaily', 'Recurs Daily'), ('RecursEveryWeekday', 'Recurs Every Weekday'), ('RecursMonthly', 'Recurs Monthly'), ('RecursMonthlyNth', 'Recurs Monthy Nth'), ('RecursWeekly', 'Recurs Weekly'), ('RecursYearly', 'Recurs Yearly'), ('RecursYearlyNth', 'Recurs Yearly Nth')], blank=True, null=True)
-    recurrence_interval = models.IntegerField(blank=True, null=True)
-    recurrence_day_of_week_mask = models.IntegerField(verbose_name='Recurrence Day of Week Mask', blank=True, null=True)
-    recurrence_day_of_month = models.IntegerField(verbose_name='Recurrence Day of Month', blank=True, null=True)
-    recurrence_instance = models.CharField(max_length=40, choices=[('First', '1st'), ('Second', '2nd'), ('Third', '3rd'), ('Fourth', '4th'), ('Last', 'last')], blank=True, null=True)
-    recurrence_month_of_year = models.CharField(max_length=40, verbose_name='Recurrence Month of Year', choices=[('January', 'January'), ('February', 'February'), ('March', 'March'), ('April', 'April'), ('May', 'May'), ('June', 'June'), ('July', 'July'), ('August', 'August'), ('September', 'September'), ('October', 'October'), ('November', 'November'), ('December', 'December')], blank=True, null=True)
-    original_instance_date_time = models.DateTimeField(verbose_name='Original Instance DateTime', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    is_exception = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    is_client_managed = models.BooleanField(default=models.DefaultedOnCreate(False))
-    client_guid = models.CharField(max_length=255, verbose_name='Client GUID', blank=True, null=True)
-    reminder_date_time = models.DateTimeField(verbose_name='Reminder Date/Time', blank=True, null=True)
-    is_reminder_set = models.BooleanField(verbose_name='Reminder Set', default=models.DefaultedOnCreate(False))
-    event_subtype = models.CharField(max_length=40, sf_read_only=models.NOT_UPDATEABLE, choices=[('Event', 'Event')], blank=True, null=True)
-    is_recurrence2_exclusion = models.BooleanField(verbose_name='Historical Event, Not Following Recurrence', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    recurrence2_pattern_text = models.TextField(verbose_name='Recurrence Pattern', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    recurrence2_pattern_version = models.CharField(max_length=40, verbose_name='Pattern Version', sf_read_only=models.READ_ONLY, choices=[('1', 'RFC 5545 v4 RRULE')], blank=True, null=True)
-    is_recurrence2 = models.BooleanField(verbose_name='Repeat', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    is_recurrence2_exception = models.BooleanField(verbose_name='Is Exception', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    recurrence2_pattern_start_date = models.DateTimeField(verbose_name='Recurrence Pattern Start Date', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    recurrence2_pattern_time_zone = models.CharField(max_length=255, verbose_name='Recurrence Pattern Time Zone Reference', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    event_outcome = models.CharField(custom=True, db_column='Event_Outcome__c', max_length=255, verbose_name='Event Outcome', sf_read_only=models.READ_ONLY, help_text='Select the value that best describes the outcome of the event.', choices=[('Meeting Completed', 'Meeting Completed'), ('DM No Show', 'DM No Show'), ('Customer Canceled', 'Customer Canceled'), ('Unable to Contact Customer', 'Unable to Contact Customer')], blank=True, null=True)
-    activity_type = models.CharField(custom=True, db_column='Activity_Type__c', max_length=255, verbose_name='Activity Type', blank=True, null=True)
-    qbdialer_call_recording_url = models.URLField(db_column='qbdialer__CallRecordingURL__c', custom=True, verbose_name='Call Recording', blank=True, null=True)
-    qbdialer_call_date_time = models.DateTimeField(db_column='qbdialer__Call_Date_Time__c', custom=True, verbose_name='Call Date/Time', blank=True, null=True)
-    qbdialer_call_dial_number = models.DecimalField(db_column='qbdialer__Call_Dial_Number__c', custom=True, max_digits=18, decimal_places=0, verbose_name='Call Dial Number', blank=True, null=True)
-    qbdialer_call_hour = models.CharField(db_column='qbdialer__Call_Hour__c', custom=True, max_length=8, verbose_name='Call Hour', blank=True, null=True)
-    qbdialer_call_lead_status = models.CharField(db_column='qbdialer__Call_Lead_Status__c', custom=True, max_length=40, verbose_name='Call Lead Status', blank=True, null=True)
-    qbdialer_call_ring_time = models.DecimalField(db_column='qbdialer__Call_Ring_Time__c', custom=True, max_digits=18, decimal_places=0, verbose_name='Call Ring Time', blank=True, null=True)
-    qbdialer_call_time_zone = models.CharField(db_column='qbdialer__Call_Time_Zone__c', custom=True, max_length=20, verbose_name='Call Time Zone', blank=True, null=True)
-    isdc_dialed_phone_number = models.CharField(custom=True, db_column='isdc_dialed_phone_number__c', max_length=40, verbose_name='Phone Dialed', blank=True, null=True)
-    isdc_dialer_call_type = models.CharField(custom=True, db_column='isdc_dialer_call_type__c', max_length=255, verbose_name='Dialer Type', choices=[('Click-to-Call', 'Click-to-Call'), ('Seek', 'Seek'), ('Domino', 'Domino')], blank=True, null=True)
-    isdc_dialer_list_name = models.CharField(custom=True, db_column='isdc_dialer_list_name__c', max_length=80, verbose_name='List Name', blank=True, null=True)
-    isdc_dialer_query_name = models.CharField(custom=True, db_column='isdc_dialer_query_name__c', max_length=80, verbose_name='Query Name', blank=True, null=True)
-    task_external_id = models.CharField(custom=True, db_column='Task_External_Id__c', max_length=255, verbose_name='Task External Id', blank=True, null=True)
-    event_external_id = models.CharField(custom=True, db_column='Event_External_Id__c', max_length=255, verbose_name='Event External Id', blank=True, null=True)
-    telemarketing_call_type = models.CharField(custom=True, db_column='Telemarketing_Call_Type__c', max_length=255, verbose_name='Telemarketing Call Type', choices=[('Contact', 'Contact'), ('Decision Maker', 'Decision Maker'), ('Disconnected Number', 'Disconnected Number'), ('No Answer', 'No Answer'), ('Set Call Back', 'Set Call Back'), ('Set Event', 'Set Event'), ('Voicemail No Message', 'Voicemail No Message'), ('Wrong Number', 'Wrong Number')], blank=True, null=True)
-    audit_error_reason = models.CharField(custom=True, db_column='Audit_Error_Reason__c', max_length=255, verbose_name='Audit Error Reason', choices=[('Address Truncated in IBAS', 'Address Truncated in IBAS'), ('Age Change Basis Incorrect', 'Age Change Basis Incorrect'), ('Ancillary', 'Ancillary'), ('App Not Signed', 'App Not Signed'), ('Benefit Amounts - Not added or Incorrect', 'Benefit Amounts - Not added or Incorrect'), ('Benefit Error', 'Benefit Error'), ('BMLL Box Not Checked', 'BMLL Box Not Checked'), ('Carrier Group Number Incorrect', 'Carrier Group Number Incorrect'), ('Carrier Incorrect Case Setup', 'Carrier Incorrect Case Setup'), ('City Incorrect', 'City Incorrect'), ('COB Not Updated', 'COB Not Updated'), ('Cobra Error', 'Cobra Error'), ('Cobra Med Codes', 'Cobra Med Codes'), ('Contact Phone Number Incorrect', 'Contact Phone Number Incorrect'), ('Contract Date/Period Incorrect or Not Updated', 'Contract Date/Period Incorrect or Not Updated'), ('Coverage Code Incorrect', 'Coverage Code Incorrect'), ('Coverage Code Missing', 'Coverage Code Missing'), ('Coverage Codes Not Termed', 'Coverage Codes Not Termed'), ('Coverage Level Incorrect', 'Coverage Level Incorrect'), ('CT # of Apps Field Not Updated or Incorrect', 'CT # of Apps Field Not Updated or Incorrect'), ('CT Date Sent to Audit Field Not Updated', 'CT Date Sent to Audit Field Not Updated'), ('CT Record Not Updated', 'CT Record Not Updated'), ('Date of Birth Incorrect', 'Date of Birth Incorrect'), ('Date of Hire Incorrect', 'Date of Hire Incorrect'), ('Dependent Date of Birth Incorrect', 'Dependent Date of Birth Incorrect'), ('Dependent Enrolled without Student Cert', 'Dependent Enrolled without Student Cert'), ('Dependent Name Misspelled', 'Dependent Name Misspelled'), ('Dependent Not Enrolled or Not Termed', 'Dependent Not Enrolled or Not Termed'), ('Dependent Not Entered', 'Dependent Not Entered'), ('Dependent SSN Incorrect', 'Dependent SSN Incorrect'), ('Domestic Partner Not Updated', 'Domestic Partner Not Updated'), ('Dual Coverage Not Updated', 'Dual Coverage Not Updated'), ('Effective Date Incorrect', 'Effective Date Incorrect'), ('Eligibility Period Incorrect', 'Eligibility Period Incorrect'), ('Employee Not Enrolled', 'Employee Not Enrolled'), ('ER Contributions', 'ER Contributions'), ('Error Removed', 'Error Removed'), ('Gender Incorrect', 'Gender Incorrect'), ('Group Address Not Updated or Incorrect', 'Group Address Not Updated or Incorrect'), ('Group Contact Incorrect', 'Group Contact Incorrect'), ('Group Size Incorrect', 'Group Size Incorrect'), ('HB1057 Box Not Checked', 'HB1057 Box Not Checked'), ('Home Phone Incorrect', 'Home Phone Incorrect'), ('Incorrect Broker Information', 'Incorrect Broker Information'), ('Incorrect Carrier Code', 'Incorrect Carrier Code'), ('Incorrect Class or Class Missing', 'Incorrect Class or Class Missing'), ('Incorrect HB8', 'Incorrect HB8'), ('Incorrect Or Missing Beneficiary', 'Incorrect Or Missing Beneficiary'), ('Incorrect or Misspelled Group Name', 'Incorrect or Misspelled Group Name'), ('Incorrect PCP Code Used', 'Incorrect PCP Code Used'), ('Incorrect PDF Number', 'Incorrect PDF Number'), ('Incorrect Plan', 'Incorrect Plan'), ('Incorrect Rate', 'Incorrect Rate'), ('Incorrect Tax ID Number', 'Incorrect Tax ID Number'), ('Incorrect Team', 'Incorrect Team'), ('Mapping Not Processed/Incorrect', 'Mapping Not Processed/Incorrect'), ('Member Name Misspelled', 'Member Name Misspelled'), ('Miscellaneous', 'Miscellaneous'), ('Missing Middle Initial', 'Missing Middle Initial'), ('Missing Student Cert Not Requested', 'Missing Student Cert Not Requested'), ('NCA Class Codes Incorrect or Missing', 'NCA Class Codes Incorrect or Missing'), ('Not Verified', 'Not Verified'), ('OFE O/E Not Updated', 'OFE O/E Not Updated'), ('Original Effective Date Not Updated or Incorrect', 'Original Effective Date Not Updated or Incorrect'), ('Overage Dependent Age Incorrect', 'Overage Dependent Age Incorrect'), ('Parallel Non-Parallel Incorrect', 'Parallel Non-Parallel Incorrect'), ('Part Time Eligibility Incorrect or Not Updated', 'Part Time Eligibility Incorrect or Not Updated'), ('PCP Error', 'PCP Error'), ('Plan Not Setup', 'Plan Not Setup'), ('Plan Not Termed', 'Plan Not Termed'), ('Rate(s) Not Termed', 'Rate(s) Not Termed'), ('Rate(s) Termed in Error', 'Rate(s) Termed in Error'), ('Rate Error', 'Rate Error'), ('Request Not Processed', 'Request Not Processed'), ('Retro Date Incorrect', 'Retro Date Incorrect'), ('Salary Incorrect', 'Salary Incorrect'), ('SSN Incorrect', 'SSN Incorrect'), ('State Incorrect', 'State Incorrect'), ('Street Address Incorrect or Misspelled', 'Street Address Incorrect or Misspelled'), ('Student Cert Status Incorrect or Not Updated', 'Student Cert Status Incorrect or Not Updated'), ('Supporting Documentation-Missing Info', 'Supporting Documentation-Missing Info'), ('System Error', 'System Error'), ('Termination Date Incorrect', 'Termination Date Incorrect'), ('Title Missing from Name', 'Title Missing from Name'), ('Transmission/Upload Issue', 'Transmission/Upload Issue'), ('Transmit to Carrier Missed', 'Transmit to Carrier Missed'), ('Wrong CT Record Updated', 'Wrong CT Record Updated'), ('Zip Code Incorrect', 'Zip Code Incorrect')], blank=True, null=True)
-    audit_type = models.CharField(custom=True, db_column='Audit_Type__c', max_length=255, verbose_name='Audit Type', choices=[('FYI', 'FYI'), ('Error', 'Error'), ('Group level error', 'Group level error'), ('Enrollment error', 'Enrollment error')], blank=True, null=True)
-    call_back_date = models.DateField(custom=True, db_column='Call_Back_Date__c', verbose_name='Call Back Date', blank=True, null=True)
-    qbdialer_callback_date_time = models.DateTimeField(db_column='qbdialer__Callback_Date_Time__c', custom=True, verbose_name='Callback Date/Time', blank=True, null=True)
-    qbdialer_impression_id = models.DecimalField(db_column='qbdialer__ImpressionId__c', custom=True, unique=True, max_digits=18, decimal_places=0, verbose_name='Impression ID', blank=True, null=True)
-    qbdialer_smsreminder = models.BooleanField(db_column='qbdialer__SMSReminder__c', custom=True, verbose_name='Send text msg reminder to all attendees', default=models.DefaultedOnCreate(False), help_text='Text message reminders will be sent to all attendees at the set reminder time.')
-    class Meta(models.Model.Meta):
-        db_table = 'Event'
-        verbose_name = 'Event'
-        verbose_name_plural = 'Events'
-        # keyPrefix = '00U'
-
-
-
-class EventBusSubscriber(models.Model):
-    external_id = models.CharField(max_length=255, verbose_name='External ID', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    name = models.CharField(max_length=80, verbose_name='Subscriber Name', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    type = models.CharField(max_length=80, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    topic = models.CharField(max_length=80, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    position = models.IntegerField(sf_read_only=models.READ_ONLY, blank=True, null=True)
-    tip = models.IntegerField(sf_read_only=models.READ_ONLY, blank=True, null=True)
-    retries = models.IntegerField(verbose_name='Retry Attempts', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    last_error = models.CharField(max_length=255, verbose_name='Last Error Message', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    status = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, choices=[('Running', 'Running'), ('Suspended', 'Suspended'), ('Expired', 'Expired'), ('Error', 'Error')], blank=True, null=True)
-    class Meta(models.Model.Meta):
-        db_table = 'EventBusSubscriber'
-        verbose_name = 'Platform Event Subscription'
-        verbose_name_plural = 'Platform Event Subscription'
-        # keyPrefix = '0Cd'
-
-
-
-class EventFeed(models.Model):
-    parent = models.ForeignKey(Event, models.DO_NOTHING, sf_read_only=models.READ_ONLY)  # Master Detail Relationship *
-    type = models.CharField(max_length=40, verbose_name='Feed Item Type', sf_read_only=models.READ_ONLY, choices=[('TrackedChange', 'Tracked Change'), ('UserStatus', 'User Status'), ('TextPost', 'Text Post'), ('AdvancedTextPost', 'Advanced Text Post'), ('LinkPost', 'Link Post'), ('ContentPost', 'Content Post'), ('PollPost', 'Poll'), ('RypplePost', 'Work.com Thanks'), ('ProfileSkillPost', 'Profile Skill Post'), ('DashboardComponentSnapshot', 'Dashboard Component Snapshot'), ('ApprovalPost', 'Approval Post'), ('CaseCommentPost', 'Case Comment Feed'), ('ReplyPost', 'Reply Post'), ('EmailMessageEvent', 'Email Message Feed'), ('CallLogPost', 'Call Log Feed'), ('ChangeStatusPost', 'Change Status Feed'), ('AttachArticleEvent', 'Attached Article'), ('MilestoneEvent', 'Milestone Event'), ('ActivityEvent', 'Activity Change'), ('ChatTranscriptPost', 'Chat Transcript Post'), ('CollaborationGroupCreated', 'Collaboration Group Created'), ('CollaborationGroupUnarchived', 'Collaboration Group Reactivated'), ('SocialPost', 'Social Post'), ('QuestionPost', 'Question Post'), ('FacebookPost', 'Facebook Post'), ('BasicTemplateFeedItem', 'Basic Template Post'), ('CreateRecordEvent', 'Created Record'), ('CanvasPost', 'Canvas'), ('AnnouncementPost', 'a')], blank=True, null=True)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventfeed_createdby_set', sf_read_only=models.READ_ONLY)
-    created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    comment_count = models.IntegerField(sf_read_only=models.READ_ONLY)
-    like_count = models.IntegerField(sf_read_only=models.READ_ONLY)
-    title = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    body = models.TextField(sf_read_only=models.READ_ONLY, blank=True, null=True)
-    link_url = models.URLField(sf_read_only=models.READ_ONLY, blank=True, null=True)
-    is_rich_text = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    related_record = models.ForeignKey(ContentVersion, models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    inserted_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventfeed_insertedby_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    network_scope = models.CharField(max_length=40, sf_read_only=models.READ_ONLY, choices=[('AllNetworks', 'All Networks')], blank=True, null=True)
-    visibility = models.CharField(max_length=40, sf_read_only=models.READ_ONLY, choices=[('AllUsers', 'All Users'), ('InternalUsers', 'Internal Users')], blank=True, null=True)
-    best_comment = models.ForeignKey('FeedComment', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    class Meta(models.Model.Meta):
-        db_table = 'EventFeed'
-        verbose_name = 'Event Feed'
-        verbose_name_plural = 'Event Feed'
-        # keyPrefix = 'None'
-
-
-
-class EventRecurrenceException(models.Model):
-    is_deletion = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    event = models.ForeignKey(Event, models.DO_NOTHING, related_name='eventrecurrenceexception_event_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    activity_date_original = models.DateTimeField(verbose_name='Original Date', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    activity_date_time_original = models.DateTimeField(verbose_name='Original Time', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    is_all_day_event_original = models.BooleanField(verbose_name='Original All-Day Event', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    recurrence_event = models.ForeignKey(Event, models.DO_NOTHING, related_name='eventrecurrenceexception_recurrenceevent_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventrecurrenceexception_createdby_set', sf_read_only=models.READ_ONLY)
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventrecurrenceexception_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
-    system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    class Meta(models.Model.Meta):
-        db_table = 'EventRecurrenceException'
-        verbose_name = 'Event Recurrence Exception'
-        verbose_name_plural = 'Event Recurrence Exception'
-        # keyPrefix = '10z'
-
-
-
-class EventRelation(models.Model):
-    relation = models.ForeignKey(Calendar, models.DO_NOTHING, sf_read_only=models.NOT_UPDATEABLE)  # Reference to tables [Calendar, User] Master Detail Relationship *
-    event = models.ForeignKey(Event, models.DO_NOTHING, sf_read_only=models.NOT_UPDATEABLE)  # Master Detail Relationship *
-    status = models.CharField(max_length=40, choices=[('New', 'New'), ('Declined', 'Declined'), ('Accepted', 'Accepted'), ('Uninvited', 'Uninvited'), ('Maybe', 'Maybe')], blank=True, null=True)
-    responded_date = models.DateTimeField(verbose_name='Response Date', blank=True, null=True)
-    response = models.CharField(max_length=255, blank=True, null=True)
-    created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventrelation_createdby_set', sf_read_only=models.READ_ONLY)
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventrelation_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
-    system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    class Meta(models.Model.Meta):
-        db_table = 'EventRelation'
-        verbose_name = 'Event Relation'
-        verbose_name_plural = 'Event Relations'
-        # keyPrefix = '0RE'
-
+# class Event(models.Model):
+#     what = models.ForeignKey(Account, models.DO_NOTHING, related_name='event_what_set', blank=True, null=True)  # Reference to tables [Account, ListEmail] Master Detail Relationship *
+#     subject = models.CharField(max_length=255, choices=[('Call', 'Call'), ('Email', 'Email'), ('Meeting', 'Meeting'), ('Send Letter', 'Send Letter'), ('Send Quote', 'Send Quote'), ('Pending Item', 'Pending Item'), ('After Payroll Solutions', 'After Payroll Solutions'), ('Audit', 'Audit'), ('Client Training', 'Client Training'), ('Specialized Training', 'Specialized Training'), ('Service Hand-Off', 'Service Hand-Off'), ('Other', 'Other')], blank=True, null=True)
+#     location = models.CharField(max_length=255, blank=True, null=True)
+#     is_all_day_event = models.BooleanField(verbose_name='All-Day Event', default=models.DefaultedOnCreate(False))
+#     activity_date_time = models.DateTimeField(verbose_name='Due Date Time', blank=True, null=True)
+#     activity_date = models.DateField(verbose_name='Due Date Only', blank=True, null=True)
+#     duration_in_minutes = models.IntegerField(verbose_name='Duration', blank=True, null=True)
+#     start_date_time = models.DateTimeField(blank=True, null=True)
+#     end_date_time = models.DateTimeField(blank=True, null=True)
+#     end_date = models.DateField(sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     description = models.TextField(blank=True, null=True)
+#     account = models.ForeignKey(Account, models.DO_NOTHING, related_name='event_account_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     owner = models.ForeignKey(Calendar, models.DO_NOTHING)  # Reference to tables [Calendar, User]
+#     type = models.CharField(max_length=40, default=models.DefaultedOnCreate('Other'), choices=[('Agent BMALL Visit', 'Agent BMALL Visit'), ('BDM Meeting', 'BDM Meeting'), ('Call', 'Call'), ('Client Visit', 'Client Visit'), ('Cold Call', 'Cold Call'), ('Drop Information', 'Drop Information'), ('Email', 'Email'), ('Established Partner Meeting', 'Established Partner Meeting'), ('Fax', 'Fax'), ('First Meeting', 'First Meeting'), ('Follow-up', 'Follow-up'), ('General Meeting', 'General Meeting'), ('Open Enrollment Meeting', 'Open Enrollment Meeting'), ('Other', 'Other'), ('Product Demo', 'Product Demo'), ('Proposal Meeting', 'Proposal Meeting'), ('Q2E internal training', 'Q2E internal training'), ('Q2E with broker', 'Q2E with broker'), ('Renewal Meeting', 'Renewal Meeting')], blank=True, null=True)
+#     is_private = models.BooleanField(verbose_name='Private', default=models.DefaultedOnCreate(False))
+#     show_as = models.CharField(max_length=40, verbose_name='Show Time As', default=models.DefaultedOnCreate('Busy'), choices=[('Busy', 'Busy'), ('OutOfOffice', 'Out of Office'), ('Free', 'Free')], blank=True, null=True)
+#     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     is_child = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     is_group_event = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     group_event_type = models.CharField(max_length=40, sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate('0'), choices=[('0', 'Non-group Event'), ('1', 'Group Event'), ('2', 'Proposed Event'), ('3', 'IsRecurrence2 Series Pattern')], blank=True, null=True)
+#     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='event_createdby_set', sf_read_only=models.READ_ONLY)
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='event_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+#     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     is_archived = models.BooleanField(verbose_name='Archived', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     recurrence_activity = models.ForeignKey('self', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     is_recurrence = models.BooleanField(verbose_name='Create Recurring Series of Events', sf_read_only=models.NOT_UPDATEABLE, default=models.DefaultedOnCreate(False))
+#     recurrence_start_date_time = models.DateTimeField(verbose_name='Recurrence Start', blank=True, null=True)
+#     recurrence_end_date_only = models.DateField(verbose_name='Recurrence End', blank=True, null=True)
+#     recurrence_time_zone_sid_key = models.CharField(max_length=40, verbose_name='Recurrence Time Zone', choices=[('Pacific/Kiritimati', '(GMT+14:00) Line Islands Time (Pacific/Kiritimati)'), ('Pacific/Chatham', '(GMT+13:45) Chatham Daylight Time (Pacific/Chatham)'), ('Pacific/Auckland', '(GMT+13:00) New Zealand Daylight Time (Pacific/Auckland)'), ('Pacific/Enderbury', '(GMT+13:00) Phoenix Islands Time (Pacific/Enderbury)'), ('Pacific/Tongatapu', '(GMT+13:00) Tonga Standard Time (Pacific/Tongatapu)'), ('Asia/Kamchatka', '(GMT+12:00) Petropavlovsk-Kamchatski Standard Time (Asia/Kamchatka)'), ('Pacific/Fiji', '(GMT+12:00) Fiji Standard Time (Pacific/Fiji)'), ('Pacific/Norfolk', '(GMT+12:00) Norfolk Island Time (Pacific/Norfolk)'), ('Australia/Lord_Howe', '(GMT+11:00) Lord Howe Daylight Time (Australia/Lord_Howe)'), ('Australia/Sydney', '(GMT+11:00) Australian Eastern Daylight Time (Australia/Sydney)'), ('Pacific/Guadalcanal', '(GMT+11:00) Solomon Islands Time (Pacific/Guadalcanal)'), ('Australia/Adelaide', '(GMT+10:30) Australian Central Daylight Time (Australia/Adelaide)'), ('Australia/Brisbane', '(GMT+10:00) Australian Eastern Standard Time (Australia/Brisbane)'), ('Australia/Darwin', '(GMT+09:30) Australian Central Standard Time (Australia/Darwin)'), ('Asia/Seoul', '(GMT+09:00) Korean Standard Time (Asia/Seoul)'), ('Asia/Tokyo', '(GMT+09:00) Japan Standard Time (Asia/Tokyo)'), ('Asia/Hong_Kong', '(GMT+08:00) Hong Kong Standard Time (Asia/Hong_Kong)'), ('Asia/Kuala_Lumpur', '(GMT+08:00) Malaysia Time (Asia/Kuala_Lumpur)'), ('Asia/Manila', '(GMT+08:00) Philippine Standard Time (Asia/Manila)'), ('Asia/Shanghai', '(GMT+08:00) China Standard Time (Asia/Shanghai)'), ('Asia/Singapore', '(GMT+08:00) Singapore Standard Time (Asia/Singapore)'), ('Asia/Taipei', '(GMT+08:00) Taipei Standard Time (Asia/Taipei)'), ('Australia/Perth', '(GMT+08:00) Australian Western Standard Time (Australia/Perth)'), ('Asia/Bangkok', '(GMT+07:00) Indochina Time (Asia/Bangkok)'), ('Asia/Ho_Chi_Minh', '(GMT+07:00) Indochina Time (Asia/Ho_Chi_Minh)'), ('Asia/Jakarta', '(GMT+07:00) Western Indonesia Time (Asia/Jakarta)'), ('Asia/Rangoon', '(GMT+06:30) Myanmar Time (Asia/Rangoon)'), ('Asia/Dhaka', '(GMT+06:00) Bangladesh Standard Time (Asia/Dhaka)'), ('Asia/Kathmandu', '(GMT+05:45) Nepal Time (Asia/Kathmandu)'), ('Asia/Colombo', '(GMT+05:30) India Standard Time (Asia/Colombo)'), ('Asia/Kolkata', '(GMT+05:30) India Standard Time (Asia/Kolkata)'), ('Asia/Karachi', '(GMT+05:00) Pakistan Standard Time (Asia/Karachi)'), ('Asia/Tashkent', '(GMT+05:00) Uzbekistan Standard Time (Asia/Tashkent)'), ('Asia/Yekaterinburg', '(GMT+05:00) Yekaterinburg Standard Time (Asia/Yekaterinburg)'), ('Asia/Kabul', '(GMT+04:30) Afghanistan Time (Asia/Kabul)'), ('Asia/Tehran', '(GMT+04:30) Iran Daylight Time (Asia/Tehran)'), ('Asia/Baku', '(GMT+04:00) Azerbaijan Standard Time (Asia/Baku)'), ('Asia/Dubai', '(GMT+04:00) Gulf Standard Time (Asia/Dubai)'), ('Asia/Tbilisi', '(GMT+04:00) Georgia Standard Time (Asia/Tbilisi)'), ('Asia/Yerevan', '(GMT+04:00) Armenia Standard Time (Asia/Yerevan)'), ('Africa/Nairobi', '(GMT+03:00) East Africa Time (Africa/Nairobi)'), ('Asia/Baghdad', '(GMT+03:00) Arabian Standard Time (Asia/Baghdad)'), ('Asia/Kuwait', '(GMT+03:00) Arabian Standard Time (Asia/Kuwait)'), ('Asia/Riyadh', '(GMT+03:00) Arabian Standard Time (Asia/Riyadh)'), ('Europe/Istanbul', '(GMT+03:00) Europe/Istanbul'), ('Europe/Minsk', '(GMT+03:00) Moscow Standard Time (Europe/Minsk)'), ('Europe/Moscow', '(GMT+03:00) Moscow Standard Time (Europe/Moscow)'), ('Africa/Cairo', '(GMT+02:00) Eastern European Standard Time (Africa/Cairo)'), ('Africa/Johannesburg', '(GMT+02:00) South Africa Standard Time (Africa/Johannesburg)'), ('Asia/Beirut', '(GMT+02:00) Eastern European Standard Time (Asia/Beirut)'), ('Asia/Jerusalem', '(GMT+02:00) Israel Standard Time (Asia/Jerusalem)'), ('Europe/Athens', '(GMT+02:00) Eastern European Standard Time (Europe/Athens)'), ('Europe/Bucharest', '(GMT+02:00) Eastern European Standard Time (Europe/Bucharest)'), ('Europe/Helsinki', '(GMT+02:00) Eastern European Standard Time (Europe/Helsinki)'), ('Africa/Algiers', '(GMT+01:00) Central European Standard Time (Africa/Algiers)'), ('Africa/Casablanca', '(GMT+01:00) Africa/Casablanca'), ('Europe/Amsterdam', '(GMT+01:00) Central European Standard Time (Europe/Amsterdam)'), ('Europe/Berlin', '(GMT+01:00) Central European Standard Time (Europe/Berlin)'), ('Europe/Brussels', '(GMT+01:00) Central European Standard Time (Europe/Brussels)'), ('Europe/Paris', '(GMT+01:00) Central European Standard Time (Europe/Paris)'), ('Europe/Prague', '(GMT+01:00) Central European Standard Time (Europe/Prague)'), ('Europe/Rome', '(GMT+01:00) Central European Standard Time (Europe/Rome)'), ('Europe/Dublin', '(GMT+00:00) Greenwich Mean Time (Europe/Dublin)'), ('Europe/Lisbon', '(GMT+00:00) Western European Standard Time (Europe/Lisbon)'), ('Europe/London', '(GMT+00:00) Greenwich Mean Time (Europe/London)'), ('GMT', '(GMT+00:00) Greenwich Mean Time (GMT)'), ('America/Scoresbysund', '(GMT-01:00) East Greenland Standard Time (America/Scoresbysund)'), ('Atlantic/Azores', '(GMT-01:00) Azores Standard Time (Atlantic/Azores)'), ('Atlantic/Cape_Verde', '(GMT-01:00) Cape Verde Standard Time (Atlantic/Cape_Verde)'), ('Atlantic/South_Georgia', '(GMT-02:00) South Georgia Time (Atlantic/South_Georgia)'), ('America/St_Johns', '(GMT-02:30) Newfoundland Daylight Time (America/St_Johns)'), ('America/Argentina/Buenos_Aires', '(GMT-03:00) Argentina Standard Time (America/Argentina/Buenos_Aires)'), ('America/Halifax', '(GMT-03:00) Atlantic Daylight Time (America/Halifax)'), ('America/Santiago', '(GMT-03:00) Chile Summer Time (America/Santiago)'), ('America/Sao_Paulo', '(GMT-03:00) Brasilia Standard Time (America/Sao_Paulo)'), ('Atlantic/Bermuda', '(GMT-03:00) Atlantic Daylight Time (Atlantic/Bermuda)'), ('America/Caracas', '(GMT-04:00) Venezuela Time (America/Caracas)'), ('America/Indiana/Indianapolis', '(GMT-04:00) Eastern Daylight Time (America/Indiana/Indianapolis)'), ('America/New_York', '(GMT-04:00) Eastern Daylight Time (America/New_York)'), ('America/Puerto_Rico', '(GMT-04:00) Atlantic Standard Time (America/Puerto_Rico)'), ('America/Bogota', '(GMT-05:00) Colombia Standard Time (America/Bogota)'), ('America/Chicago', '(GMT-05:00) Central Daylight Time (America/Chicago)'), ('America/Lima', '(GMT-05:00) Peru Standard Time (America/Lima)'), ('America/Panama', '(GMT-05:00) Eastern Standard Time (America/Panama)'), ('America/Denver', '(GMT-06:00) Mountain Daylight Time (America/Denver)'), ('America/El_Salvador', '(GMT-06:00) Central Standard Time (America/El_Salvador)'), ('America/Mexico_City', '(GMT-06:00) Central Standard Time (America/Mexico_City)'), ('America/Los_Angeles', '(GMT-07:00) Pacific Daylight Time (America/Los_Angeles)'), ('America/Mazatlan', '(GMT-07:00) Mexican Pacific Standard Time (America/Mazatlan)'), ('America/Phoenix', '(GMT-07:00) Mountain Standard Time (America/Phoenix)'), ('America/Tijuana', '(GMT-07:00) Pacific Daylight Time (America/Tijuana)'), ('America/Anchorage', '(GMT-08:00) Alaska Daylight Time (America/Anchorage)'), ('Pacific/Pitcairn', '(GMT-08:00) Pitcairn Time (Pacific/Pitcairn)'), ('America/Adak', '(GMT-09:00) Hawaii-Aleutian Daylight Time (America/Adak)'), ('Pacific/Gambier', '(GMT-09:00) Gambier Time (Pacific/Gambier)'), ('Pacific/Marquesas', '(GMT-09:30) Marquesas Time (Pacific/Marquesas)'), ('Pacific/Honolulu', '(GMT-10:00) Hawaii-Aleutian Standard Time (Pacific/Honolulu)'), ('Pacific/Niue', '(GMT-11:00) Niue Time (Pacific/Niue)'), ('Pacific/Pago_Pago', '(GMT-11:00) Samoa Standard Time (Pacific/Pago_Pago)')], blank=True, null=True)
+#     recurrence_type = models.CharField(max_length=40, choices=[('RecursDaily', 'Recurs Daily'), ('RecursEveryWeekday', 'Recurs Every Weekday'), ('RecursMonthly', 'Recurs Monthly'), ('RecursMonthlyNth', 'Recurs Monthy Nth'), ('RecursWeekly', 'Recurs Weekly'), ('RecursYearly', 'Recurs Yearly'), ('RecursYearlyNth', 'Recurs Yearly Nth')], blank=True, null=True)
+#     recurrence_interval = models.IntegerField(blank=True, null=True)
+#     recurrence_day_of_week_mask = models.IntegerField(verbose_name='Recurrence Day of Week Mask', blank=True, null=True)
+#     recurrence_day_of_month = models.IntegerField(verbose_name='Recurrence Day of Month', blank=True, null=True)
+#     recurrence_instance = models.CharField(max_length=40, choices=[('First', '1st'), ('Second', '2nd'), ('Third', '3rd'), ('Fourth', '4th'), ('Last', 'last')], blank=True, null=True)
+#     recurrence_month_of_year = models.CharField(max_length=40, verbose_name='Recurrence Month of Year', choices=[('January', 'January'), ('February', 'February'), ('March', 'March'), ('April', 'April'), ('May', 'May'), ('June', 'June'), ('July', 'July'), ('August', 'August'), ('September', 'September'), ('October', 'October'), ('November', 'November'), ('December', 'December')], blank=True, null=True)
+#     original_instance_date_time = models.DateTimeField(verbose_name='Original Instance DateTime', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     is_exception = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     is_client_managed = models.BooleanField(default=models.DefaultedOnCreate(False))
+#     client_guid = models.CharField(max_length=255, verbose_name='Client GUID', blank=True, null=True)
+#     reminder_date_time = models.DateTimeField(verbose_name='Reminder Date/Time', blank=True, null=True)
+#     is_reminder_set = models.BooleanField(verbose_name='Reminder Set', default=models.DefaultedOnCreate(False))
+#     event_subtype = models.CharField(max_length=40, sf_read_only=models.NOT_UPDATEABLE, choices=[('Event', 'Event')], blank=True, null=True)
+#     is_recurrence2_exclusion = models.BooleanField(verbose_name='Historical Event, Not Following Recurrence', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     recurrence2_pattern_text = models.TextField(verbose_name='Recurrence Pattern', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     recurrence2_pattern_version = models.CharField(max_length=40, verbose_name='Pattern Version', sf_read_only=models.READ_ONLY, choices=[('1', 'RFC 5545 v4 RRULE')], blank=True, null=True)
+#     is_recurrence2 = models.BooleanField(verbose_name='Repeat', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     is_recurrence2_exception = models.BooleanField(verbose_name='Is Exception', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     recurrence2_pattern_start_date = models.DateTimeField(verbose_name='Recurrence Pattern Start Date', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     recurrence2_pattern_time_zone = models.CharField(max_length=255, verbose_name='Recurrence Pattern Time Zone Reference', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     event_outcome = models.CharField(custom=True, db_column='Event_Outcome__c', max_length=255, verbose_name='Event Outcome', sf_read_only=models.READ_ONLY, help_text='Select the value that best describes the outcome of the event.', choices=[('Meeting Completed', 'Meeting Completed'), ('DM No Show', 'DM No Show'), ('Customer Canceled', 'Customer Canceled'), ('Unable to Contact Customer', 'Unable to Contact Customer')], blank=True, null=True)
+#     activity_type = models.CharField(custom=True, db_column='Activity_Type__c', max_length=255, verbose_name='Activity Type', blank=True, null=True)
+#     qbdialer_call_recording_url = models.URLField(db_column='qbdialer__CallRecordingURL__c', custom=True, verbose_name='Call Recording', blank=True, null=True)
+#     qbdialer_call_date_time = models.DateTimeField(db_column='qbdialer__Call_Date_Time__c', custom=True, verbose_name='Call Date/Time', blank=True, null=True)
+#     qbdialer_call_dial_number = models.DecimalField(db_column='qbdialer__Call_Dial_Number__c', custom=True, max_digits=18, decimal_places=0, verbose_name='Call Dial Number', blank=True, null=True)
+#     qbdialer_call_hour = models.CharField(db_column='qbdialer__Call_Hour__c', custom=True, max_length=8, verbose_name='Call Hour', blank=True, null=True)
+#     qbdialer_call_lead_status = models.CharField(db_column='qbdialer__Call_Lead_Status__c', custom=True, max_length=40, verbose_name='Call Lead Status', blank=True, null=True)
+#     qbdialer_call_ring_time = models.DecimalField(db_column='qbdialer__Call_Ring_Time__c', custom=True, max_digits=18, decimal_places=0, verbose_name='Call Ring Time', blank=True, null=True)
+#     qbdialer_call_time_zone = models.CharField(db_column='qbdialer__Call_Time_Zone__c', custom=True, max_length=20, verbose_name='Call Time Zone', blank=True, null=True)
+#     isdc_dialed_phone_number = models.CharField(custom=True, db_column='isdc_dialed_phone_number__c', max_length=40, verbose_name='Phone Dialed', blank=True, null=True)
+#     isdc_dialer_call_type = models.CharField(custom=True, db_column='isdc_dialer_call_type__c', max_length=255, verbose_name='Dialer Type', choices=[('Click-to-Call', 'Click-to-Call'), ('Seek', 'Seek'), ('Domino', 'Domino')], blank=True, null=True)
+#     isdc_dialer_list_name = models.CharField(custom=True, db_column='isdc_dialer_list_name__c', max_length=80, verbose_name='List Name', blank=True, null=True)
+#     isdc_dialer_query_name = models.CharField(custom=True, db_column='isdc_dialer_query_name__c', max_length=80, verbose_name='Query Name', blank=True, null=True)
+#     task_external_id = models.CharField(custom=True, db_column='Task_External_Id__c', max_length=255, verbose_name='Task External Id', blank=True, null=True)
+#     event_external_id = models.CharField(custom=True, db_column='Event_External_Id__c', max_length=255, verbose_name='Event External Id', blank=True, null=True)
+#     telemarketing_call_type = models.CharField(custom=True, db_column='Telemarketing_Call_Type__c', max_length=255, verbose_name='Telemarketing Call Type', choices=[('Contact', 'Contact'), ('Decision Maker', 'Decision Maker'), ('Disconnected Number', 'Disconnected Number'), ('No Answer', 'No Answer'), ('Set Call Back', 'Set Call Back'), ('Set Event', 'Set Event'), ('Voicemail No Message', 'Voicemail No Message'), ('Wrong Number', 'Wrong Number')], blank=True, null=True)
+#     audit_error_reason = models.CharField(custom=True, db_column='Audit_Error_Reason__c', max_length=255, verbose_name='Audit Error Reason', choices=[('Address Truncated in IBAS', 'Address Truncated in IBAS'), ('Age Change Basis Incorrect', 'Age Change Basis Incorrect'), ('Ancillary', 'Ancillary'), ('App Not Signed', 'App Not Signed'), ('Benefit Amounts - Not added or Incorrect', 'Benefit Amounts - Not added or Incorrect'), ('Benefit Error', 'Benefit Error'), ('BMLL Box Not Checked', 'BMLL Box Not Checked'), ('Carrier Group Number Incorrect', 'Carrier Group Number Incorrect'), ('Carrier Incorrect Case Setup', 'Carrier Incorrect Case Setup'), ('City Incorrect', 'City Incorrect'), ('COB Not Updated', 'COB Not Updated'), ('Cobra Error', 'Cobra Error'), ('Cobra Med Codes', 'Cobra Med Codes'), ('Contact Phone Number Incorrect', 'Contact Phone Number Incorrect'), ('Contract Date/Period Incorrect or Not Updated', 'Contract Date/Period Incorrect or Not Updated'), ('Coverage Code Incorrect', 'Coverage Code Incorrect'), ('Coverage Code Missing', 'Coverage Code Missing'), ('Coverage Codes Not Termed', 'Coverage Codes Not Termed'), ('Coverage Level Incorrect', 'Coverage Level Incorrect'), ('CT # of Apps Field Not Updated or Incorrect', 'CT # of Apps Field Not Updated or Incorrect'), ('CT Date Sent to Audit Field Not Updated', 'CT Date Sent to Audit Field Not Updated'), ('CT Record Not Updated', 'CT Record Not Updated'), ('Date of Birth Incorrect', 'Date of Birth Incorrect'), ('Date of Hire Incorrect', 'Date of Hire Incorrect'), ('Dependent Date of Birth Incorrect', 'Dependent Date of Birth Incorrect'), ('Dependent Enrolled without Student Cert', 'Dependent Enrolled without Student Cert'), ('Dependent Name Misspelled', 'Dependent Name Misspelled'), ('Dependent Not Enrolled or Not Termed', 'Dependent Not Enrolled or Not Termed'), ('Dependent Not Entered', 'Dependent Not Entered'), ('Dependent SSN Incorrect', 'Dependent SSN Incorrect'), ('Domestic Partner Not Updated', 'Domestic Partner Not Updated'), ('Dual Coverage Not Updated', 'Dual Coverage Not Updated'), ('Effective Date Incorrect', 'Effective Date Incorrect'), ('Eligibility Period Incorrect', 'Eligibility Period Incorrect'), ('Employee Not Enrolled', 'Employee Not Enrolled'), ('ER Contributions', 'ER Contributions'), ('Error Removed', 'Error Removed'), ('Gender Incorrect', 'Gender Incorrect'), ('Group Address Not Updated or Incorrect', 'Group Address Not Updated or Incorrect'), ('Group Contact Incorrect', 'Group Contact Incorrect'), ('Group Size Incorrect', 'Group Size Incorrect'), ('HB1057 Box Not Checked', 'HB1057 Box Not Checked'), ('Home Phone Incorrect', 'Home Phone Incorrect'), ('Incorrect Broker Information', 'Incorrect Broker Information'), ('Incorrect Carrier Code', 'Incorrect Carrier Code'), ('Incorrect Class or Class Missing', 'Incorrect Class or Class Missing'), ('Incorrect HB8', 'Incorrect HB8'), ('Incorrect Or Missing Beneficiary', 'Incorrect Or Missing Beneficiary'), ('Incorrect or Misspelled Group Name', 'Incorrect or Misspelled Group Name'), ('Incorrect PCP Code Used', 'Incorrect PCP Code Used'), ('Incorrect PDF Number', 'Incorrect PDF Number'), ('Incorrect Plan', 'Incorrect Plan'), ('Incorrect Rate', 'Incorrect Rate'), ('Incorrect Tax ID Number', 'Incorrect Tax ID Number'), ('Incorrect Team', 'Incorrect Team'), ('Mapping Not Processed/Incorrect', 'Mapping Not Processed/Incorrect'), ('Member Name Misspelled', 'Member Name Misspelled'), ('Miscellaneous', 'Miscellaneous'), ('Missing Middle Initial', 'Missing Middle Initial'), ('Missing Student Cert Not Requested', 'Missing Student Cert Not Requested'), ('NCA Class Codes Incorrect or Missing', 'NCA Class Codes Incorrect or Missing'), ('Not Verified', 'Not Verified'), ('OFE O/E Not Updated', 'OFE O/E Not Updated'), ('Original Effective Date Not Updated or Incorrect', 'Original Effective Date Not Updated or Incorrect'), ('Overage Dependent Age Incorrect', 'Overage Dependent Age Incorrect'), ('Parallel Non-Parallel Incorrect', 'Parallel Non-Parallel Incorrect'), ('Part Time Eligibility Incorrect or Not Updated', 'Part Time Eligibility Incorrect or Not Updated'), ('PCP Error', 'PCP Error'), ('Plan Not Setup', 'Plan Not Setup'), ('Plan Not Termed', 'Plan Not Termed'), ('Rate(s) Not Termed', 'Rate(s) Not Termed'), ('Rate(s) Termed in Error', 'Rate(s) Termed in Error'), ('Rate Error', 'Rate Error'), ('Request Not Processed', 'Request Not Processed'), ('Retro Date Incorrect', 'Retro Date Incorrect'), ('Salary Incorrect', 'Salary Incorrect'), ('SSN Incorrect', 'SSN Incorrect'), ('State Incorrect', 'State Incorrect'), ('Street Address Incorrect or Misspelled', 'Street Address Incorrect or Misspelled'), ('Student Cert Status Incorrect or Not Updated', 'Student Cert Status Incorrect or Not Updated'), ('Supporting Documentation-Missing Info', 'Supporting Documentation-Missing Info'), ('System Error', 'System Error'), ('Termination Date Incorrect', 'Termination Date Incorrect'), ('Title Missing from Name', 'Title Missing from Name'), ('Transmission/Upload Issue', 'Transmission/Upload Issue'), ('Transmit to Carrier Missed', 'Transmit to Carrier Missed'), ('Wrong CT Record Updated', 'Wrong CT Record Updated'), ('Zip Code Incorrect', 'Zip Code Incorrect')], blank=True, null=True)
+#     audit_type = models.CharField(custom=True, db_column='Audit_Type__c', max_length=255, verbose_name='Audit Type', choices=[('FYI', 'FYI'), ('Error', 'Error'), ('Group level error', 'Group level error'), ('Enrollment error', 'Enrollment error')], blank=True, null=True)
+#     call_back_date = models.DateField(custom=True, db_column='Call_Back_Date__c', verbose_name='Call Back Date', blank=True, null=True)
+#     qbdialer_callback_date_time = models.DateTimeField(db_column='qbdialer__Callback_Date_Time__c', custom=True, verbose_name='Callback Date/Time', blank=True, null=True)
+#     qbdialer_impression_id = models.DecimalField(db_column='qbdialer__ImpressionId__c', custom=True, unique=True, max_digits=18, decimal_places=0, verbose_name='Impression ID', blank=True, null=True)
+#     qbdialer_smsreminder = models.BooleanField(db_column='qbdialer__SMSReminder__c', custom=True, verbose_name='Send text msg reminder to all attendees', default=models.DefaultedOnCreate(False), help_text='Text message reminders will be sent to all attendees at the set reminder time.')
+#     class Meta(models.Model.Meta):
+#         db_table = 'Event'
+#         verbose_name = 'Event'
+#         verbose_name_plural = 'Events'
+#         # keyPrefix = '00U'
+# 
+# 
+# 
+# class EventBusSubscriber(models.Model):
+#     external_id = models.CharField(max_length=255, verbose_name='External ID', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     name = models.CharField(max_length=80, verbose_name='Subscriber Name', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     type = models.CharField(max_length=80, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     topic = models.CharField(max_length=80, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     position = models.IntegerField(sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     tip = models.IntegerField(sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     retries = models.IntegerField(verbose_name='Retry Attempts', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     last_error = models.CharField(max_length=255, verbose_name='Last Error Message', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     status = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, choices=[('Running', 'Running'), ('Suspended', 'Suspended'), ('Expired', 'Expired'), ('Error', 'Error')], blank=True, null=True)
+#     class Meta(models.Model.Meta):
+#         db_table = 'EventBusSubscriber'
+#         verbose_name = 'Platform Event Subscription'
+#         verbose_name_plural = 'Platform Event Subscription'
+#         # keyPrefix = '0Cd'
+# 
+# 
+# 
+# class EventFeed(models.Model):
+#     parent = models.ForeignKey(Event, models.DO_NOTHING, sf_read_only=models.READ_ONLY)  # Master Detail Relationship *
+#     type = models.CharField(max_length=40, verbose_name='Feed Item Type', sf_read_only=models.READ_ONLY, choices=[('TrackedChange', 'Tracked Change'), ('UserStatus', 'User Status'), ('TextPost', 'Text Post'), ('AdvancedTextPost', 'Advanced Text Post'), ('LinkPost', 'Link Post'), ('ContentPost', 'Content Post'), ('PollPost', 'Poll'), ('RypplePost', 'Work.com Thanks'), ('ProfileSkillPost', 'Profile Skill Post'), ('DashboardComponentSnapshot', 'Dashboard Component Snapshot'), ('ApprovalPost', 'Approval Post'), ('CaseCommentPost', 'Case Comment Feed'), ('ReplyPost', 'Reply Post'), ('EmailMessageEvent', 'Email Message Feed'), ('CallLogPost', 'Call Log Feed'), ('ChangeStatusPost', 'Change Status Feed'), ('AttachArticleEvent', 'Attached Article'), ('MilestoneEvent', 'Milestone Event'), ('ActivityEvent', 'Activity Change'), ('ChatTranscriptPost', 'Chat Transcript Post'), ('CollaborationGroupCreated', 'Collaboration Group Created'), ('CollaborationGroupUnarchived', 'Collaboration Group Reactivated'), ('SocialPost', 'Social Post'), ('QuestionPost', 'Question Post'), ('FacebookPost', 'Facebook Post'), ('BasicTemplateFeedItem', 'Basic Template Post'), ('CreateRecordEvent', 'Created Record'), ('CanvasPost', 'Canvas'), ('AnnouncementPost', 'a')], blank=True, null=True)
+#     created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventfeed_createdby_set', sf_read_only=models.READ_ONLY)
+#     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     comment_count = models.IntegerField(sf_read_only=models.READ_ONLY)
+#     like_count = models.IntegerField(sf_read_only=models.READ_ONLY)
+#     title = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     body = models.TextField(sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     link_url = models.URLField(sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     is_rich_text = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     related_record = models.ForeignKey(ContentVersion, models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     inserted_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventfeed_insertedby_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     network_scope = models.CharField(max_length=40, sf_read_only=models.READ_ONLY, choices=[('AllNetworks', 'All Networks')], blank=True, null=True)
+#     visibility = models.CharField(max_length=40, sf_read_only=models.READ_ONLY, choices=[('AllUsers', 'All Users'), ('InternalUsers', 'Internal Users')], blank=True, null=True)
+#     best_comment = models.ForeignKey('FeedComment', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     class Meta(models.Model.Meta):
+#         db_table = 'EventFeed'
+#         verbose_name = 'Event Feed'
+#         verbose_name_plural = 'Event Feed'
+#         # keyPrefix = 'None'
+# 
+# 
+# 
+# class EventRecurrenceException(models.Model):
+#     is_deletion = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     event = models.ForeignKey(Event, models.DO_NOTHING, related_name='eventrecurrenceexception_event_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     activity_date_original = models.DateTimeField(verbose_name='Original Date', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     activity_date_time_original = models.DateTimeField(verbose_name='Original Time', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     is_all_day_event_original = models.BooleanField(verbose_name='Original All-Day Event', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     recurrence_event = models.ForeignKey(Event, models.DO_NOTHING, related_name='eventrecurrenceexception_recurrenceevent_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventrecurrenceexception_createdby_set', sf_read_only=models.READ_ONLY)
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventrecurrenceexception_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+#     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     class Meta(models.Model.Meta):
+#         db_table = 'EventRecurrenceException'
+#         verbose_name = 'Event Recurrence Exception'
+#         verbose_name_plural = 'Event Recurrence Exception'
+#         # keyPrefix = '10z'
+# 
+# 
+# 
+# class EventRelation(models.Model):
+#     relation = models.ForeignKey(Calendar, models.DO_NOTHING, sf_read_only=models.NOT_UPDATEABLE)  # Reference to tables [Calendar, User] Master Detail Relationship *
+#     event = models.ForeignKey(Event, models.DO_NOTHING, sf_read_only=models.NOT_UPDATEABLE)  # Master Detail Relationship *
+#     status = models.CharField(max_length=40, choices=[('New', 'New'), ('Declined', 'Declined'), ('Accepted', 'Accepted'), ('Uninvited', 'Uninvited'), ('Maybe', 'Maybe')], blank=True, null=True)
+#     responded_date = models.DateTimeField(verbose_name='Response Date', blank=True, null=True)
+#     response = models.CharField(max_length=255, blank=True, null=True)
+#     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventrelation_createdby_set', sf_read_only=models.READ_ONLY)
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='eventrelation_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+#     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     class Meta(models.Model.Meta):
+#         db_table = 'EventRelation'
+#         verbose_name = 'Event Relation'
+#         verbose_name_plural = 'Event Relations'
+#         # keyPrefix = '0RE'
+# 
 
 
 class ExternalDataSource(models.Model):
@@ -3285,62 +3285,62 @@ class ExternalDataUserAuth(models.Model):
 
 
 
-class ExternalEvent(models.Model):
-    is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    name = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='externalevent_createdby_set', sf_read_only=models.READ_ONLY)
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='externalevent_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
-    system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    external_id = models.CharField(max_length=255, blank=True, null=True)
-    title = models.CharField(max_length=255, blank=True, null=True)
-    location = models.CharField(max_length=255, blank=True, null=True)
-    notes = models.TextField(blank=True, null=True)
-    time = models.CharField(max_length=255, blank=True, null=True)
-    class Meta(models.Model.Meta):
-        db_table = 'ExternalEvent'
-        verbose_name = 'External Event'
-        verbose_name_plural = 'External Events'
-        # keyPrefix = '0AY'
+# class ExternalEvent(models.Model):
+#     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     name = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='externalevent_createdby_set', sf_read_only=models.READ_ONLY)
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='externalevent_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+#     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     external_id = models.CharField(max_length=255, blank=True, null=True)
+#     title = models.CharField(max_length=255, blank=True, null=True)
+#     location = models.CharField(max_length=255, blank=True, null=True)
+#     notes = models.TextField(blank=True, null=True)
+#     time = models.CharField(max_length=255, blank=True, null=True)
+#     class Meta(models.Model.Meta):
+#         db_table = 'ExternalEvent'
+#         verbose_name = 'External Event'
+#         verbose_name_plural = 'External Events'
+#         # keyPrefix = '0AY'
+
+
+#
+# class ExternalEventMapping(models.Model):
+#     owner = models.ForeignKey('Group', models.DO_NOTHING)  # Reference to tables [Group, User]
+#     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     name = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='externaleventmapping_createdby_set', sf_read_only=models.READ_ONLY)
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='externaleventmapping_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+#     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     external_id = models.CharField(max_length=255, blank=True, null=True)
+#     event = models.ForeignKey(Event, models.DO_NOTHING, blank=True, null=True)  # Master Detail Relationship *
+#     start_date = models.DateField(blank=True, null=True)
+#     end_date = models.DateField(blank=True, null=True)
+#     is_recurring = models.BooleanField(default=models.DefaultedOnCreate(False))
+#     class Meta(models.Model.Meta):
+#         db_table = 'ExternalEventMapping'
+#         verbose_name = 'External Event Mapping'
+#         verbose_name_plural = 'External Event Mappings'
+#         # keyPrefix = '08N'
 
 
 
-class ExternalEventMapping(models.Model):
-    owner = models.ForeignKey('Group', models.DO_NOTHING)  # Reference to tables [Group, User]
-    is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    name = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='externaleventmapping_createdby_set', sf_read_only=models.READ_ONLY)
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='externaleventmapping_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
-    system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    external_id = models.CharField(max_length=255, blank=True, null=True)
-    event = models.ForeignKey(Event, models.DO_NOTHING, blank=True, null=True)  # Master Detail Relationship *
-    start_date = models.DateField(blank=True, null=True)
-    end_date = models.DateField(blank=True, null=True)
-    is_recurring = models.BooleanField(default=models.DefaultedOnCreate(False))
-    class Meta(models.Model.Meta):
-        db_table = 'ExternalEventMapping'
-        verbose_name = 'External Event Mapping'
-        verbose_name_plural = 'External Event Mappings'
-        # keyPrefix = '08N'
-
-
-
-class ExternalEventMappingShare(models.Model):
-    parent = models.ForeignKey(ExternalEventMapping, models.DO_NOTHING, sf_read_only=models.NOT_UPDATEABLE)
-    user_or_group = models.ForeignKey('Group', models.DO_NOTHING, sf_read_only=models.NOT_UPDATEABLE)  # Reference to tables [Group, User] Master Detail Relationship *
-    access_level = models.CharField(max_length=40, verbose_name='Custom Object Access', choices=[('Read', 'Read Only'), ('Edit', 'Read/Write'), ('All', 'Owner')])
-    row_cause = models.CharField(max_length=40, sf_read_only=models.NOT_UPDATEABLE, choices=[('Owner', 'Owner'), ('Manual', 'Manual Sharing'), ('Rule', 'Sharing Rule'), ('ImplicitChild', 'Account Sharing'), ('ImplicitParent', 'Associated record owner or sharing'), ('ImplicitPerson', 'Person Contact'), ('Team', 'Sales Team'), ('Territory', 'Territory Assignment Rule'), ('TerritoryManual', 'Territory Manual'), ('Territory2AssociationManual', 'Territory Manual'), ('TerritoryRule', 'Territory Sharing Rule'), ('Territory2Forecast', 'Territory assignment for forecasting and reporting'), ('GuestRule', 'Guest User Sharing Rule'), ('GuestParentImplicit', 'Associated guest user sharing'), ('GuestPersonImplicit', 'Associated Guest User Sharing'), ('SurveyShare', 'Survey Sharing Rule')], blank=True, null=True)
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, sf_read_only=models.READ_ONLY)
-    is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    class Meta(models.Model.Meta):
-        db_table = 'ExternalEventMappingShare'
-        verbose_name = 'External Event Mapping Share'
-        verbose_name_plural = 'External Event Mapping Share'
-        # keyPrefix = 'None'
+# class ExternalEventMappingShare(models.Model):
+#     parent = models.ForeignKey(ExternalEventMapping, models.DO_NOTHING, sf_read_only=models.NOT_UPDATEABLE)
+#     user_or_group = models.ForeignKey('Group', models.DO_NOTHING, sf_read_only=models.NOT_UPDATEABLE)  # Reference to tables [Group, User] Master Detail Relationship *
+#     access_level = models.CharField(max_length=40, verbose_name='Custom Object Access', choices=[('Read', 'Read Only'), ('Edit', 'Read/Write'), ('All', 'Owner')])
+#     row_cause = models.CharField(max_length=40, sf_read_only=models.NOT_UPDATEABLE, choices=[('Owner', 'Owner'), ('Manual', 'Manual Sharing'), ('Rule', 'Sharing Rule'), ('ImplicitChild', 'Account Sharing'), ('ImplicitParent', 'Associated record owner or sharing'), ('ImplicitPerson', 'Person Contact'), ('Team', 'Sales Team'), ('Territory', 'Territory Assignment Rule'), ('TerritoryManual', 'Territory Manual'), ('Territory2AssociationManual', 'Territory Manual'), ('TerritoryRule', 'Territory Sharing Rule'), ('Territory2Forecast', 'Territory assignment for forecasting and reporting'), ('GuestRule', 'Guest User Sharing Rule'), ('GuestParentImplicit', 'Associated guest user sharing'), ('GuestPersonImplicit', 'Associated Guest User Sharing'), ('SurveyShare', 'Survey Sharing Rule')], blank=True, null=True)
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     last_modified_by = models.ForeignKey('User', models.DO_NOTHING, sf_read_only=models.READ_ONLY)
+#     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     class Meta(models.Model.Meta):
+#         db_table = 'ExternalEventMappingShare'
+#         verbose_name = 'External Event Mapping Share'
+#         verbose_name_plural = 'External Event Mapping Share'
+#         # keyPrefix = 'None'
 
 
 
@@ -8573,23 +8573,23 @@ class TopicFeed(models.Model):
 
 
 
-class UndecidedEventRelation(models.Model):
-    relation = models.ForeignKey(Calendar, models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)  # Reference to tables [Calendar, User]
-    event = models.ForeignKey(Event, models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    responded_date = models.DateTimeField(verbose_name='Response Date', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    response = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='undecidedeventrelation_createdby_set', sf_read_only=models.READ_ONLY)
-    last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='undecidedeventrelation_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
-    system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    type = models.CharField(max_length=50, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    class Meta(models.Model.Meta):
-        db_table = 'UndecidedEventRelation'
-        verbose_name = 'Undecided Event Relation'
-        verbose_name_plural = 'Undecided Event Relations'
-        # keyPrefix = 'None'
+# class UndecidedEventRelation(models.Model):
+#     relation = models.ForeignKey(Calendar, models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)  # Reference to tables [Calendar, User]
+#     event = models.ForeignKey(Event, models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     responded_date = models.DateTimeField(verbose_name='Response Date', sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     response = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='undecidedeventrelation_createdby_set', sf_read_only=models.READ_ONLY)
+#     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='undecidedeventrelation_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+#     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
+#     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
+#     type = models.CharField(max_length=50, sf_read_only=models.READ_ONLY, blank=True, null=True)
+#     class Meta(models.Model.Meta):
+#         db_table = 'UndecidedEventRelation'
+#         verbose_name = 'Undecided Event Relation'
+#         verbose_name_plural = 'Undecided Event Relations'
+#         # keyPrefix = 'None'
 
 
 
