@@ -9413,4 +9413,7 @@ footer.footer-7 {
     margin-right: auto;
   }
 }
+.rich-text li {
+  list-style: disc;
+}
 /*# sourceMappingURL=theme.css.map */
