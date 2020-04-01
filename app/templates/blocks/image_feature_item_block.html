@@ -2,7 +2,7 @@
 {% load wagtailimages_tags %}
 {% image self.image original as image %}
 
-{% if layout == 'border' %}
+{% if layout == 'bordered' %}
     <div class="{{ cols }}">
         <div class="feature feature-1">
             <img src="{{ image.url }}" alt="{{ image.alt }}">
