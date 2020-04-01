@@ -8,7 +8,7 @@
             <img src="{{ image.url }}" alt="{{ image.alt }}">
             <div class="feature__body boxed boxed--border">
                 <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
-                <p class="{{ body_size }}"> {{ self.text }} </p>
+                {% if self.text %}<p class="{{ body_size }}"> {{ self.text }} </p>{% endif %}
                 {% include_block self.link %}
             </div>
         </div>
@@ -39,7 +39,7 @@
         <div class="feature">
             <img src="{{ image.url }}" alt="{{ image.alt }}">
             <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
-            <p class="{{ body_size }}">{{ self.text }}</p>
+            {% if self.text %}<p class="{{ body_size }}">{{ self.text }}</p>{% endif %}
             {% include_block self.link %}
         </div>
     </div>

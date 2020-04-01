@@ -6,7 +6,7 @@ from .link_block import LinkBlock
 
 class ImageFeatureItemBlock(StructBlock):
     header = CharBlock()
-    text = TextBlock()
+    text = TextBlock(required=False)
     image = ImageChooserBlock()
     link = LinkBlock()
 
