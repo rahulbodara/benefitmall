@@ -117,7 +117,7 @@ OUTLINE_CHOICES = (
 IMAGE_FEATURE_CHOICES = (
     ('none', 'None'),
     ('border', 'Bordered'),
-    ('overlay','Text Overlay'),
+    ('overlay', 'Text Overlay'),
 )
 
 BIO_LAYOUT_CHOICES = (
@@ -126,7 +126,7 @@ BIO_LAYOUT_CHOICES = (
 )
 
 ICON_FEATURE_CHOICES = (
-    ('large-two','Large Two Column'),
+    ('large-two', 'Large Two Column'),
     ('small-four', 'Small Four Column'),
 )
 
@@ -194,7 +194,7 @@ IMAGE_SLIDER_CHOICES = (
     ('logo', 'Logo'),
 )
 PROCESS_BLOCK_LAYOUT_CHOICES = (
-    ('horizontal','Horizontal'),
+    ('horizontal', 'Horizontal'),
     ('vertical', 'Vertical'),
     ('media', 'Media Beside'),
     ('boxes', 'Boxes'),
@@ -218,4 +218,26 @@ COLUMNS_BREAKPOINT_CHOICES = (
     ('col-md-6 col-sm-12', '2'),
     ('col-md-4 col-sm-12', '3'),
     ('col-md-3 col-sm-6 col-xs-12', '4'),
+)
+
+IMAGE_SLIDER_ARROW_CHOICES = (
+    ('false', 'icon-fa-times'),
+    ('true', 'icon-fa-check'),
+)
+IMAGE_SLIDER_PAGING_CHOICES = (
+    ('false', 'icon-fa-times'),
+    ('true', 'icon-fa-check'),
+)
+IMAGE_SLIDER_SPEED_CHOICES = (
+    ('false', 'Off'),
+    ('1000', '1'),
+    ('2000', '2'),
+    ('3000', '3'),
+    ('4000', '4'),
+    ('5000', '5'),
+    ('6000', '6'),
+    ('7000', '7'),
+    ('8000', '8'),
+    ('9000', '9'),
+    ('10000', '10'),
 )
