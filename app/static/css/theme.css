@@ -7166,6 +7166,7 @@ a[data-lightbox]:hover {
     right: -0.92857143em;
   }
   .process-1 .process__item:nth-child(even) {
+    text-align: left;
     margin-left: 50%;
     padding-left: 3.71428571em;
   }
