@@ -6,24 +6,23 @@
         {% include_block block %}
     {% endfor %}
 
-    {% if latest_news %}
-        <section class=" space--sm space--sm switchable switchable--switch">
+    {% if featured_news %}
+        <section class="space--sm switchable switchable--switch">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="height-50  border--round space--sm {% if bg_img %}imagebg image--light{% endif %}" data-overlay="6">
-                            {% comment %} TODO: Define bg_img {% endcomment %}
-                            {% if bg_img %}
-                                {% image bg_img original as image %}
+                            {% if featured_news_bg %}
+                                {% image featured_news_bg original as image %}
                                 <div class="background-image-holder" style="background: url(&quot;{{ image.url }}&quot;); opacity: 1;">
                                     <img src="{{ image.url }}" alt="{{ image.alt }} (background)">
                                 </div>
                             {% endif %}
                             <div class="pos-vertical-center col-md-12 boxed boxed--lg bg--none">
-                                <h2>{{ latest_news.title }}</h2>
-                                <h5>{{ latest_news.news_datetime|date:'N j, Y' }}</h5>
-                                <p>{{ latest_news.body|striptags|truncatechars:300 }}</p>
-                                <a href="{{ latest_news.get_url }}" class="btn btn--primary">
+                                <h2>{{ featured_news.title }}</h2>
+                                <h5>{{ featured_news.news_datetime|date:'N j, Y' }}</h5>
+                                <p>{{ featured_news.body|striptags|truncatechars:300 }}</p>
+                                <a href="{{ featured_news.get_url }}" class="btn btn--primary">
                                     <span class="btn__text">View More</span>
                                 </a>
                             </div>
@@ -35,7 +34,7 @@
     {% endif %}
 
     {% if news %}
-        <section class=" space--xxs">
+        <section class="space--xxs">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 col-lg-12">

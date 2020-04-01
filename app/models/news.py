@@ -1,4 +1,5 @@
 from django.db import models
+from django.apps import apps
 from django.forms import ModelForm
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
@@ -38,25 +39,28 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 		if day:
 			all_news = all_news.filter(news_datetime__day=day)
 
-		latest_news = None
-		other_news = None
+		featured_news = None
+		news = None
 		if all_news.count() > 0:
-			latest_news = all_news[0]
-			other_news = all_news[1:]
+			featured_news = all_news[0]
+			news = all_news[1:]
 
-		paginator = Paginator(other_news, 10)
+			paginator = Paginator(news, 10)
 
-		try:
-			# Return linked page
-			news = paginator.page(request.GET.get('page'))
-		except PageNotAnInteger:
-			# Return first page
-			news = paginator.page(1)
-		except EmptyPage:
-			# Return last page
-			news = paginator.page(paginator.num_pages)
+			try:
+				# Return linked page
+				news = paginator.page(request.GET.get('page'))
+			except PageNotAnInteger:
+				# Return first page
+				news = paginator.page(1)
+			except EmptyPage:
+				# Return last page
+				news = paginator.page(paginator.num_pages)
 
-		context['latest_news'] = latest_news
+		HeaderFooter = apps.get_model(app_label='app', model_name='HeaderFooter')
+		header_footer = HeaderFooter.for_site(site=request.site)
+		context['featured_news_bg'] = header_footer.featured_news_bg
+		context['featured_news'] = featured_news
 		context['news'] = news
 		return TemplateResponse(request, self.get_template(request), context)
 
