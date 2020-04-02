@@ -6736,7 +6736,10 @@ a.block:hover > .feature {
   -webkit-transition: 0.3s ease;
   -moz-transition: 0.3s ease;
 }
-.cta-2 h2 {
+.cta-2 h2,
+.cta-2 h3,
+.cta-2 h4,
+.cta-2 h5 {
   margin: 1.57575758em 0;
 }
 .cta-2.bg--primary:hover {
