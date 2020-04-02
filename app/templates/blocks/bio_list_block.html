@@ -4,7 +4,7 @@
     <div class="container {{ self.background.size_mode }}">
         <div class="row">
             {% for block in self.bios %}
-                {% include_block block with layout=self.layout %}
+                {% include_block block with layout=self.layout title_size=self.title_size %}
             {% endfor %}
         </div>
     </div>
