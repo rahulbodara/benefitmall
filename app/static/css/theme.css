@@ -9417,6 +9417,10 @@ footer.footer-7 {
     margin-right: auto;
   }
 }
+.rich-text ul {
+  margin-inline-start: 1em;
+  margin-inline-end: 1em;
+}
 .rich-text li {
   list-style: disc;
 }
