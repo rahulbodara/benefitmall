@@ -34,6 +34,19 @@ class LinkBlockStructValue(StructValue):
             prefix = 'mailto:'
         return prefix
 
+    def title_attribute(self):
+        """
+        Return extra values to the template context.
+        """
+        # TODO - Add additional attributes here for other link types.
+
+        link_type = self.get('link_type')
+        title = ''
+        if link_type == 'document':
+            doc = self.get('document')
+            title = doc.title
+        return title
+
 
 class LinkBlock(StructBlock):
     link_type = CustomChoiceBlock(label='Type', choices=LINK_TYPE_CHOICES, default=LINK_TYPE_CHOICES[0][0], required=False, widget=CustomRadioSelect)
