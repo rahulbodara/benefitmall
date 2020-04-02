@@ -64,14 +64,3 @@ def get_recent_posts(current_page):
     """
     return BlogPage.objects.live().exclude(id=current_page.id).order_by('-date')[:3]
 
-
-@register.inclusion_tag('templatetags/featured_event.html', takes_context=True)
-def featured_event(context):
-    """
-    Return closest event to now, excluding current page.
-    """
-    header_footer = HeaderFooter.for_site(site=get_current_site(context))
-    return {
-        'event': EventPage.objects.live().order_by('-start_datetime').first(),
-        'bg_img': header_footer.featured_event_bg,
-        }
