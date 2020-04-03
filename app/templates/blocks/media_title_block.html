@@ -1,8 +1,10 @@
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
 {% image self.media.image original as image %}
-{% if self.width == 'fixed' %}
-    <section class="{{ self.text.alignment }} {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+{% image self.small_image original as small_image %}
+
+{% if self.layout == 'fixed' %}
+    <section class="{{ self.text.alignment }} {{ self.switchable }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
         {% include_block self.background %}
         <div class="container {{ self.background.size_mode }}">
             <div class="row justify-content-around {{ self.vertical_alignment }}">
@@ -12,15 +14,15 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-12">
-                    {% include_block self.media with width=self.width %}
+                    {% include_block self.media with width=self.layout %}
                 </div>
             </div>
         </div>
     </section>
-{% elif self.width == 'full' %}
-    <section class="imageblock {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+{% elif self.layout == 'full' %}
+    <section class="imageblock {{ self.switchable }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
         <div class="imageblock__content col-lg-6 col-md-4 pos-right" style="z-index:3;">
-            {% include_block self.media with width=self.width %}
+            {% include_block self.media with width=self.layout %}
         </div>
         {% include_block self.background %}
         <div class="container {{ self.background.size_mode }}" style="z-index:2;">
@@ -31,4 +33,25 @@
             </div>
         </div>
     </section>
+{% elif self.layout == 'three_column'%}
+     <section class="feature-large feature-large-2 {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+        {% include_block self.background %}
+        <div class="container">
+            <div class="row justify-content-between {{ self.vertical_alignment }}">
+                <div class="col-md-5 imageblock__content" style="min-height: 289px">
+                    {% include_block self.media with width=self.layout %}
+                </div>
+{#                <div class="col-md-1"></div>#}
+                <div class="col-md-4 three-column-copy">
+                    {% include_block self.text %}
+                </div>
+{#                <div class="col-md-1"></div>#}
+                <div class="col-md-2 three-column-image">
+                    <img alt="Image" src="{{ small_image.url }}" style="max-width: 158px">
+                </div>
+            </div>
+        </div>
+    </section>
 {% endif %}
+
+

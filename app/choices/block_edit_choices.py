@@ -241,3 +241,8 @@ IMAGE_SLIDER_SPEED_CHOICES = (
     ('9000', '9'),
     ('10000', '10'),
 )
+MEDIA_TITLE_LAYOUT_CHOICES = (
+    ('fixed', 'Fixed'),
+    ('full', 'Full'),
+    ('three_column', 'Three Column'),
+)
