@@ -8339,6 +8339,14 @@ input[type="image"] {
 iframe[src*='google.com/maps'] {
   border: none;
 }
+.under-map {
+  margin-bottom: 2em;
+}
+.under-map p {
+  margin-bottom: 0;
+  font-family: Arial;
+  line-height: normal;
+}
 .map-container {
   min-height: 400px;
 }
