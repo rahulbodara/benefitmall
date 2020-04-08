@@ -6,7 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from salesforce import models
-
+from app.models import salesforce
 
 class Account(models.Model):
     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
