@@ -5,9 +5,11 @@ from site_settings.wagtail_hooks import SiteSettings
 from wagtail.core.models import Site
 from wagtail.core.models import Page
 from app.models.notifications import Notification
+from django.utils.html import escape
+from wagtail.core.models import Page
+from django.utils.safestring import mark_safe
 from datetime import datetime
 register = template.Library()
-
 
 @register.simple_tag(takes_context=True)
 def get_site_root(context):
@@ -16,6 +18,10 @@ def get_site_root(context):
 
 def has_menu_children(page):
     return page.get_children().live().in_menu().exists()
+
+
+def has_children(page):
+    return page.get_children().live().exists()
 
 
 def is_active(page, current_page):
@@ -30,6 +36,39 @@ def get_current_site(self, context=None):
     return site
 
 
+@register.simple_tag(takes_context=True)
+def get_site_map(context):
+    ret = mark_safe(get_page_items(get_site_root(context), context))
+    return ret
+
+
+def get_page_items(parent, context):
+    ret = '<ul>'
+    children = Page.objects.child_of(parent).live().specific()
+    for page in children:
+        ret += '<li><a href="{1}">{0}</a>'.format(
+            escape(page.title),
+            get_path(page, context)
+        )
+        if len(page.get_children()) > 0:
+            ret += get_page_items(page, context)
+        ret += '</li>'
+    ret += '</ul>'
+    return ret
+
+
+def get_path(page, context):
+    try:
+        root_slug = context['request'].site.root_page.slug
+        full_path = page.url_path
+        rel_path = full_path[len(root_slug)+1:]
+    except Exception as ex:
+        tmp = ex
+        rel_path = ''
+
+    return rel_path
+
+
 def get_links_recursive(context, parent, calling_page):
     menuitems = parent.get_children().live().in_menu().specific()
     for menuitem in menuitems:
@@ -41,6 +80,7 @@ def get_links_recursive(context, parent, calling_page):
         if menuitem.show_dropdown:
             menuitem.children = get_links_recursive(context, menuitem, calling_page)
     return menuitems
+
 
 def get_header_links(context, calling_page):
     site_root = get_current_site(context).root_page
