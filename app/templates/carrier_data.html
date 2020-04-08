@@ -2,15 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    {% for carrier in carriers %}
-        <strong> {{ carrier.fields.name }}</strong> <br>
-        {% for field, value in carrier.fields.items %}
-            {{ field }}: {{ value }} <br>
-        {% endfor %}
-    {% endfor %}
+    <title>Carrier Data</title>
 </head>
 <body>
-
+    <h1>Carrier Data</h1>
+    <ul>
+    {% for carrier in carriers %}
+        <li>
+        <h3> {{ carrier.fields.name }}</h3> <br>
+        <ul>
+        {% for field, value in carrier.fields.items %}
+            <li><strong>{{ field }}:</strong> {{ value }}</li>
+        {% endfor %}
+        </ul>
+        </li>
+    {% endfor %}
+    </ul>
 </body>
 </html>
