@@ -56,7 +56,7 @@ class SiteSettingsMiddleware:
                 # First include UA
                 frame_src.append('https://*.salesforce.com')
                 connect_src.append('https://*.salesforce.com')
-
+                form_action.append('https://*.salesforce.com')
 
             if 'jquery' in csp_exceptions:
                 connect_src.append('https://code.jquery.com')
