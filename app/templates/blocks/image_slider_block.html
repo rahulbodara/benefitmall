@@ -8,7 +8,7 @@
             <div class="container {{ self.background.size_mode }}">
                 <div class="row">
                     <div class="col">
-                        <div class="slider slider--ken-burns" data-arrows="true" data-paging="true">
+                        <div class="slider slider--ken-burns" data-arrows="{{ self.arrows }}" data-paging="{{ self.paging }}" data-timing="{{ self.speed }}">
                             <ul class="slides">
                                 {% for block in self.items %}
                                     {% include_block block with size=self.slider_size %}
@@ -22,7 +22,7 @@
             <div class="container {{ self.background.size_mode }}">
                 <div class="row">
                     <div class="col">
-                        <div class="slider slider--columns" data-arrows="true" data-paging="true">
+                        <div class="slider slider--columns" data-arrows="{{ self.arrows }}" data-paging="{{ self.paging }}" data-timing="{{ self.speed }}">
                             <ul class="slides">
                             {% for block in self.items %}
                                 {% include_block block with size=self.slider_size %}
@@ -36,7 +36,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <div class="slider slider--inline-arrows slider--arrows-hover text-center" data-arrows="true">
+                            <div class="slider slider--inline-arrows slider--arrows-hover text-center" data-timing="{{ self.speed }}" data-arrows="{{ self.arrows }}" data-paging="{{ self.paging }}">
                                 <ul class="slides">
                                     {% for block in self.items %}
                                         {% include_block block with size=self.slider_size %}

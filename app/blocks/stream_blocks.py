@@ -27,11 +27,13 @@ from .video_cover_block import VideoCoverBlock
 from .three_image_cover_block import ThreeImageCoverBlock
 from .pricing_block import PricingBlock
 from .link_block import LinkBlock
+from .contact_map_block import ContactMapBlock
 # settings
 from .settings.header_block import HeaderBlock
 from .header_footer.header_block import HeaderLinkBlock, HeaderButtonBlock
 from .header_footer.footer_block import FooterLinkBlock, FooterButtonBlock, FooterUtilityLinkBlock, FooterCategoryBlock
 from .salesforce.lead_form_block import LeadFormBlock
+
 
 class DefaultStreamBlock(StreamBlock):
     wysiwyg_block = WYSIWYGBlock()
@@ -59,6 +61,7 @@ class DefaultStreamBlock(StreamBlock):
     three_image_cover_block = ThreeImageCoverBlock()
     pricing_block = PricingBlock()
     lead_from_block = LeadFormBlock()
+    contact_map = ContactMapBlock()
 
 class HeaderLinkStreamBlock(StreamBlock):
     header_link_block = HeaderLinkBlock()
