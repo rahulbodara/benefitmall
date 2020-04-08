@@ -2782,7 +2782,7 @@ a {
   background: #016faf;
 }
 .bg--primary p,
-.bg--primary span,
+.bg--primary span:not(.btn__text),
 .bg--primary ul,
 .bg--primary a:not(.btn) {
   color: #fff;
@@ -4539,11 +4539,11 @@ p > .btn {
     display: block;
   }
 }
-.bg--primary div:not([class*='feature']) .btn--primary {
+.bg--primary div:not([class*='feature']):not(.boxed) > .btn--primary {
   background: #fff;
   border-color: #fff;
 }
-.bg--primary div:not([class*='feature']) .btn--primary .btn__text {
+.bg--primary div:not([class*='feature']):not(.boxed) > .btn--primary .btn__text {
   color: #016faf;
 }
 .bg--primary > .btn--primary {
