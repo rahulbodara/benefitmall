@@ -125,11 +125,6 @@ BIO_LAYOUT_CHOICES = (
     ('two-column', 'Two Column'),
 )
 
-ICON_FEATURE_CHOICES = (
-    ('large-two', 'Large Two Column'),
-    ('small-four', 'Small Four Column'),
-)
-
 FEATURES_LAYOUT_CHOICES = (
     ('fixed', 'Fixed Width'),
     ('max', 'Max Width'),

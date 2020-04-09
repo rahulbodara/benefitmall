@@ -1,20 +1,7 @@
 {% load wagtailcore_tags %}
 
-{% if layout == 'small-four' %}
-<div class="col-md-6 col-lg-3">
-    <div class="feature feature-6">
-        {% if self.icon %}
-            <i class="icon icon--sm icon-{{ self.icon }} color--primary"></i>
-        {% endif %}
-        <h5>{{ self.header }}</h5>
-         {{ self.text }}
-        {% include_block self.link %}
-    </div>
-</div>
-{% endif %}
-
-{% if layout == 'large-two' %}
-<div class="col-md-6">
+{% if cols == 'col-md-6 col-sm-12' %}
+<div class="{{ cols }}">
     <div class="feature feature-5 boxed boxed--lg boxed--border">
         {% if self.icon %}
             <i class="icon icon-{{ self.icon }} icon--lg"></i>
@@ -24,6 +11,17 @@
             {{ self.text }}
             {% include_block self.link %}
         </div>
+    </div>
+</div>
+{% else %}
+<div class="{{ cols }}">
+    <div class="feature feature-6">
+        {% if self.icon %}
+            <i class="icon icon--sm icon-{{ self.icon }} color--primary"></i>
+        {% endif %}
+        <h5>{{ self.header }}</h5>
+         {{ self.text }}
+        {% include_block self.link %}
     </div>
 </div>
 {% endif %}
