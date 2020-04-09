@@ -16,6 +16,8 @@ from .views import get_page_meta_data
 
 
 class AbstractBasePage(Page):
+    # Hide from sitemap
+    hide_in_sitemap = models.BooleanField(default=False, verbose_name="Hide in sitemap", help_text="Don't show this page in the sitemap.")
     # SEO Metadata Fields
     canonical_url = models.CharField(
         max_length=255, blank=True, null=True,
@@ -45,7 +47,10 @@ class AbstractBasePage(Page):
     promote_panels = [
         MultiFieldPanel([
             FieldPanel('slug'),
-            FieldPanel('show_in_menus'),
+            FieldRowPanel([
+                FieldPanel('show_in_menus'),
+                FieldPanel('hide_in_sitemap'),
+            ]),
             FieldPanel('canonical_url'),
             FieldPanel('seo_title'),
             FieldPanel('search_description'),
@@ -77,6 +82,8 @@ class AbstractBasePage(Page):
 
 
 class AbstractBaseEmailForm(AbstractEmailForm):
+    # Hide from sitemap
+    hide_in_sitemap = models.BooleanField(default=False, verbose_name="Hide this page from the sitemap?")
     # SEO Metadata Fields
     canonical_url = models.CharField(
         max_length=255, blank=True, null=True,
@@ -106,6 +113,10 @@ class AbstractBaseEmailForm(AbstractEmailForm):
     promote_panels = [
         MultiFieldPanel([
             FieldPanel('slug'),
+            FieldRowPanel([
+                FieldPanel('show_in_menus'),
+                FieldPanel('hide_in_sitemap'),
+            ]),
             FieldPanel('canonical_url'),
             FieldPanel('seo_title'),
             FieldPanel('search_description'),

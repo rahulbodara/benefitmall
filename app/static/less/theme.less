@@ -186,6 +186,26 @@
     margin-inline-end: 1em;
   }
   li{
-    list-style: disc;
+    list-style: none;
   }
+}
+
+.sitemap{
+  ul{
+    margin-inline-start: 1em;
+    margin-inline-end: 1em;
+  }
+  li{
+    font-size: .8em;
+    font-weight: 700;
+    list-style: none;
+  }
+  .container>.row>div>ul>li{
+    font-size: @h3-size;
+    >a, >ul{
+      display: block;
+      margin-bottom: 1.04em;
+    }
+  }
+
 }

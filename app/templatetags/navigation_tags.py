@@ -46,13 +46,14 @@ def get_page_items(parent, context):
     ret = '<ul>'
     children = Page.objects.child_of(parent).live().specific()
     for page in children:
-        ret += '<li><a href="{1}">{0}</a>'.format(
-            escape(page.title),
-            get_path(page, context)
-        )
-        if len(page.get_children()) > 0:
-            ret += get_page_items(page, context)
-        ret += '</li>'
+        if not page.hide_in_sitemap:
+            ret += '<li><a href="{1}">{0}</a>'.format(
+                escape(page.title),
+                get_path(page, context)
+            )
+            if has_children(page):
+                ret += get_page_items(page, context)
+            ret += '</li>'
     ret += '</ul>'
     return ret
 

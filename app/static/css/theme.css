@@ -9433,6 +9433,23 @@ footer.footer-7 {
   margin-inline-end: 1em;
 }
 .rich-text li {
-  list-style: disc;
+  list-style: none;
+}
+.sitemap ul {
+  margin-inline-start: 1em;
+  margin-inline-end: 1em;
+}
+.sitemap li {
+  font-size: 0.8em;
+  font-weight: 700;
+  list-style: none;
+}
+.sitemap .container > .row > div > ul > li {
+  font-size: 1.78571429em;
+}
+.sitemap .container > .row > div > ul > li > a,
+.sitemap .container > .row > div > ul > li > ul {
+  display: block;
+  margin-bottom: 1.04em;
 }
 /*# sourceMappingURL=theme.css.map */
