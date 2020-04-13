@@ -152,7 +152,7 @@ class Migration(migrations.Migration):
                 if field['@key'] == 'name':
                     new_loc.name = field['content']
                 if field['@key'] == 'abbreviation':
-                    new_loc.name = field['content']
+                    new_loc.abbreviation = field['content']
             new_loc.old_guid = st['@id']
             new_loc.save()
             state_list.append(new_loc)
