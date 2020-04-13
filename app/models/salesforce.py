@@ -7,7 +7,6 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from salesforce import models
 
-
 class Account(models.Model):
     is_deleted = models.BooleanField(verbose_name='Deleted', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
     master_record = models.ForeignKey('self', models.DO_NOTHING, related_name='account_masterrecord_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
@@ -46,11 +45,11 @@ class Account(models.Model):
     number_of_employees = models.IntegerField(verbose_name='Employees', sf_read_only=models.READ_ONLY, blank=True, null=True)
     description = models.TextField(verbose_name='Account Description', sf_read_only=models.READ_ONLY, blank=True, null=True)
     rating = models.CharField(max_length=40, verbose_name='Account Rating', sf_read_only=models.READ_ONLY, choices=[('Hot', 'Hot'), ('Warm', 'Warm'), ('Cold', 'Cold')], blank=True, null=True)
-    owner = models.ForeignKey('User', models.DO_NOTHING, related_name='account_owner_set', sf_read_only=models.READ_ONLY)
+    owner = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='account_owner_set', sf_read_only=models.READ_ONLY)
     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='account_createdby_set', sf_read_only=models.READ_ONLY)
+    created_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='account_createdby_set', sf_read_only=models.READ_ONLY)
     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='account_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+    last_modified_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='account_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     last_activity_date = models.DateField(verbose_name='Last Activity', sf_read_only=models.READ_ONLY, blank=True, null=True)
     last_viewed_date = models.DateTimeField(sf_read_only=models.READ_ONLY, blank=True, null=True)
@@ -104,7 +103,7 @@ class Account(models.Model):
     dba = models.CharField(custom=True, db_column='DBA__c', max_length=100, verbose_name='DBA', sf_read_only=models.READ_ONLY, blank=True, null=True)
     partner_code = models.CharField(custom=True, db_column='Partner_Code__c', max_length=20, verbose_name='Partner Code', sf_read_only=models.READ_ONLY, blank=True, null=True)
     advisory_notice = models.TextField(custom=True, db_column='Advisory_Notice__c', verbose_name='Advisory Notice', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    referring_employee = models.ForeignKey('User', models.DO_NOTHING, db_column='Referring_Employee__c', custom=True, related_name='account_referringemployee_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
+    referring_employee = models.ForeignKey('SFUser', models.DO_NOTHING, db_column='Referring_Employee__c', custom=True, related_name='account_referringemployee_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
     state_swt_filing = models.CharField(custom=True, db_column='State_SWT_Filing__c', max_length=4099, verbose_name='State SWT Filing', sf_read_only=models.READ_ONLY, choices=[('Values', 'Values'), ('AL', 'AL'), ('AK', 'AK'), ('AZ', 'AZ'), ('AR', 'AR'), ('CA', 'CA'), ('CO', 'CO'), ('CT', 'CT'), ('DE', 'DE'), ('DC', 'DC'), ('FL', 'FL'), ('GA', 'GA'), ('HI', 'HI'), ('ID', 'ID'), ('IL', 'IL'), ('IN', 'IN'), ('IA', 'IA'), ('KS', 'KS'), ('KY', 'KY'), ('LA', 'LA'), ('ME', 'ME'), ('MD', 'MD'), ('MA', 'MA'), ('MI', 'MI'), ('MN', 'MN'), ('MS', 'MS'), ('MO', 'MO'), ('MT', 'MT'), ('NE', 'NE'), ('NV', 'NV'), ('NH', 'NH'), ('NJ', 'NJ'), ('NM', 'NM'), ('NY', 'NY'), ('NC', 'NC'), ('ND', 'ND'), ('OH', 'OH'), ('OK', 'OK'), ('OR', 'OR'), ('PA', 'PA'), ('RI', 'RI'), ('SC', 'SC'), ('SD', 'SD'), ('TN', 'TN'), ('TX', 'TX'), ('UT', 'UT'), ('VT', 'VT'), ('VA', 'VA'), ('WA', 'WA'), ('WV', 'WV'), ('WI', 'WI'), ('WY', 'WY')], blank=True, null=True)
     state_sdi_filing = models.CharField(custom=True, db_column='State_SDI_Filing__c', max_length=4099, verbose_name='State SDI Filing', sf_read_only=models.READ_ONLY, choices=[('Values', 'Values'), ('AL', 'AL'), ('AK', 'AK'), ('AZ', 'AZ'), ('AR', 'AR'), ('CA', 'CA'), ('CO', 'CO'), ('CT', 'CT'), ('DE', 'DE'), ('DC', 'DC'), ('FL', 'FL'), ('GA', 'GA'), ('HI', 'HI'), ('ID', 'ID'), ('IL', 'IL'), ('IN', 'IN'), ('IA', 'IA'), ('KS', 'KS'), ('KY', 'KY'), ('LA', 'LA'), ('ME', 'ME'), ('MD', 'MD'), ('MA', 'MA'), ('MI', 'MI'), ('MN', 'MN'), ('MS', 'MS'), ('MO', 'MO'), ('MT', 'MT'), ('NE', 'NE'), ('NV', 'NV'), ('NH', 'NH'), ('NJ', 'NJ'), ('NM', 'NM'), ('NY', 'NY'), ('NC', 'NC'), ('ND', 'ND'), ('OH', 'OH'), ('OK', 'OK'), ('OR', 'OR'), ('PA', 'PA'), ('RI', 'RI'), ('SC', 'SC'), ('SD', 'SD'), ('TN', 'TN'), ('TX', 'TX'), ('UT', 'UT'), ('VT', 'VT'), ('VA', 'VA'), ('WA', 'WA'), ('WV', 'WV'), ('WI', 'WI'), ('WY', 'WY')], blank=True, null=True)
     payroll_url = models.URLField(custom=True, db_column='Payroll_URL__c', verbose_name='Payroll URL', sf_read_only=models.READ_ONLY, blank=True, null=True)
@@ -232,7 +231,7 @@ class Account(models.Model):
     naics_code = models.CharField(custom=True, db_column='NAICS_Code__c', max_length=8, verbose_name='NAICS Code', sf_read_only=models.READ_ONLY, blank=True, null=True)
     marketing_engaged = models.BooleanField(custom=True, db_column='Marketing_Engaged__c', verbose_name='Marketing Engaged', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
     annualized_premium = models.DecimalField(custom=True, db_column='Annualized_Premium__c', max_digits=18, decimal_places=2, verbose_name='Annualized Premium', sf_read_only=models.READ_ONLY, blank=True, null=True)
-    bse_assigned = models.ForeignKey('User', models.DO_NOTHING, db_column='BSE_Assigned__c', custom=True, related_name='account_bseassigned_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
+    bse_assigned = models.ForeignKey('SFUser', models.DO_NOTHING, db_column='BSE_Assigned__c', custom=True, related_name='account_bseassigned_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
     naics_description = models.CharField(custom=True, db_column='NAICS_Description__c', max_length=120, verbose_name='NAICS Description', sf_read_only=models.READ_ONLY, blank=True, null=True)
     active_assigned_dm_or_bse = models.BooleanField(custom=True, db_column='Active_Assigned_DM_or_BSE__c', verbose_name='Active Assigned DM or BSE', sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     noof_attachment = models.DecimalField(custom=True, max_digits=5, decimal_places=0, verbose_name='NoofAttachment', sf_read_only=models.READ_ONLY, blank=True, null=True)
@@ -313,9 +312,9 @@ class BusinessProcess(models.Model):
     description = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, blank=True, null=True)
     table_enum_or_id = models.CharField(max_length=40, verbose_name='Entity Enumeration Or ID', sf_read_only=models.READ_ONLY, choices=[('Case', None), ('Lead', None), ('Opportunity', None), ('Solution', None)])
     is_active = models.BooleanField(verbose_name='Active', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='businessprocess_createdby_set', sf_read_only=models.READ_ONLY)
+    created_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='businessprocess_createdby_set', sf_read_only=models.READ_ONLY)
     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='businessprocess_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+    last_modified_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='businessprocess_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     class Meta(models.Model.Meta):
@@ -333,9 +332,9 @@ class CallCenter(models.Model):
     custom_settings = models.CharField(max_length=3000, sf_read_only=models.READ_ONLY, blank=True, null=True)
     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='callcenter_createdby_set', sf_read_only=models.READ_ONLY)
+    created_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='callcenter_createdby_set', sf_read_only=models.READ_ONLY)
     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='callcenter_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+    last_modified_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='callcenter_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
     class Meta(models.Model.Meta):
         db_table = 'CallCenter'
         verbose_name = 'Call Center'
@@ -346,7 +345,7 @@ class CallCenter(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=40, sf_read_only=models.READ_ONLY)
     developer_name = models.CharField(max_length=80, sf_read_only=models.READ_ONLY, blank=True, null=True)
-    related = models.ForeignKey('User', models.DO_NOTHING, related_name='group_related_set', sf_read_only=models.READ_ONLY, blank=True, null=True)  # Reference to tables [User, UserRole]
+    related = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='group_related_set', sf_read_only=models.READ_ONLY, blank=True, null=True)  # Reference to tables [User, UserRole]
     type = models.CharField(max_length=40, sf_read_only=models.READ_ONLY, choices=[('AllCustomerPortal', None), ('ChannelProgramGroup', None), ('CollaborationGroup', None), ('Manager', None), ('ManagerAndSubordinatesInternal', None), ('Organization', None), ('PRMOrganization', None), ('Queue', None), ('Regular', None), ('Role', None), ('RoleAndSubordinates', None), ('RoleAndSubordinatesInternal', None), ('Territory', None), ('TerritoryAndSubordinates', None)])
     email = models.EmailField(sf_read_only=models.READ_ONLY, blank=True, null=True)
     queue_routing_config = models.ForeignKey('QueueRoutingConfig', models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
@@ -354,9 +353,9 @@ class Group(models.Model):
     does_send_email_to_members = models.BooleanField(verbose_name='Send Email to Members', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
     does_include_bosses = models.BooleanField(verbose_name='Include Bosses', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='group_createdby_set', sf_read_only=models.READ_ONLY)
+    created_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='group_createdby_set', sf_read_only=models.READ_ONLY)
     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='group_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+    last_modified_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='group_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     class Meta(models.Model.Meta):
         db_table = 'Group'
@@ -416,9 +415,9 @@ class Organization(models.Model):
     monthly_page_views_entitlement = models.IntegerField(verbose_name='Monthly Page Views Allowed', sf_read_only=models.READ_ONLY, blank=True, null=True)
     is_read_only = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='organization_createdby_set', sf_read_only=models.READ_ONLY)
+    created_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='organization_createdby_set', sf_read_only=models.READ_ONLY)
     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='organization_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+    last_modified_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='organization_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
     class Meta(models.Model.Meta):
         db_table = 'Organization'
         verbose_name = 'Organization'
@@ -683,9 +682,9 @@ class Profile(models.Model):
     user_license = models.ForeignKey('UserLicense', models.DO_NOTHING, sf_read_only=models.READ_ONLY)
     user_type = models.CharField(max_length=40, sf_read_only=models.READ_ONLY, choices=[('Standard', 'Standard'), ('PowerPartner', 'Partner'), ('PowerCustomerSuccess', 'Customer Portal Manager'), ('CustomerSuccess', 'Customer Portal User'), ('Guest', 'Guest'), ('CspLitePortal', 'High Volume Portal'), ('CsnOnly', 'CSN Only'), ('SelfService', 'Self Service')], blank=True, null=True)
     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='profile_createdby_set', sf_read_only=models.READ_ONLY)
+    created_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='profile_createdby_set', sf_read_only=models.READ_ONLY)
     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='profile_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+    last_modified_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='profile_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     is_sso_enabled = models.BooleanField(verbose_name='Is Single Sign-On Enabled', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
     description = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, blank=True, null=True)
@@ -704,9 +703,9 @@ class QueueRoutingConfig(models.Model):
     language = models.CharField(max_length=40, verbose_name='Master Language', sf_read_only=models.READ_ONLY, choices=[('en_US', 'English'), ('de', 'German'), ('es', 'Spanish'), ('fr', 'French'), ('it', 'Italian'), ('ja', 'Japanese'), ('sv', 'Swedish'), ('ko', 'Korean'), ('zh_TW', 'Chinese (Traditional)'), ('zh_CN', 'Chinese (Simplified)'), ('pt_BR', 'Portuguese (Brazil)'), ('nl_NL', 'Dutch'), ('da', 'Danish'), ('th', 'Thai'), ('fi', 'Finnish'), ('ru', 'Russian'), ('es_MX', 'Spanish (Mexico)'), ('no', 'Norwegian')])
     master_label = models.CharField(max_length=80, verbose_name='Routing Configuration Name', sf_read_only=models.READ_ONLY)
     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='queueroutingconfig_createdby_set', sf_read_only=models.READ_ONLY)
+    created_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='queueroutingconfig_createdby_set', sf_read_only=models.READ_ONLY)
     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='queueroutingconfig_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+    last_modified_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='queueroutingconfig_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     routing_priority = models.IntegerField(sf_read_only=models.READ_ONLY)
     routing_model = models.CharField(max_length=255, sf_read_only=models.READ_ONLY, choices=[('LeastActive', 'Least Active'), ('MostAvailable', 'Most Available'), ('ExternalRouting', 'External Routing')])
@@ -731,9 +730,9 @@ class RecordType(models.Model):
     business_process = models.ForeignKey(BusinessProcess, models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
     sobject_type = models.CharField(max_length=80, verbose_name='Sobject Type Name', sf_read_only=models.READ_ONLY, choices=[('Account', None), ('Account_Bundle__c', None), ('AccountBrand', None), ('Agent_Affiliation__c', None), ('AgentWork', None), ('Alert__c', None), ('ambition__AmbitionEmailRecipient__c', None), ('ambition__AmbitionEntity__c', None), ('ambition__AmbitionEntityField__c', None), ('ambition__AmbitionGeneralConfig__c', None), ('ambition__AmbitionLogEntry__c', None), ('ambition__AmbitionPushableObject__c', None), ('ambition__AmbitionPushableObjectField__c', None), ('ambition__AmbitionPushableObjectTestObject__c', None), ('ambition__AmbitionReportFilter__c', None), ('ambition__AmbitionReportInstance__c', None), ('ambition__AmbitionReportInstanceChunk__c', None), ('ambition__AmbitionReportRunConfig__c', None), ('ambition__log_entry__c', None), ('AMS_Account_Team__c', None), ('Announcement', None), ('ANTS_Letters_and_Attachments__c', None), ('Apex_Error__c', None), ('AppAnalyticsQueryRequest', None), ('Asset', None), ('AssetRelationship', None), ('AssistantProgress', None), ('Authorization__c', None), ('AuthorizationForm', None), ('AuthorizationFormConsent', None), ('AuthorizationFormDataUse', None), ('AuthorizationFormText', None), ('Benefits_Upsell_Opportunity__c', None), ('Broker_Commission__c', None), ('Broker_Email_Archive__c', None), ('Broker_Favorites__c', None), ('Broker_Trip_Status__c', None), ('BrokerOpportunity__c', None), ('BrokerSales__c', None), ('CalendarModel', None), ('CalendarView', None), ('Campaign', None), ('CampaignMember', None), ('Carrier__c', None), ('Carrier_Data_Mapping__c', None), ('Carrier_RFP__c', None), ('CarrierLibrary__c', None), ('Case', None), ('Case_Dimension_Email__c', None), ('Case_Route__c', None), ('CaseExternalDocument', None), ('Checklist__c', None), ('Class__c', None), ('CollaborationGroup', None), ('CollaborationGroupRank', None), ('CollaborationGroupRecord', None), ('Commission__c', None), ('CommSubscription', None), ('CommSubscriptionChannelType', None), ('CommSubscriptionConsent', None), ('CommSubscriptionTiming', None), ('Community_Message__c', None), ('CommunityTiles__c', None), ('ComponentResponseCache', None), ('Connection_Credential__c', None), ('Contact', None), ('ContactPointConsent', None), ('ContactPointEmail', None), ('ContactPointPhone', None), ('ContactPointTypeConsent', None), ('ContactRequest', None), ('ContentDocumentListViewMapping', None), ('ContentFolderDistribution', None), ('ContentVersion', None), ('Contract', None), ('ContractLineItem', None), ('ConversationContextEntry', None), ('Course__c', None), ('Credential__c', None), ('DataPrepServiceLocator', None), ('DataUseLegalBasis', None), ('DataUsePurpose', None), ('DeflectionSignal', None), ('DuplicateErrorLog', None), ('DuplicateRecordItem', None), ('DuplicateRecordSet', None), ('Email_Signature_Attachments__c', None), ('EngagementChannelType', None), ('Enrollment__c', None), ('Entitlement', None), ('EntitlementContact', None), ('Event', None), ('ExpressionFilter', None), ('ExpressionFilterCriteria', None), ('Feedback__c', None), ('FileInspectionResult', None), ('FileSearchActivity', None), ('FlowExecutionEventMetric', None), ('FlowRecordRelation', None), ('FlowStageRelation', None), ('Group_Calendar__c', None), ('Idea', None), ('Image', None), ('InboundSocialPost', None), ('Individual', None), ('INQ__Criteria_Fields_Status__c', None), ('INQ__Data_Mapping_Configuration__c', None), ('INQ__Data_Transfer_Criteria__c', None), ('INQ__Data_Transfer_Criteria_Detail__c', None), ('INQ__Email_Template_Mapping_Configuration__c', None), ('INQ__Exception_Logger__c', None), ('INQ__iConnectionStatus__c', None), ('INQ__Inquisium_Activity_Tracker__c', None), ('INQ__Respondent__c', None), ('INQ__Respondent_Field_Mapping__c', None), ('INQ__Survey_Answer__c', None), ('INQ__Survey_Criteria__c', None), ('INQ__Survey_Criteria_Detail__c', None), ('INQ__Survey_Program__c', None), ('INQ__Survey_Program_Question__c', None), ('INQ__Survey_Staging__c', None), ('INQ__Trigger_Object_Exclusion__c', None), ('Intake__c', None), ('Knowledge__kav', None), ('KnowledgeMigrationStat', None), ('Lead', None), ('Lead_Assignment_Rules__c', None), ('LinkedArticle', None), ('ListEmail', None), ('ListEmailIndividualRecipient', None), ('ListEmailRecipientSource', None), ('ListEmailSentResult', None), ('LiveAgentSession', None), ('LiveChatFileToken', None), ('LiveChatTranscript', None), ('Macro', None), ('MacroAction', None), ('MacroInstruction', None), ('MacroUsage', None), ('ManagedContent', None), ('ManagedContentBlock', None), ('ManagedContentBlockVersion', None), ('ManagedContentBodyLink', None), ('ManagedContentChannel', None), ('ManagedContentFolderMember', None), ('ManagedContentMigration', None), ('ManagedContentNode', None), ('ManagedContentNodeRefTree', None), ('ManagedContentNodeRendition', None), ('ManagedContentRelease', None), ('ManagedContentReleaseItem', None), ('ManagedContentSet', None), ('ManagedContentSetLink', None), ('ManagedContentSpaceChannel', None), ('ManagedContentSpaceFolderMember', None), ('ManagedContentSpaceItem', None), ('ManagedContentTranslationJob', None), ('ManagedContentTranslationTask', None), ('ManagedContentTypeSearchBlackList', None), ('ManagedContentVariant', None), ('ManagedContentVersion', None), ('Menu__c', None), ('Migration_Task__c', None), ('mkto_si__Best_Bets_View__c', None), ('mkto_si__Best_Bets_View_Detail__c', None), ('mkto_si__BestBetsCache__c', None), ('mkto_si__EmailActivityCache__c', None), ('mkto_si__GroupedWebActivityCache__c', None), ('mkto_si__InterestingMomentsCache__c', None), ('mkto_si__Marketo_Sales_Insight_Config__c', None), ('mkto_si__ScoringCache__c', None), ('mkto_si__Value__c', None), ('mkto_si__WebActivityCache__c', None), ('myobj__c', None), ('NetworkSearchQueryFrequency', None), ('NetworkUserHistoryRecent', None), ('Notification__c', None), ('OE_Error__c', None), ('Office__c', None), ('Opportunity', None), ('Opportunity_Pipeline_Snapshot__c', None), ('OrgDeleteRequest', None), ('OrgMetric', None), ('OrgMetricScanResult', None), ('OrgMetricScanSummary', None), ('Out_Of_Office__c', None), ('PartyConsent', None), ('Payroll_Price_Book__c', None), ('PendingServiceRouting', None), ('PersonalizationResource', None), ('Plan_Selection__c', None), ('Plan_Type__c', None), ('Platform_History__c', None), ('Postal_Code__c', None), ('Pricebook2', None), ('Product2', None), ('PromptAction', None), ('qbdialer__ContactScore__c', None), ('qbdialer__DialerQuery__c', None), ('qbdialer__DialerQueryAttendee__c', None), ('qbdialer__DialerQueryItem__c', None), ('qbdialer__isDialerConfig__c', None), ('qbdialer__SeekInitiative__c', None), ('qbdialer__SeekInitiativeAttendee__c', None), ('qbdialer__SeekInitiativeItem__c', None), ('QuickText', None), ('QuickTextUsage', None), ('Quote', None), ('Quote_Line_Item__c', None), ('Recommendation', None), ('RecommendationReaction', None), ('RecordAction', None), ('RecordMergeHistory', None), ('RecordOrigin', None), ('Referral__c', None), ('ReportResultBlob', None), ('RequestsForAccessSIQ', None), ('sbv2__Group__c', None), ('sbv2__List_Object__c', None), ('sbv2__Quality_Sample__c', None), ('sbv2__Sample_Criteria_Filter__c', None), ('sbv2__Score_List__c', None), ('sbv2__Summary_Score__c', None), ('sbv2__Team__c', None), ('sbv2__Team_User__c', None), ('Scorecard', None), ('ScorecardAssociation', None), ('ScorecardMetric', None), ('SearchActivity', None), ('SearchPromotionRule', None), ('Security_Questions__c', None), ('seismic__Debug_Log__c', None), ('ServiceContract', None), ('Services__c', None), ('SetupAssistantAnswer', None), ('SetupAssistantProgress', None), ('SetupFlowProgress', None), ('Shipment__c', None), ('SIC_Code__c', None), ('SiqUserBlacklist', None), ('sma__AvailableField__c', None), ('sma__MAAJAXDebugLog__c', None), ('sma__MAAnalytic__c', None), ('sma__MAArcGISBatchPushLog__c', None), ('sma__MAArcGISBatchPushSetting__c', None), ('sma__MAArcGISBatchPushTest__c', None), ('sma__MAAssignmentDebugLog__c', None), ('sma__MAAssignmentPlan__c', None), ('sma__MAAssignmentRule__c', None), ('sma__MABaseObject__c', None), ('sma__MAButtonSet__c', None), ('sma__MACache__c', None), ('sma__MAClick2Create__c', None), ('sma__MACustomAction__c', None), ('sma__MADataLayerSetting__c', None), ('sma__MADataLoad__c', None), ('sma__MADataLoadSegment__c', None), ('sma__MADriveProfile__c', None), ('sma__MAEventBaseObj__c', None), ('sma__MAEventLookup__c', None), ('sma__MAExport__c', None), ('sma__MAExportRow__c', None), ('sma__MAFolder__c', None), ('sma__MAFolderPermission__c', None), ('sma__MALayer__c', None), ('sma__MALocation__c', None), ('sma__MALocationFolder__c', None), ('sma__MALog__c', None), ('sma__MAMiniMapSetting__c', None), ('sma__MARelatedList__c', None), ('sma__MARoute__c', None), ('sma__MASavedQry__c', None), ('sma__MASavedQryComponent__c', None), ('sma__MAScheduledJob__c', None), ('sma__MASettingsAssignments__c', None), ('sma__MASettingsGroup__c', None), ('sma__MAShift__c', None), ('sma__MATerritory__c', None), ('sma__MATerritoryAggregation__c', None), ('sma__MATerritoryAggregationSetting__c', None), ('sma__MATerritoryCollection__c', None), ('sma__MATerritoryCollectionBaseObject__c', None), ('sma__MATerritoryCollectionFieldUpdate__c', None), ('sma__MATerritoryGeometry__c', None), ('sma__MATerritoryNode__c', None), ('sma__MATerritoryRollup__c', None), ('sma__MATerritoryRollupComponent__c', None), ('sma__MATerritoryRollupFolder__c', None), ('sma__MATerritoryRollupRun__c', None), ('sma__MATerritoryRollupValue__c', None), ('sma__MAWaypoint__c', None), ('SocialPost', None), ('Solution', None), ('Source_Account_Team__c', None), ('StrategyMonthlyStats', None), ('StreamActivityAccess', None), ('SyncTransactionLog', None), ('Task', None), ('TaxNotice__c', None), ('trailheadapp__Badge__c', None), ('trailheadapp__Debug_Log__c', None), ('trailheadapp__Trail__c', None), ('trailheadapp__Trailhead_User_Data__c', None), ('trailheadapp__Trailmix__c', None), ('trailheadapp__Trailmix_Assignment__c', None), ('trailheadapp__User_Badge__c', None), ('trailheadapp__User_Trailmix__c', None), ('TrainingEnrollment__c', None), ('TransactionSecurityAction', None), ('TransactionSecurityActionEvent', None), ('Trip_Status_Eligibility__c', None), ('Twilio_Voice_Response__c', None), ('Upsell_Opportunity__c', None), ('User_Login_Snapshot__c', None), ('UserEmailPreferredPerson', None), ('UserMetrics', None), ('UserNavItem', None), ('UserServicePresence', None), ('vidyard__Video_View__c', None), ('XactlyCorp__XactlyUserBusiness__c', None), ('XactlyCorp__XCIncentBusiness__c', None)])
     is_active = models.BooleanField(verbose_name='Active', sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
-    created_by = models.ForeignKey('User', models.DO_NOTHING, related_name='recordtype_createdby_set', sf_read_only=models.READ_ONLY)
+    created_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='recordtype_createdby_set', sf_read_only=models.READ_ONLY)
     created_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey('User', models.DO_NOTHING, related_name='recordtype_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+    last_modified_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='recordtype_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     class Meta(models.Model.Meta):
@@ -743,7 +742,7 @@ class RecordType(models.Model):
         # keyPrefix = '012'
 
 
-class User(models.Model):
+class SFUser(models.Model):
     username = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     first_name = models.CharField(max_length=40, blank=True, null=True)
@@ -981,16 +980,16 @@ class UserRole(models.Model):
     opportunity_access_for_account_owner = models.CharField(max_length=40, verbose_name='Opportunity Access Level for Account Owner', sf_read_only=models.READ_ONLY, choices=[('None', 'Private'), ('Read', 'Read Only'), ('Edit', 'Read/Write')])
     case_access_for_account_owner = models.CharField(max_length=40, verbose_name='Case Access Level for Account Owner', sf_read_only=models.READ_ONLY, choices=[('None', 'Private'), ('Read', 'Read Only'), ('Edit', 'Read/Write')], blank=True, null=True)
     contact_access_for_account_owner = models.CharField(max_length=40, verbose_name='Contact Access Level for Account Owner', sf_read_only=models.READ_ONLY, choices=[('None', 'Private'), ('Read', 'Read Only'), ('Edit', 'Read/Write')], blank=True, null=True)
-    forecast_user = models.ForeignKey(User, models.DO_NOTHING, related_name='userrole_forecastuser_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
+    forecast_user = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='userrole_forecastuser_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
     may_forecast_manager_share = models.BooleanField(sf_read_only=models.READ_ONLY, default=models.DefaultedOnCreate(False))
     last_modified_date = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
-    last_modified_by = models.ForeignKey(User, models.DO_NOTHING, related_name='userrole_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
+    last_modified_by = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='userrole_lastmodifiedby_set', sf_read_only=models.READ_ONLY)
     system_modstamp = models.DateTimeField(sf_read_only=models.READ_ONLY, default=models.DEFAULTED_ON_CREATE)
     developer_name = models.CharField(max_length=80, sf_read_only=models.READ_ONLY, blank=True, null=True)
     portal_account = models.ForeignKey(Account, models.DO_NOTHING, sf_read_only=models.READ_ONLY, blank=True, null=True)
     portal_type = models.CharField(max_length=40, sf_read_only=models.READ_ONLY, choices=[('None', 'None'), ('CustomerPortal', 'Customer Portal'), ('Partner', 'Partner Portal')], blank=True, null=True)
     portal_role = models.CharField(max_length=40, sf_read_only=models.READ_ONLY, choices=[('Executive', 'Executive'), ('Manager', 'Manager'), ('Worker', 'User'), ('PersonAccount', 'Person Account')], blank=True, null=True)
-    portal_account_owner = models.ForeignKey(User, models.DO_NOTHING, related_name='userrole_portalaccountowner_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
+    portal_account_owner = models.ForeignKey('SFUser', models.DO_NOTHING, related_name='userrole_portalaccountowner_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
     class Meta(models.Model.Meta):
         db_table = 'UserRole'
         verbose_name = 'Role'

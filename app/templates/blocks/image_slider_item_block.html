@@ -1,21 +1,20 @@
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
-{% image self.image fill-340x227 as image %}
 
 {% if size == 'full' %}
-    <li> <img alt="{{ image.alt }}" src="{{ image.url }}"> </li>
-{% endif %}
-
-
-{% if size == 'inline' %}
-    <li class="col-md-4 col-6">
-        <a href="{{ image.url }}" data-lightbox="Gallery 1"> <img alt="{{ image.alt }}" src="{{ image.url }}"> </a>
+    {% image self.image fill-340x227 as image %}
+    <li>
+        <img alt="{{ image.alt }}" src="{{ image.url }}">
     </li>
-{% endif %}
-
-{% if size == 'logo' %}
+{% elif size == 'inline' %}
+    {% image self.image fill-340x227 as image %}
+    <li class="col-md-4 col-6">
+        <img alt="{{ image.alt }}" src="{{ image.url }}">
+    </li>
+{% else %}
+{#LOGO#}
+    {% image self.image original as image %}
     <li class="col-md-3 col-6">
         <img alt="{{ image.alt }}" class="image--xxs" src="{{ image.url }}">
     </li>
-
 {% endif %}

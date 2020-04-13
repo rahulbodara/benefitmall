@@ -269,23 +269,27 @@ $(function () {
 
 
     /**************************************************************************************************/
-     function imageFeatureBlockToggler(elem){
+     function mediaTitleBlockToggler(elem){
         var value = $(elem).find('input:checked').val();
-        var container = $(elem).closest('.image-feature-block');
+        var container = $(elem).closest('.media-title-block');
 
-        if (value === 'overlay') {
-            container.find('.fieldname-image_invert').parent().closest('.field').show();
-            container.find('.fieldname-image_overlay').parent().closest('.field').show();
+        if (value === 'three_column') {
+            container.find('.fieldname-small_image').parent().closest('.field').show();
+            container.find('.fieldname-small_image').parent().closest('.field').addClass('required');
+            container.find('.fieldname-switchable').parent().closest('.field').hide();
+            container.find('.fieldname-vertical_alignment').parent().closest('.field').hide();
         }
         else{
-            container.find('.fieldname-image_invert').parent().closest('.field').hide();
-            container.find('.fieldname-image_overlay').parent().closest('.field').hide();
+            container.find('.fieldname-small_image').parent().closest('.field').hide();
+            container.find('.fieldname-small_image').parent().closest('.field').removeClass('required');
+            container.find('.fieldname-switchable').parent().closest('.field').show();
+            container.find('.fieldname-vertical_alignment').parent().closest('.field').show();
         }
 
     }
 
-    $('body').on('change', '.image-feature-block .fieldname-layout', function() {
-       imageFeatureBlockToggler(this);
+    $('body').on('change', '.media-title-block .fieldname-layout', function() {
+       mediaTitleBlockToggler(this);
     });
     /**************************************************************************************************/
 
@@ -339,6 +343,11 @@ $(function () {
         $('.image-feature-block .fieldname-layout').each(function() {
            imageFeatureBlockToggler(this);
         });
+        // mediaTitleBlockToggler call on observed mutation
+        $('.media-title-block .fieldname-layout').each(function() {
+           mediaTitleBlockToggler(this);
+        });
+
 
 
     });

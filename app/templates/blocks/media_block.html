@@ -27,4 +27,19 @@
             </div>
         </div>
    {% endif %}
+{% elif width == 'three_column' %}
+    <div class="background-image-holder">
+        <img src="{{ image.url }}" alt="{{ image.alt }}">
+    </div>
+    {% if self.mode == 'image-video' %}
+        <div class="modal-instance">
+            <div class="video-play-icon modal-trigger"></div>
+            <div class="modal-container">
+                <div class="modal-content bg-dark" data-width="60%" data-height="60%">
+                    <iframe data-src="{{ self.video_source }}{{ self.video_id }}?autoplay=1" allowfullscreen="allowfullscreen"></iframe>
+                </div>
+            </div>
+        </div>
+   {% endif %}
+
 {% endif %}

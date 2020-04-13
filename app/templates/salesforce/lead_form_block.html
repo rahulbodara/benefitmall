@@ -2,82 +2,79 @@
 <section class="">
     <div class="container">
         <div class="row  justify-content-center">
-            <div class="{{ self.form_width }}">
-
+            <div class="{{ self.form_width }} {{ self.alignment }}">
+                <div>
                 {% if self.heading %}
-                    <{{ self.heading_size }} class="{{ self.alignment }}">{{ self.heading }}</{{ self.heading_size }}>
+                    <{{ self.heading_size }}>{{ self.heading }}</{{ self.heading_size }}>
                 {% endif %}
                 {% if self.body %}
                     {{ self.body }}
                 {% endif %}
-{#                <!--  ----------------------------------------------------------------------  -->#}
-{#                <!--  NOTE: Please add the following <META> element to your page <HEAD>.      -->#}
-{#                <!--  If necessary, please modify the charset parameter to specify the        -->#}
-{#                <!--  character set of your HTML page.                                        -->#}
-{#                <!--  ----------------------------------------------------------------------  -->#}
-{##}
-{#                <META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">#}
-{##}
-{#                <!--  ----------------------------------------------------------------------  -->#}
-{#                <!--  NOTE: Please add the following <FORM> element to your page.             -->#}
-{#                <!--  ----------------------------------------------------------------------  -->#}
-        <div role="form">
-                <form action="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
-                    <div style="display: none;">
-                        <input type=hidden name="oid" value="00Dc0000003wW7y">
-                        <input type=hidden name="retURL" value="http://www.benefitmall.com">
-                        <input type=hidden id="lead_source" name="lead_source" value="Website">
-                        <input type=hidden name="Lead_Source_Category__c" id="Lead_Source_Category__c" value="BenefitMall.com">
-                        <input type=hidden name="description" id="description" value="From Contact Us form...">
-                        <input type=hidden id="ownerId" name="ownerId" value="{{ self.lead_owner }}">
-                        <input type=hidden name="recordType" id="recordType" value="012G0000000qekx">
-                    </div>
-{#                    <!--  ----------------------------------------------------------------------  -->#}
-{#                    <!--  NOTE: These fields are optional debugging elements. Please uncomment    -->#}
-{#                    <!--  these lines if you wish to test in debug mode.                          -->#}
-{#                    <!--  <input type="hidden" name="debug" value=1>                              -->#}
-{#                    <!--  <input type="hidden" name="debugEmail"                                  -->#}
-{#                    <!--  value="praveen.meka@benefitmall.com">                                   -->#}
-{#                    <!--  ----------------------------------------------------------------------  -->#}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="first_name">First Name</label>
-                            <input  id="first_name" placeholder="First Name" maxlength="40" name="first_name" size="20" type="text" class="form-control" />
+                </div>
+                <div role="form">
+
+                    <form action="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
+                        <div style="display: none;">
+
+                            <input type=hidden name="oid" value="00Dc0000003wW7y">
+{#                            TODO - GET URL TO RETURN TO ON FORMS#}
+                            <input type=hidden name="retURL" value="http://www.benefitmall.com">
+                            <input type=hidden id="lead_source" name="lead_source" value="Website">
+                            <input type=hidden name="Lead_Source_Category__c" id="Lead_Source_Category__c" value="BenefitMall.com">
+                            <input type=hidden name="description" id="description" value="From Contact Us form...">
+                            <input type=hidden id="ownerId" name="ownerId" value="00Gc0000004I4ZuEAK">
+                            <input type=hidden name="recordType" id="recordType" value="012G0000000qekx">
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="last_name">Last Name</label>
-                            <input  id="last_name" placeholder="Last Name" maxlength="80" name="last_name" size="20" type="text" class="form-control" />
+                                <!--  ----------------------------------------------------------------------  -->
+                                <!--  NOTE: These fields are optional debugging elements. Please uncomment    -->
+                                <!--  these lines if you wish to test in debug mode.                          -->
+                                <!--  <input type="hidden" name="debug" value=1>                              -->
+                                <!--  <input type="hidden" name="debugEmail"                                  -->
+                                <!--  value="praveen.meka@benefitmall.com">                                   -->
+                                <!--  ----------------------------------------------------------------------  -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="first_name" class="hidden">First Name</label>
+                                <input placeholder="First Name" aria-label="First Name" id="first_name" maxlength="40" name="first_name" size="20" type="text" class="form-control" /><br>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="company">Company</label>
-                            <input  id="company" placeholder="Company" maxlength="40" name="company" size="20" type="text" class="form-control" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="last_name" class="hidden">Last Name</label>
+                                <input placeholder="Last Name" aria-label="Last Name" id="last_name" maxlength="80" name="last_name" size="20" type="text" class="form-control" /><br>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="phone">Phone</label>
-                            <input  id="phone" placeholder="Phone" maxlength="40" name="phone" size="20" type="text" class="form-control" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="company" class="hidden">Company</label>
+                                <input placeholder="Company" aria-label="Company" id="company" maxlength="40" name="company" size="20" type="text" class="form-control" /><br>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="email">Email</label>
-                            <input  id="email" placeholder="Email" maxlength="80" name="email" size="20" type="text" class="form-control" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="phone" class="hidden">Phone</label>
+                                <input placeholder="Phone" aria-label="Phone" id="phone" maxlength="40" name="phone" size="20" type="text" class="form-control" /><br>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <br/><button name="submit" type="submit" value="Submit" class="btn btn--primary">
-                                Submit
-                            </button>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="email" class="hidden">Email</label>
+                                <input placeholder="Email" aria-label="Email" id="email" maxlength="80" name="email" size="20" type="text" class="form-control" /><br>
+                            </div>
                         </div>
-                    </div>
-                </form>
-        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="zip" class="hidden">Zip</label>
+                                <input placeholder="Zip" aria-label="Zip" id="zip" maxlength="20" name="zip" size="20" type="text" class="form-control" /><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="submit" name="submit">
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
             </div>
         </div>

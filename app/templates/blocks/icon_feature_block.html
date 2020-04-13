@@ -6,7 +6,7 @@
     <div class="container {{ self.background.size_mode }}">
         <div class="row">
             {% for block in self.items %}
-                {% include_block block with layout=self.layout %}
+                {% include_block block with cols=self.columns %}
             {% endfor %}
         </div>
     </div>

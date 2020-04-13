@@ -1,0 +1,48 @@
+{% load wagtailcore_tags %}
+{#<section>#}
+{#    <div class="col-md-6">#}
+{#        {% for field in self.form %}#}
+{#            <div class="col-md-12">#}
+{#                <label class="hidden">{{ field.label|safe }}</label>#}
+{#                <input type="text" name="name" class="validate-required">#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#    <div class="col-md-6">#}
+{#        <div class="map-container">#}
+{#            <iframe width="100%" height="600" src="{{self.framesource}}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>#}
+{#        </div>#}
+{#        #}
+{#    </div>#}
+{#</section>#}
+
+
+<section class="switchable">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-md-5 col-12">
+                <div class="map-container">
+                    <iframe width="100%" height="600" src="{{self.framesource}}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                </div>
+                <div class="under-map">
+                    <p><span class="font-weight-bold">{{ self.title }}</span></p>
+                    <p><span>{{ self.address }}</span></p>
+                    <p><span>{{ self.city }}, {{ self.state }} {{ self.zip_code }}</span></p>
+                    <p><span>P: {{ self.direct_phone }}</span></p>
+                    <p><span>T: {{ self.toll_free_phone }}</span></p>
+                </div>
+                {{ self.wysiwyg }}
+            </div>
+            <div class="col-md-6 col-12">
+                <form class="form-email row mx-0" data-success="Thanks for your enquiry, we'll be in touch shortly." data-error="Please fill in all fields correctly.">
+                    <div class="col-md-6 col-12"> <label>Your Name:</label> <input type="text" name="name" class="validate-required"> </div>
+                    <div class="col-md-6 col-12"> <label>Email Address:</label> <input type="email" name="email" class="validate-required validate-email"> </div>
+                    <div class="col-md-12 col-12"> <label>Message:</label> <textarea rows="4" name="Message" class="validate-required"></textarea> </div>
+                    <div class="col-md-5 col-lg-4 col-6"> <button type="submit" class="btn btn--primary type--uppercase">Send Enquiry</button> </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+

@@ -150,10 +150,9 @@ p{
 	}
 }
 
-
 .bg--primary{
-	div:not([class*='feature']){
-		.btn--primary{
+	div:not([class*='feature']):not(.boxed){
+		>.btn--primary{
 			background: #fff;
 			border-color: #fff;
 			.btn__text{

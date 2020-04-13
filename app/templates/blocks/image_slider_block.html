@@ -8,7 +8,7 @@
             <div class="container {{ self.background.size_mode }}">
                 <div class="row">
                     <div class="col">
-                        <div class="slider slider--ken-burns" data-arrows="true" data-paging="true">
+                        <div class="slider" data-arrows="{{ self.arrows }}" data-paging="{{ self.paging }}" {% if self.speed %} data-timing="{{ self.speed }}" data-autoplay="true" {% endif %}>
                             <ul class="slides">
                                 {% for block in self.items %}
                                     {% include_block block with size=self.slider_size %}
@@ -22,7 +22,7 @@
             <div class="container {{ self.background.size_mode }}">
                 <div class="row">
                     <div class="col">
-                        <div class="slider slider--columns" data-arrows="true" data-paging="true">
+                        <div class="slider slider--columns" data-arrows="{{ self.arrows }}" data-paging="{{ self.paging }}" {% if self.speed %} data-timing="{{ self.speed }}" data-autoplay="true" {% endif %}>
                             <ul class="slides">
                             {% for block in self.items %}
                                 {% include_block block with size=self.slider_size %}
@@ -36,7 +36,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <div class="slider slider--inline-arrows slider--arrows-hover text-center" data-arrows="true">
+{#                        slider--inline-arrows slider--arrows-hover#}
+                            <div class="slider text-center" data-arrows="{{ self.arrows }}" data-paging="{{ self.paging }}" {% if self.speed %} data-timing="{{ self.speed }}" data-autoplay="true" {% endif %}>
                                 <ul class="slides">
                                     {% for block in self.items %}
                                         {% include_block block with size=self.slider_size %}

@@ -52,6 +52,12 @@ class SiteSettingsMiddleware:
             response['Content-Security-Policy'] = ""
 
             # jquery, typekit, googlefonts, googlemaps, youtube, gtm, gtm_preview, gtm_custom_vars
+            if 'salesforce' in csp_exceptions:
+                # First include UA
+                frame_src.append('https://*.salesforce.com')
+                connect_src.append('https://*.salesforce.com')
+                form_action.append('https://*.salesforce.com')
+
             if 'jquery' in csp_exceptions:
                 connect_src.append('https://code.jquery.com')
                 script_src.append("https://code.jquery.com")
