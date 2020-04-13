@@ -11,3 +11,4 @@ django-honeypot~=0.8
 boto3~=1.10
 python-dotenv~=0.10
 django-salesforce~=0.9
+xmltodict
