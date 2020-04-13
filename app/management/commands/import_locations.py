@@ -167,6 +167,8 @@ class Command(BaseCommand):
                     new_loc.city = field['content']
                 if field['@key'] == 'state':
                     new_loc.state = State.objects.get(old_guid=field['content'])
+                if field['@key'] == 'postal code':
+                    new_loc.postal_code = field['content']
                 if field['@key'] == 'phone':
                     new_loc.phone_number = field['content']
                 if field['@key'] == 'toll-free phone':
