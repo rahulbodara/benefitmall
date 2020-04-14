@@ -177,14 +177,16 @@ class LocationIndexPage(RoutablePageMixin, DefaultPage):
 
 		locations = Location.objects.all().order_by('state__abbreviation', 'name')
 
-		output = {'markers': []}
+		output = {}
+		markers = []
 		for loc in locations:
 			if loc.state.abbreviation not in output:
 				output[loc.state.abbreviation] = {'name': loc.state.name, 'locations': []}
 			output[loc.state.abbreviation]['locations'].append(loc)
-			output['markers'].append({'name': loc.name, 'lat': loc.lat, 'lng': loc.lng})
+			markers.append({'name': loc.name, 'lat': loc.lat, 'lng': loc.lng})
 
 		context['states'] = output
+		context['markers'] = markers
 		return TemplateResponse(request, self.get_template(request), context)
 
 	@route(r'^(.+)/$')

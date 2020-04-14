@@ -14,13 +14,13 @@
                 <script>
                   var map;
                   function initMap() {
-                      var location_latlng = {lat: {{ states.markers.0.lat }}, lng: {{ states.markers.0.lng }}};
+                      var location_latlng = {lat: {{ markers.0.lat }}, lng: {{ markers.0.lng }}};
                       var mapBounds = new google.maps.LatLngBounds();
                     map = new google.maps.Map(document.getElementById('map'), {
                         center: location_latlng,
                         zoom: 10
                     });
-                    {% for marker in states.markers %}
+                    {% for marker in markers %}
                       var marker{{ forloop.counter0 }} = new google.maps.Marker({position: {lat: {{ marker.lat }}, lng: {{ marker.lng }}}, map: map, title: '{{ marker.name }}'});
                       mapBounds.extend(new google.maps.LatLng({{ marker.lat }},{{ marker.lng }}));
                     {% endfor %}
