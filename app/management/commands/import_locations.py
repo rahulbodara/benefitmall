@@ -156,6 +156,8 @@ class Command(BaseCommand):
         print('CREATING OFFICES')
         for st in data['data']['offices']['item']:
             new_loc = Location()
+            lat = ''
+            lng = ''
             for field in st['fields']['field']:
                 if field['@key'] == 'name':
                     new_loc.name = field['content']
@@ -175,12 +177,11 @@ class Command(BaseCommand):
                     new_loc.tollfree_number = field['content']
                 if field['@key'] == 'fax':
                     new_loc.fax_number = field['content']
-                latlng = ''
                 if field['@key'] == 'latitude':
-                    latlng = field['content']
+                    lat = field['content']
                 if field['@key'] == 'longitude':
-                    latlng += ','+field['content']
-                    new_loc.latlng = latlng
+                    lng += field['content']
+            new_loc.latlng = lat + ',' + lng
             new_loc.old_guid = st['@id']
             new_loc.save()
             for field in st['fields']['field']:
