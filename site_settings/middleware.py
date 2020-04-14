@@ -82,6 +82,7 @@ class SiteSettingsMiddleware:
                 img_src.append("https://*.gstatic.com")
                 connect_src.append("https://*.googleapis.com")
                 connect_src.append("https://*.gstatic.com")
+                img_src.append("data:")
 
             if 'youtube' in csp_exceptions:
                 frame_src.append("https://www.youtube.com")
