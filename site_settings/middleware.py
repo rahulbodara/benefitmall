@@ -76,6 +76,7 @@ class SiteSettingsMiddleware:
             if 'googlemaps' in csp_exceptions:
                 frame_src.append("https://www.google.com")
                 connect_src.append("https://www.google.com")
+                script_src.append("https://*.googleapis.com")
 
             if 'youtube' in csp_exceptions:
                 frame_src.append("https://www.youtube.com")
