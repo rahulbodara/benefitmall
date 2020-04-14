@@ -77,6 +77,11 @@ class SiteSettingsMiddleware:
                 frame_src.append("https://www.google.com")
                 connect_src.append("https://www.google.com")
                 script_src.append("https://*.googleapis.com")
+                img_src.append("https://*.googleapis.com")
+                script_src.append("https://*.gstatic.com")
+                img_src.append("https://*.gstatic.com")
+                connect_src.append("https://*.googleapis.com")
+                connect_src.append("https://*.gstatic.com")
 
             if 'youtube' in csp_exceptions:
                 frame_src.append("https://www.youtube.com")
