@@ -2,7 +2,7 @@
 {% load wagtailcore_tags app_tags %}
 
 {% block content %}
-{% for block in page.body %}
+{% for block in page.get_parent.specific.body %}
     {% include_block block %}
 {% endfor %}
 

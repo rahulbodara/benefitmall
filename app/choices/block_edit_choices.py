@@ -116,7 +116,7 @@ OUTLINE_CHOICES = (
 
 IMAGE_FEATURE_CHOICES = (
     ('none', 'None'),
-    ('border', 'Bordered'),
+    ('bordered', 'Bordered'),
     ('overlay','Text Overlay'),
 )
 

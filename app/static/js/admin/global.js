@@ -197,7 +197,7 @@ $(function () {
 
         if (value === 'horizontal') {
             container.find('.fieldname-page').parent().closest('.field').hide();
-            container.find('.fieldname-subhead_size').parent().closest('.field').show();
+            // container.find('.fieldname-subhead_size').parent().closest('.field').show();
             container.find('.fieldname-body').parent().closest('.field').show();
             container.find('.fieldname-body').parent().closest('.field').addClass('required');
             container.find('.link-block').closest('.field').show();
@@ -205,7 +205,7 @@ $(function () {
             container.find('.fieldname-outline').parent().closest('.field').show();
         } else {
             container.find('.fieldname-page').parent().closest('.field').show();
-            container.find('.fieldname-subhead_size').parent().closest('.field').hide();
+            // container.find('.fieldname-subhead_size').parent().closest('.field').hide();
             container.find('.fieldname-body').parent().closest('.field').hide();
             container.find('.fieldname-body').parent().closest('.field').removeClass('required');
             container.find('.link-block').closest('.field').hide();
