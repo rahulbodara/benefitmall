@@ -7,7 +7,7 @@
     <div class="container">
         <div class="row justify-content-between">
             {% if person.photo %}
-                {% image person.photo original as image %}
+                {% image person.photo fill-540x700 as image %}
                 <div class="col-md-6">
                     <img src="{{ image.url }}" alt="{{ image.alt }}" class="border--round">
                 </div>
