@@ -1,10 +1,13 @@
 from django import template
+from django.template.loader import render_to_string
 from django.utils.html import format_html
 from wagtail.core.models import Site
 from app.wagtail_hooks import HeaderFooter
 
 from app.models import BlogPage
 from app.models.events import EventPage
+from app.models.people import Person, Division
+from app.choices.block_edit_choices import BIO_LAYOUT_CHOICES, SUBHEAD_SIZE_CHOICES
 
 register = template.Library()
 
@@ -64,3 +67,14 @@ def get_recent_posts(current_page):
     """
     return BlogPage.objects.live().exclude(id=current_page.id).order_by('-date')[:3]
 
+@register.simple_tag(takes_context=True)
+def render_person_list(context, layout=BIO_LAYOUT_CHOICES[0][0], title_size=SUBHEAD_SIZE_CHOICES[0][0], filter='all'):
+    if filter == 'executives':
+        people = Person.objects.filter(is_executive=True)
+    elif filter == 'sales':
+        people = [div.vice_president for div in Division.objects.all() if div.vice_president]
+    else:
+        people = Person.objects.all()
+
+    person_list_context = {'people': people, 'layout': layout, 'title_size': title_size}
+    return render_to_string('blocks/person_list_item_block.html', context=person_list_context, request=context['request'])

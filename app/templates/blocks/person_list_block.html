@@ -1,0 +1,9 @@
+{% load wagtailcore_tags app_tags %}
+<section class="text-center {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+    <div class="container {{ self.background.size_mode }}">
+        <div class="row">
+            {% render_person_list self.layout self.title_size self.executives %}
+        </div>
+    </div>
+</section>

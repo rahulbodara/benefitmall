@@ -123,45 +123,6 @@ class Location(models.Model):
 		ordering = ['name']
 
 
-class Person(models.Model):
-	first_name = models.CharField(max_length=50)
-	last_name = models.CharField(max_length=50)
-	title = models.CharField(max_length=50)
-	photo = models.ForeignKey(Image, blank=True, null=True, related_name="person_photo", on_delete=models.SET_NULL)
-	location = models.ForeignKey(Location, related_name='person_location', on_delete=models.PROTECT)
-	email = models.EmailField()
-	show_email = models.BooleanField(default=False)
-	is_executive = models.BooleanField(default=False)
-	executive_order = models.IntegerField()
-	bio = RichTextField(null=True, blank=True)
-	is_archived = models.BooleanField(default=False)
-
-	panels = [
-		MultiFieldPanel([
-			FieldPanel('first_name'),
-			FieldPanel('last_name'),
-			FieldPanel('title'),
-			ImageChooserPanel('photo'),
-			FieldPanel('location'),
-			FieldPanel('email'),
-			FieldPanel('show_email'),
-			FieldPanel('is_archived'),
-		], heading="Person Info", classname="collapsible"),
-		MultiFieldPanel([
-			FieldPanel('bio'),
-		], heading="Bio", classname="collapsible"),
-		MultiFieldPanel([
-			FieldPanel('is_executive'),
-			FieldPanel('executive_order'),
-		], heading="Executive Info", classname="collapsible collapsed"),
-	]
-
-	def __str__(self):
-		return '{} {}'.format(self.first_name, self.last_name)
-
-	class Meta:
-		ordering = ['last_name', 'first_name']
-
 
 class LocationIndexPage(RoutablePageMixin, DefaultPage):
 	subpage_types = []
@@ -213,6 +174,88 @@ class LocationIndexPage(RoutablePageMixin, DefaultPage):
 	def can_create_at(cls, parent):
 		# Only allow one child instance
 		return super(LocationIndexPage, cls).can_create_at(parent) and not cls.objects.exists()
+
+	def get_full_url(self, request=None):
+		url_parts = self.get_url_parts(request=request)
+		site_id, root_url, page_path = url_parts
+		return root_url + self.get_url()
+
+
+class Person(models.Model):
+	first_name = models.CharField(max_length=50)
+	last_name = models.CharField(max_length=50)
+	title = models.CharField(max_length=50)
+	photo = models.ForeignKey(Image, blank=True, null=True, related_name="person_photo", on_delete=models.SET_NULL)
+	location = models.ForeignKey(Location, related_name='person_location', on_delete=models.PROTECT)
+	email = models.EmailField()
+	show_email = models.BooleanField(default=False)
+	is_executive = models.BooleanField(default=False)
+	executive_order = models.IntegerField(null=True, blank=True)
+	bio = RichTextField(null=True, blank=True)
+	is_archived = models.BooleanField(default=False)
+
+	panels = [
+		MultiFieldPanel([
+			FieldPanel('first_name'),
+			FieldPanel('last_name'),
+			FieldPanel('title'),
+			ImageChooserPanel('photo'),
+			FieldPanel('location'),
+			FieldPanel('email'),
+			FieldPanel('show_email'),
+			FieldPanel('is_archived'),
+		], heading="Person Info", classname="collapsible"),
+		MultiFieldPanel([
+			FieldPanel('bio'),
+		], heading="Bio", classname="collapsible"),
+		MultiFieldPanel([
+			FieldPanel('is_executive'),
+			FieldPanel('executive_order'),
+		], heading="Executive Info", classname="collapsible collapsed"),
+	]
+
+	def get_url_slug(self):
+		return slugify(self.first_name + ' ' + self.last_name + ' ' + str(self.id))
+
+	def __str__(self):
+		return '{} {}'.format(self.first_name, self.last_name)
+
+	class Meta:
+		ordering = ['last_name', 'first_name']
+
+
+class PersonIndexPage(RoutablePageMixin, DefaultPage):
+	subpage_types = []
+
+	class Meta:
+		verbose_name = 'Bio Index Page'
+		verbose_name_plural = 'Bio Index Pages'
+
+	@route(r'^$')
+	def person_list(self, request, *args, **kwargs):
+		context = super().get_context(request, **kwargs)
+		self.additional_breadcrumbs = []
+		return TemplateResponse(request, self.get_template(request), context)
+
+	@route(r'^(.+)/$')
+	def person_page_detail(self, request, slug, *args, **kwargs):
+		context = super().get_context(request, **kwargs)
+
+		# Get news item
+		try:
+			slug_items = slug.split('-')
+			person = Person.objects.get(id=slug_items[-1])
+			self.additional_breadcrumbs = [({'title': '{} {}'.format(person.first_name, person.last_name), 'url': self.get_url()+slug})]
+		except Person.DoesNotExist:
+			raise Http404
+
+		context['person'] = person
+		return TemplateResponse(request, "app/person_page.html", context)
+
+	@classmethod
+	def can_create_at(cls, parent):
+		# Only allow one child instance
+		return super(PersonIndexPage, cls).can_create_at(parent) and not cls.objects.exists()
 
 	def get_full_url(self, request=None):
 		url_parts = self.get_url_parts(request=request)
