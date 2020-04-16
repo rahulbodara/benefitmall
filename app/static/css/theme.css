@@ -6415,6 +6415,7 @@ a.block:hover > .feature {
 .accordion li.active .accordion__content {
   animation: fadeUp 0.5s ease forwards;
   -webkit-animation: fadeUp 0.5s ease forwards;
+  max-height: 1000px;
 }
 .accordion-1 li.active .accordion__title {
   border-color: #016faf;
@@ -9434,7 +9435,7 @@ footer.footer-7 {
   margin-inline-end: 1em;
 }
 .rich-text li {
-  list-style: none;
+  list-style: disc;
 }
 .sitemap ul {
   margin-inline-start: 1em;
