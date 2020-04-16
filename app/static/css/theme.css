@@ -6343,10 +6343,10 @@ a.block:hover > .feature {
   margin-bottom: 2.73684211em;
 }
 @media all and (min-width: 768px) {
-  .feature-large-2 div[class*='col-']:not(.three-column-image):first-child {
+  .feature-large-2 div[class*='col-']:first-child {
     margin-top: 5.57142857em;
   }
-  .feature-large-2 div[class*='col-']:not(.three-column-image):last-child {
+  .feature-large-2 div[class*='col-']:last-child {
     margin-top: 7.42857143em;
   }
 }
