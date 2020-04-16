@@ -70,7 +70,7 @@ def get_recent_posts(current_page):
 @register.simple_tag(takes_context=True)
 def render_person_list(context, layout=BIO_LAYOUT_CHOICES[0][0], title_size=SUBHEAD_SIZE_CHOICES[0][0], filter='all'):
     if filter == 'executives':
-        people = Person.objects.filter(is_executive=True)
+        people = Person.objects.filter(is_executive=True).order_by('executive_order')
     elif filter == 'sales':
         people = [div.vice_president for div in Division.objects.all() if div.vice_president]
     else:
