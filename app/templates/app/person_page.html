@@ -10,6 +10,12 @@
                 {% image person.photo fill-540x700 as image %}
                 <div class="col-md-6">
                     <img src="{{ image.url }}" alt="{{ image.alt }}" class="border--round">
+                    {% if person.show_email %}
+                        <div class="text-center">
+                            <i class="icon icon-Email icon--xs align-middle"></i>
+                            <a href="mailto:{{ person.email }}" class="align-middle">{{ person.email }}</a>
+                        </div>
+                    {% endif %}
                 </div>
             {% endif %}
             <div class="col-md-6 col-lg-5">

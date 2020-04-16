@@ -20,13 +20,13 @@
                             </p>
                             <p>
                                 {% if location.phone_number %}
-                                    Phone: <a href="tel:{{ location.phone_number }}">{{ location.phone_number }}</a><br/>
+                                    <i class="icon icon-Telephone icon--xs align-middle"></i><span class="align-middle">Phone: <a href="tel:{{ location.phone_number }}">{{ location.phone_number }}</a></span><br/>
                                 {% endif %}
                                 {% if location.tollfree_number %}
-                                    Toll-Free: <a href="tel:{{ location.tollfree_number }}">{{ location.tollfree_number }}</a><br/>
+                                    <i class="icon icon-Telephone icon--xs align-middle"></i><span class="align-middle">Toll-Free: <a href="tel:{{ location.tollfree_number }}">{{ location.tollfree_number }}</a></span><br/>
                                 {% endif %}
                                 {% if location.fax_number %}
-                                    Fax: <a href="tel:{{ location.fax_number }}">{{ location.fax_number }}</a>
+                                    <i class="icon icon-Telephone icon--xs align-middle"></i><span class="align-middle">Fax: <a href="tel:{{ location.fax_number }}">{{ location.fax_number }}</a></span>
                                 {% endif %}
                             </p>
                             {% if location.description %}{{ location.description|safe }}{% endif %}
