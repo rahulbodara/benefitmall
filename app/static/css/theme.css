@@ -6053,6 +6053,7 @@ p .material-icons:first-child {
 .feature img + .boxed {
   border-radius: 0 0 6px 6px;
   border-top: none;
+  min-height: 18em;
 }
 a.feature {
   display: block;
