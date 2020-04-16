@@ -8,7 +8,7 @@
         {% endif %}
         <div class="feature__body">
             <h5>{{ self.header }}</h5>
-            {{ self.text }}
+            {% if self.text %}{{ self.text }}{% endif %}
             {% include_block self.link %}
         </div>
     </div>
@@ -20,7 +20,7 @@
             <i class="icon icon--sm icon-{{ self.icon }} color--primary"></i>
         {% endif %}
         <h5>{{ self.header }}</h5>
-         {{ self.text }}
+            {% if self.text %}{{ self.text }}{% endif %}
         {% include_block self.link %}
     </div>
 </div>
