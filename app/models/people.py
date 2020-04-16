@@ -9,7 +9,6 @@ from django.utils.text import slugify
 from wagtail.images.models import Image
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
-from site_settings.views import get_page_meta_data
 
 class BusinessType(models.Model):
 	name = models.CharField(max_length=50)
@@ -151,7 +150,7 @@ class LocationIndexPage(RoutablePageMixin, DefaultPage):
 		return TemplateResponse(request, self.get_template(request), context)
 
 	@route(r'^(.+)/$')
-	def news_page_detail(self, request, slug, *args, **kwargs):
+	def location_page_detail(self, request, slug, *args, **kwargs):
 		context = super().get_context(request, **kwargs)
 
 		# Get news item
@@ -167,7 +166,7 @@ class LocationIndexPage(RoutablePageMixin, DefaultPage):
 
 		context['location'] = location
 		context['team'] = team
-		# context.update(get_page_meta_data(request, news_page))
+		context.update(self.get_page_meta_data(request, location))
 		return TemplateResponse(request, "app/location_page.html", context)
 
 	@classmethod
@@ -179,6 +178,25 @@ class LocationIndexPage(RoutablePageMixin, DefaultPage):
 		url_parts = self.get_url_parts(request=request)
 		site_id, root_url, page_path = url_parts
 		return root_url + self.get_url()
+
+	def get_page_meta_data(self, request, location):
+		meta_data = { 'site_url': '', 'site_name': '', 'canonical_url': '', 'meta_title': '', 'meta_description': '', 'meta_keywords': '', 'og_title': '', 'og_description': '', 'og_type': '', 'og_url': '', 'og_image': '', }
+
+		meta_data['site_url'] = request.site.root_page.get_full_url(request)
+		site_name = request.site.site_name
+		meta_data['site_name'] = site_name
+		current_url = '{}{}'.format(self.get_full_url(request), location.get_url_slug())
+		meta_title = '{} | Office Locations | {}'.format(location.name, site_name)
+		meta_data['meta_title'] = meta_title
+		meta_description = 'Broker benefits sales offices for general agency in {}, {}.'.format(location.city, location.state.name)
+		meta_data['meta_description'] = meta_description
+		meta_data['og_title'] = meta_title
+		meta_data['og_description'] = meta_description
+		meta_data['og_type'] = 'website'
+		meta_data['og_url'] = current_url
+		meta_data['canonical_url'] = current_url
+
+		return meta_data
 
 
 class Person(models.Model):
@@ -250,6 +268,7 @@ class PersonIndexPage(RoutablePageMixin, DefaultPage):
 			raise Http404
 
 		context['person'] = person
+		context.update(self.get_page_meta_data(request, person))
 		return TemplateResponse(request, "app/person_page.html", context)
 
 	@classmethod
@@ -261,3 +280,23 @@ class PersonIndexPage(RoutablePageMixin, DefaultPage):
 		url_parts = self.get_url_parts(request=request)
 		site_id, root_url, page_path = url_parts
 		return root_url + self.get_url()
+
+	def get_page_meta_data(self, request, person):
+		meta_data = { 'site_url': '', 'site_name': '', 'canonical_url': '', 'meta_title': '', 'meta_description': '', 'meta_keywords': '', 'og_title': '', 'og_description': '', 'og_type': '', 'og_url': '', 'og_image': '', }
+
+		meta_data['site_url'] = request.site.root_page.get_full_url(request)
+		site_name = request.site.site_name
+		meta_data['site_name'] = site_name
+		current_url = '{}{}'.format(self.get_full_url(request), person.get_url_slug())
+		meta_title = '{} {} | Bios | {}'.format(person.first_name, person.last_name, site_name)
+		meta_data['meta_title'] = meta_title
+		meta_description = '{} for {}'.format(person.title, site_name)
+		meta_data['meta_description'] = meta_description
+		meta_data['og_title'] = meta_title
+		meta_data['og_description'] = meta_description
+		meta_data['og_type'] = 'profile'
+		meta_data['og_image'] = person.photo.file.url
+		meta_data['og_url'] = current_url
+		meta_data['canonical_url'] = current_url
+
+		return meta_data
