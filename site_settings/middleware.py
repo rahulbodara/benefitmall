@@ -48,6 +48,7 @@ class SiteSettingsMiddleware:
             style_src = ["'self'"]
             font_src = ["'self'"]
             frame_src = ["'self'"]
+            prefetch_src = ["'self'"]
             frame_ancestors = ["'none'"]
             response['Content-Security-Policy'] = ""
 
@@ -92,6 +93,8 @@ class SiteSettingsMiddleware:
                 script_src.append("https://*.vidyard.com")
                 img_src.append("https://*.vidyard.com")
                 connect_src.append("https://*.vidyard.com")
+                frame_src.append("https://*.vidyard.com")
+                prefetch_src.append("https://*.vidyard.com")
 
             if 'gtm' in csp_exceptions:
                 # First include UA
@@ -158,6 +161,7 @@ class SiteSettingsMiddleware:
             response['Content-Security-Policy'] += " style-src " + ' '.join(style_src) + ";"
             response['Content-Security-Policy'] += " font-src " + ' '.join(font_src) + ";"
             response['Content-Security-Policy'] += " img-src " + ' '.join(img_src) + ";"
+            response['Content-Security-Policy'] += " prefetch-src " + ' '.join(prefetch_src) + ";"
 
         response['Server'] = 'intentionally-undisclosed'
         response['Referrer-Policy'] = 'same-origin, strict-origin-when-cross-origin'
