@@ -10,5 +10,5 @@ django-widget-tweaks~=1.4
 django-honeypot~=0.8
 boto3~=1.10
 python-dotenv~=0.10
-django-salesforce~=0.9
+django-bmemcached~=0.3.0
 xmltodict

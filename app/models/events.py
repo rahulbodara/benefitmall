@@ -1,7 +1,6 @@
 import datetime
 import pytz
 from django.db import models
-from django.apps import apps
 from django.forms import ModelForm
 from django.http import HttpResponse
 from wagtail.core.fields import RichTextField
@@ -63,13 +62,7 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		if day:
 			all_events = all_events.filter(start_datetime__day=day)
 
-		featured_event = None
-		events = None
-		if all_events.count() > 0:
-			featured_event = all_events[0]
-			events = all_events[1:]
-
-		paginator = Paginator(events, 10)
+		paginator = Paginator(all_events, 10)
 
 		try:
 			# Return linked page
@@ -81,10 +74,6 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 			# Return last page
 			events = paginator.page(paginator.num_pages)
 
-		HeaderFooter = apps.get_model(app_label='app', model_name='HeaderFooter')
-		header_footer = HeaderFooter.for_site(site=request.site)
-		context['featured_event_bg'] = header_footer.featured_event_bg
-		context['featured_event'] = featured_event
 		context['events'] = events
 		return TemplateResponse(request, self.get_template(request), context)
 
