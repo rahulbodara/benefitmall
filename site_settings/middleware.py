@@ -88,6 +88,11 @@ class SiteSettingsMiddleware:
                 frame_src.append("https://www.youtube.com")
                 connect_src.append("https://www.youtube.com")
 
+            if 'vidyard' in csp_exceptions:
+                script_src.append("https://*.vidyard.com")
+                img_src.append("https://*.vidyard.com")
+                connect_src.append("https://*.vidyard.com")
+
             if 'gtm' in csp_exceptions:
                 # First include UA
                 connect_src.append('https://www.google-analytics.com')
