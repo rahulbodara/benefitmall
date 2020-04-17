@@ -1,0 +1,70 @@
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% image self.image original as image %}
+<script type="text/javascript" async src="https://play.vidyard.com/embed/v4.js"></script>
+
+{% if width == 'fixed' %}
+    {% if self.mode == 'image' %}
+       <img src="{{ image.url }}" class="{{ self.corners }} {{ self.shadow }}" alt="{{ image.alt }}">
+    {% elif self.mode == 'image-video' %}
+{#        <div class="video-cover {{ self.corners }} {{ self.shadow }}">#}
+
+{#            <div class="">#}
+                <img
+                  style="width: 100%; margin: auto; display: block;"
+                  class="vidyard-player-embed"
+                  src="https://play.vidyard.com/{{ self.video_id }}.jpg"
+                  data-uuid="{{ self.video_id }}"
+                  data-v="4"
+                  data-type="inline"
+                />
+{#            </div>#}
+
+{#        </div>#}
+    {% endif %}
+{% elif width == 'full' %}
+    <div class="background-image-holder">
+        <img src="{{ image.url }}" alt="{{ image.alt }}">
+    </div>
+    {% if self.mode == 'image-video' %}
+        <div class="modal-instance">
+            <div class="video-play-icon modal-trigger"></div>
+            <div class="modal-container">
+                <div class="modal-content bg-dark" data-width="60%" data-height="60%">
+                    <img
+                      style="width: 100%; margin: auto; display: block;"
+                      class="vidyard-player-embed"
+                      src="https://play.vidyard.com/{{ self.video_id }}.jpg"
+                      data-uuid="{{ self.video_id }}"
+                      data-v="4"
+                      data-type="inline"
+                      alt="{{ image.alt }}"
+                    />
+                </div>
+            </div>
+        </div>
+   {% endif %}
+{% elif width == 'three_column' %}
+    <div class="background-image-holder">
+        <img src="{{ image.url }}" alt="{{ image.alt }}">
+    </div>
+    {% if self.mode == 'image-video' %}
+        <div class="modal-instance">
+            <div class="video-play-icon modal-trigger"></div>
+            <div class="modal-container">
+                <div class="modal-content bg-dark" data-width="60%" data-height="60%">
+                    <img
+                      style="width: 100%; margin: auto; display: block;"
+                      class="vidyard-player-embed"
+                      src="https://play.vidyard.com/{{ self.video_id }}.jpg"
+                      data-uuid="{{ self.video_id }}"
+                      data-v="4"
+                      data-type="inline"
+                      alt="{{ image.alt }}"
+                    />
+                </div>
+            </div>
+        </div>
+   {% endif %}
+
+{% endif %}

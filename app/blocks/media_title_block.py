@@ -6,13 +6,14 @@ from app.widgets import CustomRadioSelect
 from .custom_choice_block import CustomChoiceBlock
 from .background_block import BackgroundBlock
 from .media_block import MediaBlock
+from .vidyard_media_block import VidyardMediaBlock
 from .multi_text_block import MultiTextBlock
 
 
 class MediaTitleBlock(StructBlock):
     layout = CustomChoiceBlock(choices=MEDIA_TITLE_LAYOUT_CHOICES, default=MEDIA_TITLE_LAYOUT_CHOICES[0][0], required=False, widget=CustomRadioSelect)
     switchable = CustomChoiceBlock(choices=SWITCHABLE_CHOICES, default=SWITCHABLE_CHOICES[0][0], required=False, widget=CustomRadioSelect)
-    media = MediaBlock()
+    media = VidyardMediaBlock()
     small_image = ImageChooserBlock(required=False, label='Small Image')
     vertical_alignment = CustomChoiceBlock(choices=VERTICAL_ALIGNMENT_CHOICES, default=VERTICAL_ALIGNMENT_CHOICES[0][0], required=False, widget=CustomRadioSelect, label='Vertical Alignment')
     text = MultiTextBlock()
