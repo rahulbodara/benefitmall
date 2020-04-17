@@ -95,6 +95,8 @@ class SiteSettingsMiddleware:
                 connect_src.append("https://*.vidyard.com")
                 frame_src.append("https://*.vidyard.com")
                 prefetch_src.append("https://*.vidyard.com")
+                # TODO - The browser doesn't support prefetch-src yet, so have to add to default-src for now.
+                default_src.append("https://*.vidyard.com")
 
             if 'gtm' in csp_exceptions:
                 # First include UA
