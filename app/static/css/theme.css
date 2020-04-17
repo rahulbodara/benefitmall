@@ -5835,6 +5835,9 @@ body.dropdowns--hover .nav-sidebar-column .dropdown:hover > .dropdown__container
 .imagebg .icon {
   color: #fff;
 }
+.imagebg .boxed .icon {
+  color: #000;
+}
 p .material-icons {
   font-size: 1em;
 }
