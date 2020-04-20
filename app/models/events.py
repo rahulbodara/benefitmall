@@ -84,7 +84,7 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		context = super().get_context(request, **kwargs)
 		self.additional_breadcrumbs = ['Past Events']
 
-		events = EventPage.objects.live().filter(start_datetime__lte=datetime.datetime.now())
+		events = EventPage.objects.live().filter(start_datetime__lte=datetime.datetime.now()).order_by('-start_datetime')
 
 		paginator = Paginator(events, 10)
 
