@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+    {% for block in page.body %}
+        {% include_block block %}
+    {% endfor %}
+
+
+<section class=" switchable switchable--switch space--xs">
+        <div class="container ">
+            <div class="row justify-content-around align-items-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="switchable__text">
+                        <h2>{{ location.name }}</h2>
+                        <div class="rich-text">
+                            <p>
+                                {{ location.address_1}} {{ location.address_2 }}<br/>
+                                {{ location.city }}, {{ location.state.abbreviation }} {{ location.postal_code }}
+                            </p>
+                            <p>
+                                {% if location.phone_number %}
+                                    <i class="icon icon-Telephone icon--xs align-middle"></i><span class="align-middle">Phone: <a href="tel:{{ location.phone_number }}">{{ location.phone_number }}</a></span><br/>
+                                {% endif %}
+                                {% if location.tollfree_number %}
+                                    <i class="icon icon-Telephone icon--xs align-middle"></i><span class="align-middle">Toll-Free: <a href="tel:{{ location.tollfree_number }}">{{ location.tollfree_number }}</a></span><br/>
+                                {% endif %}
+                                {% if location.fax_number %}
+                                    <i class="icon icon-Telephone icon--xs align-middle"></i><span class="align-middle">Fax: <a href="tel:{{ location.fax_number }}">{{ location.fax_number }}</a></span>
+                                {% endif %}
+                            </p>
+                            {% if location.description %}{{ location.description|safe }}{% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                   <div id="map" style="width: 100%; height: 340px;"></div>
+                    <script>
+                      var map;
+                      var location_latlng = {lat: {{ location.lat }}, lng: {{ location.lng }}};
+                      function initMap() {
+                        map = new google.maps.Map(document.getElementById('map'), {
+                          center: location_latlng,
+                          zoom: 10
+                        });
+                        var marker = new google.maps.Marker({
+                            position: location_latlng,
+                            map: map,
+                            title: '{{ location.name }}'
+                        });
+                      }
+                    </script>
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcIsRMK93v3BzIUBkzuI-sXT8Cla0e-D8&callback=initMap" async defer></script>
+                </div>
+            </div>
+        </div>
+</section>
+
+{% if team %}
+    <section class="text-center space--xs bg--secondary">
+        <div class="container ">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <h2>{{ location.name }} Sales Team</h2>
+                    <div class="rich-text"></div>
+                </div>
+            </div>
+            <div class="row">
+                {% for member in team %}
+                    <div class="col-md-4">
+                        <div class="feature feature-8">
+                            {% if member.photo %}
+                                {% image member.photo fill-200x200 as photo %}
+                                <img src="{{ photo.url }}" alt="{{ photo.alt }}">
+                            {% endif %}
+                            <h3>{{ member.first_name }} {{ member.last_name }}</h3>
+                            <span>{{ member.title }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}
+{% endblock %}

@@ -5,7 +5,8 @@ from app.widgets import CustomRadioSelect
 from .custom_choice_block import CustomChoiceBlock
 from .process_item_block import ProcessItemBlock
 from .background_block import BackgroundBlock
-from .media_block import MediaBlock
+# from .media_block import MediaBlock
+from .vidyard_media_block import MediaBlock
 
 
 class ProcessBlock(StructBlock):

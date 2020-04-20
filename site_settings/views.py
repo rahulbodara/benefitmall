@@ -75,7 +75,7 @@ def search(request):
 
         context['page'] = Page.objects.get(slug='home')
         context['results'] = results
-        context['results_count'] = len(results)
+        context['results_count'] = len(all_results)
         context['query'] = query
         return TemplateResponse(request, "search/search_results.html", context)
     else:

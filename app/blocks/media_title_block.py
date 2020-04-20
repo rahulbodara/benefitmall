@@ -5,7 +5,8 @@ from app.choices import SWITCHABLE_CHOICES, VERTICAL_ALIGNMENT_CHOICES, MEDIA_TI
 from app.widgets import CustomRadioSelect
 from .custom_choice_block import CustomChoiceBlock
 from .background_block import BackgroundBlock
-from .media_block import MediaBlock
+# from .media_block import MediaBlock
+from .vidyard_media_block import MediaBlock
 from .multi_text_block import MultiTextBlock
 
 

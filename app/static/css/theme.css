@@ -4771,7 +4771,7 @@ section.parallax .row .background-image-holder {
   font-family: 'Open Sans', 'Roboto', 'Helvetica', Sans-Serif;
 }
 .bar .logo {
-  max-height: 51px;
+  max-height: 72px;
   max-width: none;
 }
 .menu-horizontal > li > a,
@@ -5835,6 +5835,9 @@ body.dropdowns--hover .nav-sidebar-column .dropdown:hover > .dropdown__container
 .imagebg .icon {
   color: #fff;
 }
+.imagebg .boxed .icon {
+  color: #000;
+}
 p .material-icons {
   font-size: 1em;
 }
@@ -6053,6 +6056,7 @@ p .material-icons:first-child {
 .feature img + .boxed {
   border-radius: 0 0 6px 6px;
   border-top: none;
+  min-height: 18em;
 }
 a.feature {
   display: block;
@@ -6342,10 +6346,10 @@ a.block:hover > .feature {
   margin-bottom: 2.73684211em;
 }
 @media all and (min-width: 768px) {
-  .feature-large-2 div[class*='col-']:not(.three-column-image):first-child {
+  .feature-large-2 div[class*='col-']:first-child {
     margin-top: 5.57142857em;
   }
-  .feature-large-2 div[class*='col-']:not(.three-column-image):last-child {
+  .feature-large-2 div[class*='col-']:last-child {
     margin-top: 7.42857143em;
   }
 }
@@ -6414,6 +6418,7 @@ a.block:hover > .feature {
 .accordion li.active .accordion__content {
   animation: fadeUp 0.5s ease forwards;
   -webkit-animation: fadeUp 0.5s ease forwards;
+  max-height: 1000px;
 }
 .accordion-1 li.active .accordion__title {
   border-color: #016faf;
@@ -9433,7 +9438,7 @@ footer.footer-7 {
   margin-inline-end: 1em;
 }
 .rich-text li {
-  list-style: none;
+  list-style: disc;
 }
 .sitemap ul {
   margin-inline-start: 1em;

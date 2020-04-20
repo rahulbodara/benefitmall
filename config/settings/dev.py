@@ -1,6 +1,9 @@
 from .base import *
 
 DEBUG = True
+# USE_CSP_HEADER = True
+# USE_CSP_EXCEPTIONS = 'jquery,typekit,googlefonts,googlemaps,youtube,gtm,gtm_preview,gtm_custom_vars,salesforce,vidyard'
+
 
 #SECRET_KEY = '8*p^q5c)7^&6wi62p^n$a#t+9et(##28k$&m^jrinf!wqmq)%2'
 from dotenv import load_dotenv

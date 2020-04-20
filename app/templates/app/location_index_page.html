@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+    {% for block in page.body %}
+        {% include_block block %}
+    {% endfor %}
+
+<section class="space--xxs"}>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+               <div id="map" style="width: 100%; height: 340px;"></div>
+                <script>
+                  var map;
+                  function initMap() {
+                      var location_latlng = {lat: {{ markers.0.lat }}, lng: {{ markers.0.lng }}};
+                      var mapBounds = new google.maps.LatLngBounds();
+                    map = new google.maps.Map(document.getElementById('map'), {
+                        center: location_latlng,
+                        zoom: 10
+                    });
+                    {% for marker in markers %}
+                      var marker{{ forloop.counter0 }} = new google.maps.Marker({position: {lat: {{ marker.lat }}, lng: {{ marker.lng }}}, map: map, title: '{{ marker.name }}'});
+                      mapBounds.extend(new google.maps.LatLng({{ marker.lat }},{{ marker.lng }}));
+                    {% endfor %}
+                    map.fitBounds(mapBounds);
+                  }
+                </script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcIsRMK93v3BzIUBkzuI-sXT8Cla0e-D8&callback=initMap" async defer></script>
+            </div>
+        </div>
+    </div>
+</section>
+
+    {% for abbr, state in states.items %}
+        <section class="space--xxs"}>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <h3>{{ state.name }}</h3>
+                    </div>
+                </div>
+                <div class="row">
+                {% for loc in state.locations %}
+
+                    <div class="col-md-4">
+                        <div class="feature ">
+                            <h4><a href="{{ page.get_url }}{{ loc.get_url_slug }}">{{ loc.name }}</a></h4>
+                            <p>
+                                {{ loc.address_1}} {{ loc.address_2 }}<br/>
+                                {{ loc.city }}, {{ loc.state.abbreviation }} {{ loc.postal_code }}<br/>
+                                {% if loc.phone_number %}
+                                    <i class="icon icon-Telephone icon--xs align-middle"></i><span class="align-middle">Phone: <a href="tel:{{ loc.phone_number }}">{{ loc.phone_number }}</a></span><br/>
+                                {% endif %}
+                                {% if loc.tollfree_number %}
+                                    <i class="icon icon-Telephone icon--xs align-middle"></i><span class="align-middle">Toll-Free: <a href="tel:{{ loc.tollfree_number }}">{{ loc.tollfree_number }}</a></span><br/>
+                                {% endif %}
+                                {% if loc.fax_number %}
+                                    <i class="icon icon-Telephone icon--xs align-middle"></i><span class="align-middle">Fax: <a href="tel:{{ loc.fax_number }}">{{ loc.fax_number }}</a></span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                {% endfor %}
+                </div>
+            </div>
+        </section>
+    {% endfor %}
+
+{% endblock %}

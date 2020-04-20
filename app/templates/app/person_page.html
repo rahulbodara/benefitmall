@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+<section class="switchable feature-large switchable switchable--switch">
+    <div class="container">
+        <div class="row justify-content-between">
+            {% if person.photo %}
+                {% image person.photo fill-540x700 as image %}
+                <div class="col-md-6">
+                    <img src="{{ image.url }}" alt="{{ image.alt }}" class="border--round">
+                    {% if person.show_email %}
+                        <div class="text-center">
+                            <i class="icon icon-Email icon--xs align-middle"></i>
+                            <a href="mailto:{{ person.email }}" class="align-middle">{{ person.email }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+            <div class="col-md-6 col-lg-5">
+                <div class="switchable__text">
+                    <div class="text-block">
+                        <h2>{{ person.first_name }} {{ person.last_name }}</h2>
+                        <span>{{ person.title }}</span>
+                    </div>
+                    {{ person.bio|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

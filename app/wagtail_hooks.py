@@ -29,7 +29,7 @@ from app.widgets.custom_radio_select import CustomRadioSelect
 from app.models.events import EventPage, EventRegistration
 from app.models.news import NewsPage
 from app.models.notifications import Notification
-
+from app.models.people import BusinessType, State, Division, Person, Location
 
 @register_setting(icon='cogs')
 class HeaderFooter(BaseSetting):
@@ -360,4 +360,40 @@ class NotificationAdmin(ModelAdmin):
     search_fields = ('header', 'body', )
 
 modeladmin_register(NotificationAdmin)
+
+
+from app.models.people import BusinessType, State, Division, Person, Location
+
+
+
+class BusinessTypeAdmin(ModelAdmin):
+    model = BusinessType
+    menu_label = 'Business Types'
+    menu_icon = 'fa-address-book-o'
+
+
+class DivisionAdmin(ModelAdmin):
+    model = Division
+    menu_label = 'Divisions'
+    menu_icon = 'fa-briefcase'
+
+
+class LocationAdmin(ModelAdmin):
+    model = Location
+    menu_label = 'Locations'
+    menu_icon = 'fa-building-o'
+
+
+class PersonAdmin(ModelAdmin):
+    model = Person
+    menu_label = 'People'
+    menu_icon = 'fa-users'
+
+
+class PeoplePlacesAdminGroup(ModelAdminGroup):
+    menu_label = 'People & Places'
+    menu_icon = 'fa-cogs'
+    items = (PersonAdmin, LocationAdmin, DivisionAdmin, BusinessTypeAdmin, )
+
+modeladmin_register(PeoplePlacesAdminGroup)
 

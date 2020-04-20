@@ -34,7 +34,7 @@
         </div>
     </section>
 {% elif self.layout == 'three_column'%}
-     <section class="feature-large feature-large-2 {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+     <section class="feature-large {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
         {% include_block self.background %}
         <div class="container">
             <div class="row justify-content-between {{ self.vertical_alignment }}">
@@ -42,11 +42,11 @@
                     {% include_block self.media with width=self.layout %}
                 </div>
 {#                <div class="col-md-1"></div>#}
-                <div class="col-md-4 three-column-copy">
+                <div class="col-md-4">
                     {% include_block self.text %}
                 </div>
 {#                <div class="col-md-1"></div>#}
-                <div class="col-md-2 three-column-image">
+                <div class="col-md-2 text-center-md">
                     <img alt="Image" src="{{ small_image.url }}" style="max-width: 158px">
                 </div>
             </div>

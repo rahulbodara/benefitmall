@@ -161,10 +161,17 @@ def render_breadcrumbs(context, calling_page: Page):
     if not site_settings.show_breadcrumbs:
         return ''
 
+    additional_breadcrumb_page_types = [
+        'EventIndexPage',
+        'NewsIndexPage',
+        'LocationIndexPage',
+        'PersonIndexPage',
+    ]
+
     menuitems = [m for m in calling_page.get_ancestors(True)][1:]
     if len(menuitems) <= 1:
         return ''
-    if calling_page.specific.__class__.__name__ == 'EventIndexPage' or calling_page.specific.__class__.__name__ == 'NewsIndexPage':
+    if calling_page.specific.__class__.__name__ in additional_breadcrumb_page_types:
         menuitems.extend(calling_page.specific.additional_breadcrumbs)
 
     breadcrumb_context = {

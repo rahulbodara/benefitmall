@@ -6,7 +6,7 @@ from .link_block import LinkBlock
 
 class IconFeatureItemBlock(StructBlock):
     header = CharBlock()
-    text = RichTextBlock()
+    text = RichTextBlock(required=False)
     icon = CharBlock(help_text=format_html('Choose an icon from the <a target="_blank" href="/admin/icon-reference/">Icon Reference page</a>'))
     link = LinkBlock()
 
