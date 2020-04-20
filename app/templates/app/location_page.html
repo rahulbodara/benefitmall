@@ -73,7 +73,11 @@
                                 {% image member.photo fill-200x200 as photo %}
                                 <img src="{{ photo.url }}" alt="{{ photo.alt }}">
                             {% endif %}
-                            <h3>{{ member.first_name }} {{ member.last_name }}</h3>
+                            <h3>
+                                <a href="/bios/{{ member.get_url_slug }}">
+                                    {{ member.first_name }} {{ member.last_name }}
+                                </a>
+                            </h3>
                             <span>{{ member.title }}</span>
                         </div>
                     </div>
