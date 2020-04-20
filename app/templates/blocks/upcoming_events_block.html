@@ -1,0 +1,21 @@
+{% load wagtailcore_tags app_tags %}
+{% get_recent_events page as events %}
+{% if events %}
+    <section>
+        <div class="container">
+            <h2 class="text-center">Upcoming Events</h2>
+            <div class="row">
+                {% for event in events %}
+                    <div class="col-md-4">
+                        <div class="feature">
+                            <div class="pt-3 pl-2 pr-2">
+                                <div>{{ event.start_datetime|date:'F jS, Y' }}</div>
+                                <h4><a href="{{ event.get_url }}">{{ event.title }}</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}

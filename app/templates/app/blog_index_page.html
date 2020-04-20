@@ -1,78 +1,108 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load wagtailcore_tags %}
-{% load wagtailimages_tags %}
-{% load app_tags %}
+{% load wagtailcore_tags wagtailimages_tags app_tags %}
 
 {% block content %}
-<section class="space--sm">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10 col-lg-8">
-                <div class="masonry-blog-list">
+    {% for block in page.body %}
+        {% include_block block %}
+    {% endfor %}
 
-                    {% if search_type == 'date' %}
-                    <p class="lead .type--bold .type--uppercase text-center">Showing {{ posts.count }} posts from {{ search_term }}</p>
-                    {% else %}
-                    <div class="masonry-filter-container text-center d-flex justify-content-center align-items-center">
-                        <span>Category:</span>
-                        <div class="masonry-filter-holder">
-                            <div class="masonry__filters">
-                                <ul>
-                                    {% if search_type != 'category' %}<li class="active">{% else %}<li>{% endif %}
-                                    	<a href="{% pageurl page %}">All</a>
-                                    </li>
-                                    {% for category in page.get_categories %}
-                                		{% if search_type == 'category' and search_term == category.slug %}<li class="active">{% else %}<li>{% endif %}
-                                			<a href="{% pageurl page %}category/{{ category.slug }}">{{ category.name }}</a>
-                                		</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+    <section class="space--xs">
+        <div class="container">
+
+            <div class="row">
+                <div style="float:left; margin-left:20px;" class="masonry-filter-container text-center d-flex justify-content-center align-items-center">
+                    <span class="type--bold">Category:</span>
+                    <div class="masonry-filter-holder">
+                        <div class="masonry__filters">
+                            <ul>
+                                {% if page.filter_category %}
+                                    <li><a href="?{% query_transform _remove='category|page' %}">All</a></li>
+                                {% else %}
+                                    <li class="active type--bold">All</li>
+                                {% endif %}
+
+                                 {% for category in page.get_categories %}
+                                     {% if category == page.filter_category %}
+                                         <li class="active type--bold">{{ category }}</li>
+                                     {% else %}
+                                         <li><a href="?{% query_transform category=category.slug _remove='page' %}">{{ category }}</a></li>
+                                     {% endif %}
+                                 {% endfor %}
+                            </ul>
                         </div>
                     </div>
-                    {% endif %}
-                    <hr>
+                </div>
+                <div style="float:left; margin-left:20px;" class="masonry-filter-container text-center d-flex justify-content-center align-items-center">
+                    <span class="type--bold">Tag:</span>
+                    <div class="masonry-filter-holder">
+                        <div class="masonry__filters">
+                            <ul>
+                                {% if page.filter_tag %}
+                                    <li><a href="?{% query_transform _remove='tag|page' %}">All</a></li>
+                                {% else %}
+                                    <li class="active type--bold">All</li>
+                                {% endif %}
 
-					{% for post in paginated_posts %}
-                        <article class="masonry__item">
-                            <div class="article__title text-center">
-                                <a href="#">
-                                    <h2>{{ post.title }}</h2>
-                                </a>
-                                <span>{{ post.date|date:'F jS, Y' }}</span>
-                                {% if post.categories.exists %}
-	                                <span> in </span>
-			                        {% for category in post.categories.all %}
-			                            <span><a href="{% pageurl page %}category/{{ category.slug }}">{{ category }}</a>{% if not forloop.last %},{% endif %}</span>
-			                        {% endfor %}
-		                        {% endif %}
-                            </div>
-                            <div class="article__body">
-                            	{% image post.image original as image %}
-                                <a href="{{ post.url }}"><img src="{{ image.url }}" alt="{{ image.alt "></a>
-                                <p>{{ post.excerpt }}</p>
-                                <a href="{{ post.url }}">Continue reading »</a> 
-                            </div>
-                        </article>
-					{% endfor %}
-
-                    <div class="pagination">
-                    	{% if paginated_posts.has_previous %}
-                        <a class="pagination__prev" href="?page={{ paginated_posts.previous_page_number }}" title="Previous Page">« Previous</a>
-                        {% endif %}
-                        <ol>
-                        	{% for page_num in paginated_posts.paginator.page_range %}
-                            <li {% if page_num == paginated_posts.number %}class="pagination__current"{% endif %}><a href="?page={{ page_num }}">{{ page_num }}</a></li>
-                            {% endfor %}
-                        </ol>
-                        {% if paginated_posts.has_next %}
-                        <a class="pagination__next" href="?page={{ paginated_posts.next_page_number }}" title="Next Page">Next »</a> 
-                        {% endif %}
+                                 {% for tag in page.get_tags %}
+                                     {% if tag == page.filter_tag %}
+                                         <li class="active type--bold">{{ tag }}</li>
+                                     {% else %}
+                                         <li><a href="?{% query_transform tag=tag.slug _remove='page' %}">{{ tag }}</a></li>
+                                     {% endif %}
+                                 {% endfor %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            {% if page.filter_category or page.filter_tag %}
+            <h2 class="text-center">{{ page.filter_category|default:"" }} {% if page.filter_category and page.filter_tag %}&{% endif %} {{ page.filter_tag|default:"" }}</h2>
+            {% endif %}
+
+            <div class="row">
+                {% for blog in page.blogs %}
+                    <div class="col-md-4">
+                        <div class="feature">
+                            <a href="{{ blog.get_url }}"><img src="{{ blog.image.file.url }}" alt="{{ blog.image.title }}" class="border--round"></a>
+                            <div class="pt-3 pl-2 pr-2">
+                                <div>{{ blog.date|date:'F jS, Y' }}</div>
+                                <h4><a href="{{ blog.get_url }}">{{ blog.title }}</a></h4>
+                                <p>{{ blog.excerpt }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <h4>No blog articles found.</h4>
+                {% endfor %}
+            </div>
+
+            {% if page.blogs.paginator.num_pages > 1 %}
+                <div class="pagination">
+                    {% if page.blogs.has_previous %}
+                        <a style="float:none;" href="?{% query_transform page=page.blogs.previous_page_number %}" class="pagination__prev">« Prev</a>
+                    {% endif %}
+
+                    {% for page_num in page.blogs.paginator.page_range %}
+                        <ol>
+                            {% if page_num == page.blogs.number %}
+                                <li class="pagination__current">{{ page_num }}</li>
+                            {% else %}
+                                <li><a href="?{% query_transform page=page_num %}">{{ page_num }}</a></li>
+                            {% endif %}
+                        </ol>
+                    {% endfor %}
+
+                    {% if page.blogs.has_next %}
+                        <a style="float:none;" href="?{% query_transform page=page.blogs.next_page_number %}" class="pagination__next">Next »</a>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
-    </div>
-</section>
+    </section>
+
+    {% for block in page.body_below %}
+        {% include_block block %}
+    {% endfor %}
 {% endblock %}

@@ -1,0 +1,21 @@
+{% load wagtailcore_tags app_tags %}
+{% get_recent_news page as news %}
+{% if news %}
+    <section>
+        <div class="container">
+            <h2 class="text-center">Recent Press Releases</h2>
+            <div class="row">
+                {% for item in news %}
+                    <div class="col-md-4">
+                        <div class="feature">
+                            <div class="pt-3 pl-2 pr-2">
+                                <div>{{ item.news_datetime|date:'F jS, Y' }}</div>
+                                <h4><a href="{{ item.get_url }}">{{ item.title }}</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}

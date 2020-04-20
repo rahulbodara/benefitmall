@@ -20,16 +20,11 @@ from wagtail.core.fields import StreamField
 from app.views import IconReference
 from app.models import Icon
 
-from wagtail.core.fields import RichTextField
 from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES, BACKGROUND_MODE_CHOICES_NO_IMAGE
 from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, HeaderUtilityStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
-from app.blocks.custom_choice_block import CustomChoiceBlock
-from app.widgets.custom_radio_select import CustomRadioSelect
 
-from app.models.events import EventPage, EventRegistration
-from app.models.news import NewsPage
-from app.models.notifications import Notification
-from app.models.people import BusinessType, State, Division, Person, Location
+from app.models import EventPage, EventRegistration, NewsPage, BlogPage, Notification, BusinessType, State, Division, Person, Location
+
 
 @register_setting(icon='cogs')
 class HeaderFooter(BaseSetting):
@@ -264,7 +259,7 @@ def register_icon_reference_menu_item():
 class EventPageAdmin(ModelAdmin):
     model = EventPage
     menu_label = 'Events'
-    menu_icon = 'date'
+    menu_icon = 'fa-calendar'
     exclude_from_explorer = True
     list_display = ('get_title', 'event_type', 'location_type', 'start_datetime', 'registrations')
     list_filter = ('location_type', 'event_type', 'address_city', 'address_state', )
@@ -344,11 +339,33 @@ class NewsPageAdmin(ModelAdmin):
     menu_label = 'Press Releases'
     menu_icon = 'fa-newspaper-o'
     exclude_from_explorer = True
-    list_display = ('title', 'news_datetime', )
-    list_filter = ('news_datetime', )
-    search_fields = ('title', 'body', )
+    list_display = ('title', 'news_datetime')
+    list_filter = ('news_datetime',)
+    search_fields = ('title', 'body')
 
 modeladmin_register(NewsPageAdmin)
+
+
+class BlogPageAdmin(ModelAdmin):
+    model = BlogPage
+    menu_label = 'Blogs'
+    menu_icon = 'fa-rss'
+    exclude_from_explorer = True
+    list_display = ('title', 'date', 'get_categories', 'get_tags')
+    list_filter = ('date', 'live', 'categories')
+    search_fields = ('title', 'body')
+
+    def get_categories(self, obj):
+        return [category for category in obj.categories.all()]
+    get_categories.short_description = 'Categories'
+    get_categories.admin_order_field = 'categories'
+
+    def get_tags(self, obj):
+        return [tag for tag in obj.tags.all()]
+    get_tags.short_description = 'Tags'
+    get_tags.admin_order_field = 'tags'
+
+modeladmin_register(BlogPageAdmin)
 
 
 class NotificationAdmin(ModelAdmin):
