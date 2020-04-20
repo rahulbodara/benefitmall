@@ -1,60 +1,30 @@
 from __future__ import unicode_literals
 import datetime
 
-from datetime import date
-
 from django import forms
 from django.db import models
 from django.http import Http404
-from django.utils.dateformat import DateFormat
-from django.utils.formats import date_format
-from django.utils.html import format_html, strip_tags
+from django.utils.html import format_html
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.forms.utils import ErrorList
-from django.core.exceptions import ValidationError
+from django.shortcuts import redirect
 
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, TabbedInterface, ObjectList
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, TabbedInterface, ObjectList, StreamFieldPanel
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
-from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from taggit.models import TaggedItemBase
+
 from site_settings.models import AbstractBasePage
 
-from modelcluster.fields import ParentalManyToManyField
-
-from app.widgets import CustomRadioSelect
-from .pages import DefaultPage
+from app.models import DefaultPage
 
 
 class BlogIndexPage(RoutablePageMixin, DefaultPage):
-    PAGINATION_CHOICES = (
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, '5'),
-        (6, '6'),
-        (7, '7'),
-        (8, '8'),
-        (9, '9'),
-        (10, '10'),
-    )
-    pagination = models.IntegerField(default=5, choices=PAGINATION_CHOICES, help_text='Choose how many posts appear per page')
-
-    content_panels = DefaultPage.content_panels + [
-        MultiFieldPanel([
-            FieldPanel('pagination'),
-        ], heading='Settings')
-    ]
-
-    edit_handler = TabbedInterface([
-        ObjectList(content_panels, heading='Content'),
-        AbstractBasePage.meta_panels,
-    ])
-
-    subpage_types = ['BlogPage']
+    subpage_types = ['app.BlogPage']
 
     class Meta:
         verbose_name = 'Blog Index Page'
@@ -65,100 +35,93 @@ class BlogIndexPage(RoutablePageMixin, DefaultPage):
         # Only allow one child instance
         return super(BlogIndexPage, cls).can_create_at(parent) and not cls.objects.child_of(parent).exists()
 
-    def get_context(self, request, *args, **kwargs):
-        context = super(BlogIndexPage, self).get_context(request, *args, **kwargs)
-        context['posts'] = self.posts
-        context['search_type'] = getattr(self, 'search_type', '')
-        context['search_term'] = getattr(self, 'search_term', '')
-
-        paginator = Paginator(self.posts, self.pagination)
-        page = request.GET.get('page')
-        try:
-            paginated_posts = paginator.page(page)
-        except PageNotAnInteger:
-            paginated_posts = paginator.page(1)
-        except EmptyPage:
-            paginated_posts = paginator.page(paginator.num_pages)
-        context['paginated_posts'] = paginated_posts
-        return context
-
-    def get_posts(self):
-        return BlogPage.objects.live().order_by('-date')
-
     def get_categories(self):
         return BlogCategory.objects.order_by('name')
 
+    def get_tags(self):
+        return [tag.tag for tag in BlogTag.objects.order_by('tag__name')]
+
+    @route(r'^$')
     @route(r'^(\d{4})/$')
     @route(r'^(\d{4})/(\d{2})/$')
     @route(r'^(\d{4})/(\d{2})/(\d{2})/$')
-    def post_by_date(self, request, year, month=None, day=None, *args, **kwargs):
-        self.posts = self.get_posts().filter(date__year=year)
-        self.search_type = 'date'
-        self.search_term = year
+    def blogs_list(self, request, year=None, month=None, day=None, *args, **kwargs):
+        blogs = BlogPage.objects.live().order_by('-date', '-last_published_at')
+
+        # Handle category filter
+        self.filter_category = request.GET.get('category', None)
+        if self.filter_category:
+            blog_category = BlogCategory.objects.filter(slug=self.filter_category).first()
+            if blog_category:
+                self.filter_category = blog_category
+                blogs = blogs.filter(categories=self.filter_category)
+            else:
+                self.filter_category = None
+
+        # Handle tag filter
+        self.filter_tag = request.GET.get('tag', None)
+        if self.filter_tag:
+            blog_tag = BlogTag.objects.filter(tag__slug=self.filter_tag).first()
+            if blog_tag:
+                self.filter_tag = blog_tag.tag
+                blogs = blogs.filter(tags=self.filter_tag)
+            else:
+                self.filter_tag = None
+
+        # Handle date filter
+        self.filter_date = None
+        if year:
+            blogs = blogs.filter(date__year=year)
+            self.filter_date = datetime.datetime.today().replace(year=int(year), month=1, day=1)
         if month:
-            self.posts = self.posts.filter(date__month=month)
-            df = DateFormat(date(int(year), int(month), 1))
-            self.search_term = df.format('F Y')
+            blogs = blogs.filter(date__month=month)
+            self.filter_date = self.filter_date.replace(month=int(month))
         if day:
-            self.posts = self.posts.filter(date__day=day)
-            self.search_term = date_format(date(int(year), int(month), int(day)))
+            blogs = blogs.filter(date__day=day)
+            self.filter_date = self.filter_date.replace(day=int(day))
+
+        # Handle pagination
+        paginator = Paginator(blogs, 12)
+        try:
+            # Return linked page
+            self.blogs = paginator.page(request.GET.get('page'))
+        except PageNotAnInteger:
+            # Return first page
+            self.blogs = paginator.page(1)
+        except EmptyPage:
+            # Return last page
+            self.blogs = paginator.page(paginator.num_pages)
+
         return Page.serve(self, request, *args, **kwargs)
 
     @route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
-    def post_by_date_slug(self, request, year, month, day, slug, *args, **kwargs):
-        post_page = self.get_posts().filter(slug=slug).first()
-        if not post_page:
+    def blog_page_detail(self, request, year, month, day, slug, *args, **kwargs):
+        blog_page = BlogPage.objects.live().filter(date__year=year, date__month=month, date__day=day, slug=slug).first()
+        if not blog_page:
             raise Http404
-        return Page.serve(post_page, request, *args, **kwargs)
 
-    @route(r'^category/(?P<category>[-\w]+)/$')
-    def post_by_category(self, request, category, *args, **kwargs):
-        self.search_type = 'category'
-        self.search_term = category
-        self.posts = self.get_posts().filter(categories__slug=category)
-        print('POSTS:', self.posts)
-        return Page.serve(self, request, *args, **kwargs)
-
-    @route(r'^$')
-    def post_list(self, request, *args, **kwargs):
-        self.posts = self.get_posts()
-        return Page.serve(self, request, *args, **kwargs)
-
-    @route(r'^search/$')
-    def post_search(self, request, *args, **kwargs):
-        search_query = request.GET.get('q', None)
-        self.posts = self.get_posts()
-        if search_query:
-            self.posts = self.posts.filter(body__contains=search_query)
-            self.search_term = search_query
-            self.search_type = 'search'
-        return Page.serve(self, request, *args, **kwargs)
+        self.additional_breadcrumbs = [({'title': blog_page.title, 'url': blog_page.get_url()})]
+        return Page.serve(blog_page, request, *args, **kwargs)
 
 
-class BlogPage(DefaultPage):
-    VIDEO_SOURCE_CHOICES = (
-        ('', 'None'),
-        ('https://www.youtube.com/embed/', 'YouTube'),
-        ('https://player.vimeo.com/video/', 'Vimeo'),
-    )
-    categories = ParentalManyToManyField('BlogCategory', blank=True, help_text=format_html('Manage categories using the <a href="/admin/snippets/app/blogcategory/">Snippets &raquo; Categories</a> option in the sidebar'))
+class BlogPage(RoutablePageMixin, DefaultPage):
     date = models.DateTimeField(default=datetime.datetime.today, help_text='Date displayed to the public, not related to scheduled publishing dates')
-    image = models.ForeignKey('wagtailimages.Image', verbose_name='Header Image', null=True, on_delete=models.SET_NULL, related_name='+', help_text='Header image also used as thumbnail')
-    video_source = models.CharField(verbose_name='Header Video Source', null=True, blank=True, max_length=50, choices=VIDEO_SOURCE_CHOICES, default='', help_text='The source of the hosted header video')
-    video_id = models.CharField(verbose_name='Header Video ID', max_length=50, null=True, blank=True, help_text='The unique id from the selected source above. Should only consist of alphanumeric characters. Ex: 86036070')
-    excerpt = models.CharField(max_length=1000, blank=True, help_text='A teaser description of the content limited to 1000 characters')
-    content = RichTextField(features=['h2', 'h3', 'h4', 'h5', 'h6', 'bold', 'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed'])
+    image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+', help_text='Hero image also used as thumbnail')
+    excerpt = models.CharField(max_length=1000, help_text='Short description of the content limited to 1000 characters')
+    author = models.CharField(max_length=200, blank=True, null=True)
+    categories = ParentalManyToManyField('BlogCategory', blank=True, help_text=format_html('Manage categories using the <a href="/admin/snippets/app/blogcategory/">Snippets &raquo; Categories</a> option in the sidebar'))
+    tags = ClusterTaggableManager(through='BlogTag', blank=True)
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
-            FieldPanel('categories', classname='blog-categories', widget=forms.CheckboxSelectMultiple),
             FieldPanel('date'),
             ImageChooserPanel('image'),
-            FieldPanel('video_source', classname='blog-video-source', widget=forms.RadioSelect),
-            FieldPanel('video_id'),
             FieldPanel('excerpt', widget=forms.Textarea),
+            FieldPanel('author'),
+            FieldPanel('categories', classname='blog-categories', widget=forms.CheckboxSelectMultiple),
+            FieldPanel('tags'),
         ], heading='Info', classname='collapsible'),
-        FieldPanel('content', classname='full'),
+        StreamFieldPanel('body'),
     ]
 
     edit_handler = TabbedInterface([
@@ -169,33 +132,21 @@ class BlogPage(DefaultPage):
     parent_page_types = ['BlogIndexPage']
     subpage_types = []
 
+    @route(r'^$')
+    def redirect_to_detail_view(self, request, *args, **kwargs):
+        return redirect(self.get_url())
+
     @property
-    def blog_landing_page(self):
+    def get_blog_index_page(self):
         return self.get_parent().specific
 
-    def clean(self):
-        cleaned_data = super().clean()
-        errors = {}
-        if self.video_source and not self.video_id:
-            errors['video_id'] = ErrorList(['This field is required.'])
-        if len(errors) > 0:
-            raise ValidationError(errors)
-        if not self.excerpt:
-            # Build excerpt from content
-            excerpt = self.content
-            # Strip tags and slice to 350 characters
-            excerpt = strip_tags(excerpt)[:350]
-            # Split by a max of 50 words
-            excerpt = excerpt.split(' ', 50)
-            # Join the first 49 words, add an ellipsis
-            self.excerpt = ' '.join(excerpt[:49]) + '...'
-        return cleaned_data
+    def get_url(self):
+        return '{}{}{}/'.format(self.get_blog_index_page.url, self.date.strftime('%Y/%m/%d/'), self.slug)
 
-    def get_context(self, request, *args, **kwargs):
-        context = super(BlogPage, self).get_context(request, *args, **kwargs)
-        context['blog_landing_page'] = self.blog_landing_page
-        context['post'] = self
-        return context
+    def get_full_url(self, request=None):
+        url_parts = self.get_url_parts(request=request)
+        site_id, root_url, page_path = url_parts
+        return root_url + self.get_url()
 
 
 @register_snippet
@@ -218,3 +169,5 @@ class BlogCategory(models.Model):
         verbose_name_plural = 'Categories'
 
 
+class BlogTag(TaggedItemBase):
+    content_object = ParentalKey('BlogPage', on_delete=models.CASCADE, related_name='tagged_items')

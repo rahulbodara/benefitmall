@@ -29,6 +29,9 @@ from .pricing_block import PricingBlock
 from .link_block import LinkBlock
 from .contact_map_block import ContactMapBlock
 from .sitemap_block import SitemapBlock
+from .recent_blogs_block import RecentBlogsBlock
+from .recent_news_block import RecentNewsBlock
+from .upcoming_events_block import UpcomingEventsBlock
 # settings
 from .settings.header_block import HeaderBlock
 from .header_footer.header_block import HeaderLinkBlock, HeaderButtonBlock
@@ -65,6 +68,10 @@ class DefaultStreamBlock(StreamBlock):
     lead_from_block = LeadFormBlock()
     contact_map = ContactMapBlock()
     sitemap = SitemapBlock()
+    recent_blogs_block = RecentBlogsBlock()
+    recent_news_block = RecentNewsBlock()
+    upcoming_events_block = UpcomingEventsBlock()
+
 
 class HeaderLinkStreamBlock(StreamBlock):
     header_link_block = HeaderLinkBlock()
@@ -72,6 +79,7 @@ class HeaderLinkStreamBlock(StreamBlock):
 
 class HeaderButtonStreamBlock(StreamBlock):
     header_button_block = HeaderButtonBlock()
+
 
 class HeaderUtilityStreamBlock(StreamBlock):
     utility_link = LinkBlock()
@@ -87,6 +95,7 @@ class FooterButtonStreamBlock(StreamBlock):
 
 class FooterUtilityLinkStreamBlock(StreamBlock):
     footer_utility_link_block = FooterUtilityLinkBlock()
+
 
 class FooterCategoryLinkStreamBlock(StreamBlock):
     footer_category_link_block = FooterCategoryBlock();
