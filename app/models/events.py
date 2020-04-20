@@ -39,13 +39,14 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		FieldPanel('body'),
 	]
 
-    # Tabs
+	# Tabs
 	edit_handler = TabbedInterface([
 		ObjectList(content_panels, heading='Content'),
 		AbstractBasePage.meta_panels,
 	])
 
 	subpage_types = ['app.EventPage']
+	additional_breadcrumbs = []
 
 	@route(r'^$')
 	@route(r'^(\d{4})/$')
@@ -86,6 +87,30 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		context['featured_event_bg'] = header_footer.featured_event_bg
 		context['featured_event'] = featured_event
 		context['events'] = events
+		context['additional_breadcrumbs'] = []
+		return TemplateResponse(request, self.get_template(request), context)
+
+	@route(r'^past-events/$')
+	def past_events_list(self, request, *args, **kwargs):
+		context = super().get_context(request, **kwargs)
+		self.additional_breadcrumbs = ['Past Events']
+
+		events = EventPage.objects.live().filter(start_datetime__lte=datetime.datetime.now())
+
+		paginator = Paginator(events, 10)
+
+		try:
+			# Return linked page
+			events = paginator.page(request.GET.get('page'))
+		except PageNotAnInteger:
+			# Return first page
+			events = paginator.page(1)
+		except EmptyPage:
+			# Return last page
+			events = paginator.page(paginator.num_pages)
+
+		context['events'] = events
+		context['past_events_route'] = True
 		return TemplateResponse(request, self.get_template(request), context)
 
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
