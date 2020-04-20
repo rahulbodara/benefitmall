@@ -2,9 +2,11 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
-{% for block in page.body %}
-    {% include_block block %}
-{% endfor %}
+    {% if not past_events_route %}
+        {% for block in page.body %}
+            {% include_block block %}
+        {% endfor %}
+    {% endif %}
 
 <style>
     .calendar {
@@ -76,47 +78,55 @@
     </section>
 {% endif %}
 
-
-
-
+{% if past_events_route %}
+    <section class="text-center space--xxs">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <h1>Past Events</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
 
 {% for event in events %}
-    {% if event.is_active %}
-<section class="space--sm {% if not forloop.counter|divisibleby:2 %} bg--secondary{% endif %}">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="text-block">
-                    <div class="calendar">
-                        <div class="month">{{ event.start_datetime|date:'F' }}</div>
-                        <div class="date">
-                            <div class="weekday">{{ event.start_datetime|date:'D' }}</div>
-                            <div class="day">{{ event.start_datetime|date:'j' }}</div>
+    {% if event.is_active or past_events_route %}
+        <section class="space--sm {% if not forloop.counter|divisibleby:2 %} bg--secondary{% endif %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="text-block">
+                            <div class="calendar">
+                                <div class="month">{{ event.start_datetime|date:'F' }}</div>
+                                <div class="date">
+                                    <div class="weekday">{{ event.start_datetime|date:'D' }}</div>
+                                    <div class="day">{{ event.start_datetime|date:'j' }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="text-block">
+                            <h3><a href="{{ event.get_url }}">{{ event.title }}</a></h3>
+                            <h5>{{ event.event_type }}</h5>
+                            <br>
+                            <h4>
+                                {{ event.start_datetime|date:'g:i A' }} - {{ event.get_end_datetime|date:'g:i A' }} CT<br>
+                                Location: {{ event.get_location_type_display }}
+                            </h4>
+                            <br>
+                            <a href="{{ event.get_url }}" class="btn btn--sm btn--primary type--uppercase"><span class="btn__text">Register for Event</span></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="text-block">
+                            {{ event.description|richtext }}
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <div class="text-block">
-                    <h3><a href="{{ event.get_url }}">{{ event.title }}</a></h3>
-                    <h5>{{ event.event_type }}</h5>
-                    <br>
-                    <h4>
-                        {{ event.start_datetime|date:'g:i A' }} - {{ event.get_end_datetime|date:'g:i A' }} CT<br>
-                        Location: {{ event.get_location_type_display }}
-                    </h4>
-                    <br>
-                    <a href="{{ event.get_url }}" class="btn btn--sm btn--primary type--uppercase"><span class="btn__text">Register for Event</span></a>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="text-block">
-                    {{ event.description|richtext }}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
     {% endif %}
 {% endfor %}
 
