@@ -58,6 +58,9 @@ class SiteSettingsMiddleware:
                 frame_src.append('https://*.salesforce.com')
                 connect_src.append('https://*.salesforce.com')
                 form_action.append('https://*.salesforce.com')
+                script_src.append('https://*.salesforceliveagent.com')
+                connect_src.append('https://*.salesforceliveagent.com')
+
 
             if 'jquery' in csp_exceptions:
                 connect_src.append('https://code.jquery.com')

@@ -1,4 +1,11 @@
 {% load wagtailcore_tags %}
+{# LIVE CHAT DEPLOYMENT SCRIPT #}
+<script type='text/javascript' src='https://c.la1-c1cs-ord.salesforceliveagent.com/content/g/js/48.0/deployment.js'></script>
+<script type='text/javascript'>
+liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', '572c0000000Casl', '00Dc0000003wW7y');
+</script>
+
+
 {% if header_utility_nav %}
     <div class="bar bar-3 bar--sm {{ utility_background_color }}">
         <div class="container">
@@ -12,6 +19,12 @@
                                            {% include_block block %}
                                     </li>
                                 {% endfor %}
+
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                                        <a id="liveagent_button_online_573c0000000CbCw" href="javascript://Chat" style="display: none;" onclick="liveagent.startChat('573c0000000CbCw')" class="text-white btn btn--primary">Live Chat Help</a>
+                                        <div id="liveagent_button_offline_573c0000000CbCw" style="display: none;" class="btn">Live Chat Unavailable</div>
+                                    </li>
+
                             </ul>
                         {% else %}
                              <span class="type--fade top-bar-blurb {% if utility_background_color == 'bg--dark' %} text-white {% endif %}">{% if utility_text %}{{ utility_text }}{% endif %}</span>
@@ -29,6 +42,12 @@
                                            {% include_block block %}
                                     </li>
                                 {% endfor %}
+
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom">
+                                        <a id="liveagent_button_online_573c0000000CbCw" href="javascript://Chat" style="display: none;" onclick="liveagent.startChat('573c0000000CbCw')" class="text-white btn btn--primary">Live Chat Help</a>
+                                        <div id="liveagent_button_offline_573c0000000CbCw" style="display: none;" class="btn">Live Chat Unavailable</div>
+                                    </li>
+
                             </ul>
                         {% endif %}
                     </div>
@@ -37,3 +56,12 @@
         </div><!--end of container-->
     </div>
 {% endif %}
+<script type="text/javascript">
+if (!window._laq) { window._laq = []; }
+window._laq.push(
+    function(){
+        liveagent.showWhenOnline('573c0000000CbCw', document.getElementById('liveagent_button_online_573c0000000CbCw'));
+        liveagent.showWhenOffline('573c0000000CbCw', document.getElementById('liveagent_button_offline_573c0000000CbCw'));
+    }
+);
+</script>
