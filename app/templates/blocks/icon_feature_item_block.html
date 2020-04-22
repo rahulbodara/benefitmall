@@ -7,7 +7,7 @@
             <i class="icon icon-{{ self.icon }} icon--lg"></i>
         {% endif %}
         <div class="feature__body">
-            <h5>{{ self.header }}</h5>
+            <h4>{{ self.header }}</h4>
             {% if self.text %}{{ self.text }}{% endif %}
             {% include_block self.link %}
         </div>
@@ -17,9 +17,9 @@
 <div class="{{ cols }}">
     <div class="feature feature-6">
         {% if self.icon %}
-            <i class="icon icon--sm icon-{{ self.icon }} color--primary"></i>
+            <i class="icon icon--md icon-{{ self.icon }} color--primary"></i>
         {% endif %}
-        <h5>{{ self.header }}</h5>
+        <h4>{{ self.header }}</h4>
             {% if self.text %}{{ self.text }}{% endif %}
         {% include_block self.link %}
     </div>

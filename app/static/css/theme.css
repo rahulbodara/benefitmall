@@ -1100,11 +1100,6 @@ ul:last-child {
   padding: 0.46428571em;
 }
 /**! 10. Menus **/
-.menu-horizontal > li:not(:hover) > a,
-.menu-horizontal > li:not(:hover) > span,
-.menu-horizontal > li:not(:hover) > .modal-instance > .modal-trigger {
-  opacity: 0.5;
-}
 .menu-horizontal > li > a,
 .menu-horizontal > li > span,
 .menu-horizontal > li > .modal-instance > .modal-trigger {
@@ -2877,6 +2872,25 @@ a {
 .bg--primary-2 i {
   color: #fff;
 }
+.bg--primary-3 {
+  background: #4A90E2;
+}
+.bg--primary-3 p,
+.bg--primary-3 span,
+.bg--primary-3 ul,
+.bg--primary-3 li,
+.bg--primary-3 a:not(.btn) {
+  color: #fff;
+}
+.bg--primary-3 h1,
+.bg--primary-3 h2,
+.bg--primary-3 h3,
+.bg--primary-3 h4,
+.bg--primary-3 h5,
+.bg--primary-3 h6,
+.bg--primary-3 i {
+  color: #fff;
+}
 .image-bg:not(.image-light) *:not(a) {
   color: #fff;
 }
@@ -4219,7 +4233,7 @@ a:hover {
 }
 a.block {
   font-weight: normal;
-  text-decoration: none;
+  text-decoration: underline;
   color: #000000;
 }
 p a,
@@ -4231,12 +4245,12 @@ label a {
   line-height: 1.85714286em;
 }
 p + a:not(.btn) {
-  font-size: 0.85714286em;
   line-height: 2.16666667em;
 }
-.imagebg:not(.image--light) a {
+.imagebg:not(.image--light) a:not(.btn) {
   color: #fff;
   font-weight: 600;
+  text-decoration: underline;
 }
 /*! -- Stack Tables -- */
 table {
@@ -4253,6 +4267,7 @@ table th {
 }
 table tr:not(:last-of-type) {
   border-bottom: 1px solid #ececec;
+  text-decoration: underline;
 }
 table.border--round {
   border-radius: 6px;
@@ -4416,6 +4431,7 @@ hr[data-title]:before {
 }
 /*! -- Stack Buttons -- */
 .btn {
+  text-decoration: none;
   position: relative;
 }
 .btn:not([class*='primary']) {
@@ -4804,6 +4820,7 @@ section.parallax .row .background-image-holder {
   .bar-2 .row div[class*='col-']:last-child .bar__module:last-child,
   .bar-1 .row div[class*='col-']:last-child .bar__module:last-child {
     margin-bottom: 0;
+    margin-top: 1em;
   }
 }
 .bar-1 .menu-horizontal > li > .dropdown__trigger,
@@ -6391,11 +6408,7 @@ a.block:hover > .feature {
   transition: 0.5s ease;
   -webkit-transition: 0.5s ease;
   -moz-transition: 0.5s ease;
-  opacity: 0.5;
   margin-bottom: 0.92857143em;
-}
-.accordion .accordion__title:hover {
-  opacity: 1;
 }
 .accordion .accordion__title:before {
   font-family: "stack-interface";

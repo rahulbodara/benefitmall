@@ -9,7 +9,7 @@ a{
 	}
 	&.block{
 		font-weight: normal;
-		text-decoration: none;
+		text-decoration: underline;
 		color: @color-body;
 	}
 }
@@ -22,13 +22,14 @@ p a, span a, label a{
 }
 
 p+a:not(.btn){
-	font-size: @h6-size;
+	//font-size: @h6-size;
 	line-height: @h6-line-height;
 }
 
 .imagebg:not(.image--light){
-	a{
+	a:not(.btn){
 		color: #fff;
 		font-weight: 600;
+		text-decoration: underline;
 	}
 }

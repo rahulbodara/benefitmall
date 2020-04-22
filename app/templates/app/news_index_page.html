@@ -44,7 +44,7 @@
                                 <a href="{{ item.get_url }}">{{ item.title }}</a>
                             </h3>
                             <p>{{ item.body|striptags|truncatechars:300 }}</p>
-                            {% if not forloop.last %}<hr>{% endif %}
+                            <hr>
                         {% endfor %}
                     </div>
                 </div>

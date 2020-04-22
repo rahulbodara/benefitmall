@@ -146,7 +146,8 @@ LINK_TYPE_CHOICES = (
 
 LINK_FORMAT_CHOICES = (
     ('', 'Text'),
-    ('btn btn--primary', 'Button'),
+    ('btn btn--primary', 'Primary Button'),
+    ('btn btn--secondary', 'Secondary Button'),
 )
 
 ACCORDION_FORMAT_CHOICES = (

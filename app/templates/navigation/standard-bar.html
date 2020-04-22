@@ -3,10 +3,10 @@
     <div class="bar bar--sm visible-xs">
         <div class="container">
             <div class="row">
-                <div class="col-3 col-md-2">
+                <div class="col-3 col-sm-5">
                     <a href="/"> <img class="logo" alt="logo" src="{{ logo_url }}"></a>
                 </div>
-                <div class="col-9 col-md-10 text-right">
+                <div class="col-9 col-sm-7 text-right">
                     <a href="#" class="hamburger-toggle" data-toggle-class="#menu1;hidden-xs hidden-sm"> <i class="icon icon--sm stack-interface stack-menu"></i> </a>
                 </div>
             </div>
@@ -15,14 +15,14 @@
     <nav id="menu1" class="bar bar-1 hidden-xs">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-2 hidden-xs">
+                <div class="col-lg-3 col-md-12 hidden-xs text-center-sm">
                     <div class="bar__module">
                         <a href="/"> <img class="logo" alt="logo" src="{{ logo_url }}"></a>
                     </div>
                 </div>
-                <div class="col-lg-9 col-md-12 text-right text-left-xs text-left-sm" style="margin-bottom: auto; margin-top: auto;">
+                <div class="col-lg-9 col-md-12 text-right text-left-xs text-center-sm" style="margin-bottom: auto; margin-top: auto;">
                     <div class="bar__module">
-                        <ul class="menu-horizontal text-left">
+                        <ul class="menu-horizontal text-left-lg text-center-md">
                             {% if autonav %}
                                 {% for link in header_links %}
                                     {% if link.show_dropdown %}
@@ -54,7 +54,7 @@
                         </ul>
                     </div>
                     {% if header_buttons %}
-                    <div class="bar__module">
+                    <div class="bar__module text-center-sm">
                         {% for block in header_buttons %}
                             {% include_block block %}
                         {% endfor %}
