@@ -45,35 +45,48 @@ def carrier_json(request):
     for item in ret:
         carrier = {}
 
-        if 'State__c' in item:
-            carrier['state'] = item['State__c']
-        if 'Id' in item:
-            carrier['carrier_id'] = item['Id']
-        if 'Insurance_Type__c' in item:
-            carrier['insurance_type'] = item['Insurance_Type__c']
-        if 'Product_Types__c' in item:
-            carrier['product_types'] = item['Product_Types__c']
-        if 'Online_Quoting_Available__c' in item:
-            carrier['quoting_available'] = item['Online_Quoting_Available__c']
-        if 'Carrier_Acct__r' in item:
-            if 'Name' in item['Carrier_Acct__r']:
-                carrier['name'] = item['Carrier_Acct__r']['Name']
-            if 'Carrier_Description__c' in item['Carrier_Acct__r']:
-                carrier['description'] = item['Carrier_Acct__r']['Carrier_Description__c']
-            if 'Carrier_Logo_URL__c' in item['Carrier_Acct__r']:
-                carrier['logo_url'] = item['Carrier_Acct__r']['Carrier_Logo_URL__c']
-            if 'Carrier_Rating_Classification__c' in item['Carrier_Acct__r']:
-                carrier['rating_classification'] = item['Carrier_Acct__r']['Carrier_Rating_Classification__c']
-            if 'Carrier_Rating_Company_Name__c' in item['Carrier_Acct__r']:
-                carrier['rating_company_name'] = item['Carrier_Acct__r']['Carrier_Rating_Company_Name__c']
-            if 'Carrier_Rating_Description__c' in item['Carrier_Acct__r']:
-                carrier['rating_description'] = item['Carrier_Acct__r']['Carrier_Rating_Description__c']
+        # "Website": "www.advanticabenefits.com",
+        # "state": "Delaware",
+        # "Product_Types": "Dental;Vision",
+        # "Online_Quoting_Available": false,
+        # "Insurance_Type": "Large Group",
+        # "Display_Start_Time": "2011-01-01T06:00:00.000Z",
+        # "Display_End_Time": "2020-03-24T17:00:00.000Z",
+        # "Carrier_Rating_Description": "Not Rated",
+        # "Carrier_Rating_Company_Name": "A. M. Best",
+        # "Carrier_Rating_Classification": "NR",
+        # "Carrier_Name": "Advantica",
+        # "Carrier_Logo_URL": "https://benefitmall--c.na76.content.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_JPG&versionId=0681L000007pZ9JQAU&operationContext=DELIVERY&contentId=null&page=0&d=/a/1L0000001Asq/J5zWUtAsIERyq6m5HPOPmZGhInfQH1MIl4wLptZ0qdE&oid=00DG0000000gEcpMAE",
+        # "Carrier_Description": "<p>Custom Description for Advantica Delaware</p>"
+
+        if 'state' in item:
+            carrier['state'] = item['state']
+        if 'Website' in item:
+            carrier['website_url'] = item['Website']
+        if 'Insurance_Type' in item:
+            carrier['insurance_type'] = item['Insurance_Type']
+        if 'Product_Types' in item:
+            carrier['product_types'] = item['Product_Types']
+        if 'Online_Quoting_Available' in item:
+            carrier['quoting_available'] = item['Online_Quoting_Available']
+        if 'Carrier_Name' in item:
+            carrier['name'] = item['Carrier_Name']
+        if 'Carrier_Description' in item:
+            carrier['description'] = item['Carrier_Description']
+        if 'Carrier_Logo_URL' in item:
+            carrier['logo_url'] = item['Carrier_Logo_URL']
+        if 'Carrier_Rating_Classification' in item:
+            carrier['rating_classification'] = item['Carrier_Rating_Classification']
+        if 'Carrier_Rating_Company_Name' in item:
+            carrier['rating_company_name'] = item['Carrier_Rating_Company_Name']
+        if 'Carrier_Rating_Description' in item:
+            carrier['rating_description'] = item['Carrier_Rating_Description']
         out.append(carrier)
-        if carrier['insurance_type']:
+        if 'insurance_type' in carrier:
             insurance_types.append(carrier['insurance_type'])
-        if carrier['product_types']:
+        if 'product_types' in carrier:
             product_types.extend(carrier['product_types'].split(';'))
-        if carrier['name']:
+        if 'name' in carrier:
             carrier_names.append(carrier['name'])
     # carriers[carrier['carrier_id']] = carrier
     insurance_types = list(set(insurance_types))
@@ -84,6 +97,7 @@ def carrier_json(request):
     #     print("cached")
 
     return HttpResponse(json.dumps(out), content_type='text/json')
+    # return HttpResponse(r.text, content_type='text/json')
     # return ret
 
 
