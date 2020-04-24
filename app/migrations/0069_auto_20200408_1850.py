@@ -19,10 +19,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameModel(
-            old_name='User',
-            new_name='SFUser',
-        ),
+        # migrations.RenameModel(
+        #     old_name='User',
+        #     new_name='SFUser',
+        # ),
         migrations.AlterField(
             model_name='defaultpage',
             name='body',
