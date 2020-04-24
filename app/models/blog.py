@@ -33,7 +33,7 @@ class BlogIndexPage(RoutablePageMixin, DefaultPage):
     @classmethod
     def can_create_at(cls, parent):
         # Only allow one child instance
-        return super(BlogIndexPage, cls).can_create_at(parent) and not cls.objects.child_of(parent).exists()
+        return super(BlogIndexPage, cls).can_create_at(parent) and not cls.objects.exists()
 
     def get_categories(self):
         return BlogCategory.objects.order_by('name')
