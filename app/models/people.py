@@ -56,7 +56,6 @@ class Division(models.Model):
 		MultiFieldPanel([
 			FieldPanel('name'),
 			FieldPanel('vice_president'),
-			FieldPanel('show_on_division_page'),
 			FieldPanel('states', widget=CheckboxSelectMultiple),
 		], heading="Division"),
 	]
