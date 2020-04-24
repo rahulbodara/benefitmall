@@ -83,3 +83,8 @@ class FormPage(AbstractBaseEmailForm):
 
     def get_form_fields(self):
         return self.form_fields.all()
+
+    @classmethod
+    def can_create_at(cls, parent):
+        # Only allow one child instance
+        return False
