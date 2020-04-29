@@ -28,10 +28,14 @@ def render_search_modal(context):
 @register.simple_tag()
 def render_search_item(context, item):
 	try:
-		request = context.request
+		if context and 'request' in context:
+			site = context['request'].site
+		else:
+			site = Site.objects.first()
+		site_settings = SiteSettings.for_site(site=site)
 	except Exception as ex:
-		request = context.dicts[1]['request']
-	site_settings = SiteSettings.for_site(site=request.site)
+		e = ex
+		site_settings = None
 	if item == 'modal':
 		template = 'search/search_modal.html'
 	if item == 'button':
