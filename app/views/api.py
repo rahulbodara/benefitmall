@@ -36,7 +36,7 @@ def carrier_json(request):
                          headers=headers,
                          params=params,
                          )
-    ret = json.loads(r.json())
+    ret = r.json()
     out = []
     carriers = {}
     insurance_types = []
@@ -50,6 +50,7 @@ def carrier_json(request):
         # "Product_Types": "Dental;Vision",
         # "Online_Quoting_Available": false,
         # "Insurance_Type": "Large Group",
+        # TODO - Respect start and end time
         # "Display_Start_Time": "2011-01-01T06:00:00.000Z",
         # "Display_End_Time": "2020-03-24T17:00:00.000Z",
         # "Carrier_Rating_Description": "Not Rated",
