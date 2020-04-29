@@ -61,7 +61,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     'site_settings.middleware.SecurityMiddleware',
-    # 'site_settings.middleware.CaseInsensitiveURLMiddleware',
+    'site_settings.middleware.CaseInsensitiveURLMiddleware',
     'site_settings.middleware.SiteSettingsMiddleware',
     'wagtail.core.middleware.SiteMiddleware',
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
