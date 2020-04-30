@@ -63,7 +63,7 @@ def render_person_list(context, layout=BIO_LAYOUT_CHOICES[0][0], title_size=SUBH
     if filter == 'executives':
         people = Person.objects.filter(is_executive=True).order_by('executive_order')
     elif filter == 'sales':
-        people = [div.vice_president for div in Division.objects.all() if div.vice_president]
+        people = [div.vice_president for div in Division.objects.all().order_by('vice_president__last_name') if div.vice_president]
     else:
         people = Person.objects.all()
 
