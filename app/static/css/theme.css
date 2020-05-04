@@ -9474,4 +9474,7 @@ footer.footer-7 {
   display: block;
   margin-bottom: 1.04em;
 }
+.feature img {
+  width: 100%;
+}
 /*# sourceMappingURL=theme.css.map */
