@@ -76,7 +76,7 @@ class HeaderFooter(BaseSetting):
 
     copyright_text = models.CharField(
         null=True, blank=True, default='',
-        max_length=250,
+        max_length=512,
         verbose_name='Copyright text',
         help_text='Enter the text that should appear after the year in the copyright line.')
     tagline = models.CharField(
