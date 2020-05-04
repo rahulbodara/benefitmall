@@ -4042,6 +4042,7 @@ section.text-center div[class*='col-']:first-child:last-child {
 }
 h1,
 .h1 {
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 h1:not(:last-child),
@@ -4049,10 +4050,6 @@ h1:not(:last-child),
   margin-bottom: 0.59090909em;
 }
 @media all and (min-width: 768px) {
-  h1,
-  .h1 {
-    font-weight: 600;
-  }
   h1.h1--large,
   .h1.h1--large {
     font-weight: 200;
