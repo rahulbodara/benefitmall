@@ -2,12 +2,12 @@
 {% load wagtailimages_tags %}
 
 {% if size == 'full' %}
-    {% image self.image fill-340x227 as image %}
+    {% image self.image fill-1110x740 as image %}
     <li>
         <img alt="{{ image.alt }}" src="{{ image.url }}">
     </li>
 {% elif size == 'inline' %}
-    {% image self.image fill-340x227 as image %}
+    {% image self.image fill-350x272 as image %}
     <li class="col-md-4 col-6">
         <img alt="{{ image.alt }}" src="{{ image.url }}">
     </li>

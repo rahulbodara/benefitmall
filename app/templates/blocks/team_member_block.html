@@ -1,5 +1,5 @@
 {% load wagtailcore_tags wagtailimages_tags app_tags %}
-{% image self.image original as image %}
+{% image self.image fill-540x700 as image %}
 <section class="switchable feature-large {{ self.layout }}">
     <div class="container">
         <div class="row justify-content-between">

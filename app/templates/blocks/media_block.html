@@ -1,6 +1,7 @@
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
-{% image self.image original as image %}
+{% image self.image orginal as image %}
+
 {% if width == 'fixed' %}
     {% if self.mode == 'image' %}
        <img src="{{ image.url }}" class="{{ self.corners }} {{ self.shadow }}" alt="{{ image.alt }}">

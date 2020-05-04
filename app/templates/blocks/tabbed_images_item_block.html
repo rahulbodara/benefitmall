@@ -1,6 +1,6 @@
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
-{% image self.image original as image %}
+{% image self.image fill-635x354 as image %}
 <div class="tab__title text-center">
     <i class="icon icon--sm block icon-{{ self.icon }}"></i>
     <span class="h5">{{ self.text.heading }}</span>

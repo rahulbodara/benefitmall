@@ -1,6 +1,6 @@
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
-{% image self.media.image original as image %}
+{% image self.media.image fill-835x465 as image %}
 {% image self.small_image original as small_image %}
 
 {% if self.layout == 'fixed' %}
