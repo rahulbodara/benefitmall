@@ -4,7 +4,7 @@
     <div class="{% if layout == 'three-column' %}col-md-4{% else %}col-md-6{% endif %}">
         <div class="feature {% if layout == 'three-column' %}feature-8{% else %}feature-9{% endif %}">
             {% if person.photo %}
-                {% image person.photo fill-200x200 as image %}
+                {% image person.photo fill-200x250 as image %}
                 <img src="{{ image.url }}" alt="{{ image.alt }}">
             {% endif %}
             <{{ title_size }}>
