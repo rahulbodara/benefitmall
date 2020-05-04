@@ -7,8 +7,6 @@ import app.blocks.products_block
 import app.widgets.custom_radio_select
 from django.db import migrations
 import django.db.models.deletion
-import salesforce.backend.operations
-import salesforce.fields
 import wagtail.core.blocks
 import wagtail.core.fields
 import wagtail.documents.blocks
