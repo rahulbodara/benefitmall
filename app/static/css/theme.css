@@ -4620,7 +4620,7 @@ p.lead img {
 .imagebg h6 {
   position: relative;
 }
-.imagebg.image--light span:not(.btn__text),
+.imagebg.image--light span,
 .imagebg.image--light p,
 .imagebg.image--light h1,
 .imagebg.image--light h2,
@@ -4629,7 +4629,7 @@ p.lead img {
 .imagebg.image--light h5 {
   color: #000000;
 }
-.imagebg:not(.image--light) span,
+.imagebg:not(.image--light) span:not(.btn__text),
 .imagebg:not(.image--light) p,
 .imagebg:not(.image--light) h1,
 .imagebg:not(.image--light) h2,
@@ -4637,6 +4637,9 @@ p.lead img {
 .imagebg:not(.image--light) h4,
 .imagebg:not(.image--light) h5 {
   color: #fff;
+}
+.imagebg:not(.image--light) a.btn--secondary span {
+  color: #016faf;
 }
 .imagebg.border--round {
   overflow: hidden;
