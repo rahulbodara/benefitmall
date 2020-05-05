@@ -4629,6 +4629,9 @@ p.lead img {
 .imagebg.image--light h5 {
   color: #000000;
 }
+.imagebg.image--light a.btn--primary span {
+  color: #fff;
+}
 .imagebg:not(.image--light) span:not(.btn__text),
 .imagebg:not(.image--light) p,
 .imagebg:not(.image--light) h1,
