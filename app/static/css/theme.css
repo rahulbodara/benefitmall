@@ -4620,7 +4620,7 @@ p.lead img {
 .imagebg h6 {
   position: relative;
 }
-.imagebg.image--light span,
+.imagebg.image--light span:not(.btn__text),
 .imagebg.image--light p,
 .imagebg.image--light h1,
 .imagebg.image--light h2,
