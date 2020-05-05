@@ -34,7 +34,7 @@
         </div>
     </section>
 {% elif self.layout == 'three_column'%}
-     <section class="feature-large {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+     <section class="feature-large three-column {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
         {% include_block self.background %}
         <div class="container">
             <div class="row justify-content-between {{ self.vertical_alignment }}">

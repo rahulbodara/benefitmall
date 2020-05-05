@@ -9477,4 +9477,10 @@ footer.footer-7 {
   display: block;
   margin-bottom: 1.04em;
 }
+@media all and (max-width: 767px) {
+  .feature-large.three-column div[class*='col-'] {
+    padding-top: 2em;
+    padding-bottom: 2em;
+  }
+}
 /*# sourceMappingURL=theme.css.map */
