@@ -160,7 +160,11 @@ class LocationIndexPage(RoutablePageMixin, DefaultPage):
 
 			self.additional_breadcrumbs = [({'title': location.name, 'url': self.get_url()+slug})]
 
-			team = Person.objects.filter(location=location)
+			team = []
+			if location.division and location.division.vice_president:
+				team.append(location.division.vice_president)
+			team.extend([p for p in Person.objects.filter(location=location)])
+			team = list(set(team))
 		except Location.DoesNotExist:
 			raise Http404
 
