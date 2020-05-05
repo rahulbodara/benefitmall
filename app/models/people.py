@@ -106,10 +106,10 @@ class Location(models.Model):
 	]
 
 	def lat(self):
-		return self.latlng.split(',')[0]
+		return self.latlng.split(',')[0] if self.latlng else 0
 
 	def lng(self):
-		return self.latlng.split(',')[1]
+		return self.latlng.split(',')[1] if self.latlng else 0
 
 	def get_url_slug(self):
 		return slugify(self.name + ' ' + str(self.id))
@@ -139,10 +139,11 @@ class LocationIndexPage(RoutablePageMixin, DefaultPage):
 		output = {}
 		markers = []
 		for loc in locations:
-			if loc.state.abbreviation not in output:
-				output[loc.state.abbreviation] = {'name': loc.state.name, 'locations': []}
-			output[loc.state.abbreviation]['locations'].append(loc)
-			markers.append({'name': loc.name, 'lat': loc.lat, 'lng': loc.lng})
+			if loc.latlng:
+				if loc.state.abbreviation not in output:
+					output[loc.state.abbreviation] = {'name': loc.state.name, 'locations': []}
+				output[loc.state.abbreviation]['locations'].append(loc)
+				markers.append({'name': loc.name, 'lat': loc.lat, 'lng': loc.lng})
 
 		context['states'] = output
 		context['markers'] = markers
