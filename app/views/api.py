@@ -19,7 +19,6 @@ INSURANCE_TYPE_ORDER = {
     'Self-Funded': 3,
     'Individual': 4,
     'Senior': 5,
-    'Additional': 6,
 }
 
 def carrier_json(request):
@@ -63,7 +62,7 @@ def carrier_json(request):
 
         # TODO - Respect start and end time
         if id not in carriers:
-            carriers[id] = {'products': [], 'available_states': [], 'available_insurance_types': []}
+            carriers[id] = {'products': [], 'available_states': [], 'available_insurance_types': [], 'available_products': [], 'additional_products': []}
         carrier = carriers[id]
 
         # "CDM_Id": "a3Kg0000000KxoZEAS",
@@ -97,35 +96,33 @@ def carrier_json(request):
         if 'Display_End_Time' in item and item['Display_End_Time'] != '':
             carrier['end_time'] = item['Display_End_Time']
 
+        # GATHER THESE AHEAD OF THE LOOP
+
+        # "state": "Delaware",
+        state_name = item['state']
+        quoting_available = item['Online_Quoting_Available']
+        state = {'name': state_name, 'quoting_available': quoting_available}
+        if state_name not in carrier['available_states']:
+            carrier['available_states'].append(state_name)
+
+        # "Insurance_Type": "Small Group",
+        insurance_type = item['Insurance_Type']
+        for it in carrier['available_insurance_types']:
+            if it['name'] == insurance_type:
+                current_insurance_type = it
+                break
+        else:
+            current_insurance_type = {'name': insurance_type, 'order': 6, 'quoting_available': quoting_available}
+            if insurance_type in INSURANCE_TYPE_ORDER:
+                current_insurance_type['order'] = INSURANCE_TYPE_ORDER[insurance_type]
+            carrier['available_insurance_types'].append(current_insurance_type)
+        if quoting_available:
+            current_insurance_type['quoting_available'] = quoting_available
 
         # "Product_Types": "Dental;Vision",
-        if 'Product_Types' in item:
-            product_types = item['Product_Types'].split(';')
-
-            # GATHER THESE AHEAD OF THE LOOP
-            # "state": "Delaware",
-            state_name = item['state']
-            quoting_available = item['Online_Quoting_Available']
-            state = {'name': state_name, 'quoting_available': quoting_available}
-            if state_name not in carrier['available_states']:
-                carrier['available_states'].append(state_name)
-
-            # "Insurance_Type": "Small Group",
-            insurance_type = item['Insurance_Type']
-            for it in carrier['available_insurance_types']:
-                if it['name'] == insurance_type:
-                    current_insurance_type = it
-                    break
-            else:
-                current_insurance_type = {'name': insurance_type, 'order': 6, 'quoting_available': quoting_available}
-                if insurance_type in INSURANCE_TYPE_ORDER:
-                    current_insurance_type['order'] = INSURANCE_TYPE_ORDER[insurance_type]
-                carrier['available_insurance_types'].append(current_insurance_type)
-
-            if quoting_available:
-                current_insurance_type['quoting_available'] = quoting_available
-
-            for product_type in item['Product_Types'].split(';'):
+        product_types = item['Product_Types'].split(';')
+        if insurance_type in INSURANCE_TYPE_ORDER: #  if it's one of the columns
+            for product_type in product_types:
                 for p in carrier['products']:
                     if p['name'] == product_type:
                         product = p
@@ -138,7 +135,21 @@ def carrier_json(request):
                 if insurance_type not in product:
                     product[insurance_type] = {'name': insurance_type, 'states': []}
                 product[insurance_type]['states'].append(state)
+        else: # It's an additional product
+            for product_type in product_types:
+                if product_type not in carrier['additional_products']:
+                    carrier['additional_products'].append(product_type)
 
+        for product_type in product_types:
+            for ap in carrier['available_products']:
+                if ap['name'] == product_type:
+                    product = ap
+                    break
+            else:
+                product = {'name': product_type, 'order': 6}
+                if product_type in PRODUCT_ORDER:
+                    product['order'] = PRODUCT_ORDER[product_type]
+                carrier['available_products'].append(product)
 
     # else:
     #     print("cached")
