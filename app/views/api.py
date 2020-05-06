@@ -5,6 +5,23 @@ from django.core.cache import cache
 
 
 
+
+PRODUCT_ORDER = {
+    'Medical': 1,
+    'Dental': 2,
+    'Vision': 3,
+    'Life': 4,
+    'Disability': 5,
+}
+INSURANCE_TYPE_ORDER = {
+    'Large Group': 1,
+    'Small Group': 2,
+    'Self-Funded': 3,
+    'Individual': 4,
+    'Senior': 5,
+    'Additional': 6,
+}
+
 def carrier_json(request):
     cachekey = 'carriers'
 
@@ -37,67 +54,96 @@ def carrier_json(request):
                          params=params,
                          )
     ret = r.json()
-    out = []
     carriers = {}
-    insurance_types = []
-    product_types = []
-    carrier_names = []
     for item in ret:
-        carrier = {}
+        # "Carrier_Id": "001g000002ETUdlAAH",
+        id = None
+        if 'Carrier_Id' in item:
+            id = item['Carrier_Id']
 
-        # "Website": "www.advanticabenefits.com",
-        # "state": "Delaware",
-        # "Product_Types": "Dental;Vision",
-        # "Online_Quoting_Available": false,
-        # "Insurance_Type": "Large Group",
         # TODO - Respect start and end time
-        # "Display_Start_Time": "2011-01-01T06:00:00.000Z",
-        # "Display_End_Time": "2020-03-24T17:00:00.000Z",
-        # "Carrier_Rating_Description": "Not Rated",
-        # "Carrier_Rating_Company_Name": "A. M. Best",
-        # "Carrier_Rating_Classification": "NR",
-        # "Carrier_Name": "Advantica",
-        # "Carrier_Logo_URL": "https://benefitmall--c.na76.content.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_JPG&versionId=0681L000007pZ9JQAU&operationContext=DELIVERY&contentId=null&page=0&d=/a/1L0000001Asq/J5zWUtAsIERyq6m5HPOPmZGhInfQH1MIl4wLptZ0qdE&oid=00DG0000000gEcpMAE",
-        # "Carrier_Description": "<p>Custom Description for Advantica Delaware</p>"
+        if id not in carriers:
+            carriers[id] = {'products': [], 'available_states': [], 'available_insurance_types': []}
+        carrier = carriers[id]
 
-        if 'state' in item:
-            carrier['state'] = item['state']
-        if 'Website' in item:
-            carrier['website_url'] = item['Website']
-        if 'Insurance_Type' in item:
-            carrier['insurance_type'] = item['Insurance_Type']
-        if 'Product_Types' in item:
-            carrier['product_types'] = item['Product_Types']
-        if 'Online_Quoting_Available' in item:
-            carrier['quoting_available'] = item['Online_Quoting_Available']
-        if 'Carrier_Name' in item:
+        # "CDM_Id": "a3Kg0000000KxoZEAS",
+        if 'CDM_Id' in item and item['CDM_Id'] != '':
+            carrier['cdm_id'] = item['CDM_Id']
+        # "Carrier_Name": "Advantica",
+        if 'Carrier_Name' in item and item['Carrier_Name'] != '':
             carrier['name'] = item['Carrier_Name']
-        if 'Carrier_Description' in item:
+        # "Website": "www.advanticabenefits.com",
+        if 'Website' in item and item['Website'] != '':
+            carrier['website_url'] = item['Website']
+        # "Carrier_Description": ""
+        if 'Carrier_Description' in item and item['Carrier_Description'] != '':
             carrier['description'] = item['Carrier_Description']
-        if 'Carrier_Logo_URL' in item:
+        # "Carrier_Logo_URL": "",
+        if 'Carrier_Logo_URL' in item and item['Carrier_Logo_URL'] != '':
             carrier['logo_url'] = item['Carrier_Logo_URL']
-        if 'Carrier_Rating_Classification' in item:
+        # "Carrier_Rating_Classification": "NR",
+        if 'Carrier_Rating_Classification' in item and item['Carrier_Rating_Classification'] != '':
             carrier['rating_classification'] = item['Carrier_Rating_Classification']
-        if 'Carrier_Rating_Company_Name' in item:
+        # "Carrier_Rating_Company_Name": "A. M. Best",
+        if 'Carrier_Rating_Company_Name' in item and item['Carrier_Rating_Company_Name'] != '':
             carrier['rating_company_name'] = item['Carrier_Rating_Company_Name']
-        if 'Carrier_Rating_Description' in item:
+        # "Carrier_Rating_Description": "Not Rated",
+        if 'Carrier_Rating_Description' in item and item['Carrier_Rating_Description'] != '':
             carrier['rating_description'] = item['Carrier_Rating_Description']
-        out.append(carrier)
-        if 'insurance_type' in carrier:
-            insurance_types.append(carrier['insurance_type'])
-        if 'product_types' in carrier:
-            product_types.extend(carrier['product_types'].split(';'))
-        if 'name' in carrier:
-            carrier_names.append(carrier['name'])
-    # carriers[carrier['carrier_id']] = carrier
-    insurance_types = list(set(insurance_types))
-    product_types = list(set(product_types))
-    carrier_names = list(set(carrier_names))
+        # "Display_Start_Time": "2011-01-01T06:00:00.000Z",
+        if 'Display_Start_Time' in item and item['Display_Start_Time'] != '':
+            carrier['start_time'] = item['Display_Start_Time']
+        # "Display_End_Time": "2020-03-24T17:00:00.000Z",
+        if 'Display_End_Time' in item and item['Display_End_Time'] != '':
+            carrier['end_time'] = item['Display_End_Time']
+
+
+        # "Product_Types": "Dental;Vision",
+        if 'Product_Types' in item:
+            product_types = item['Product_Types'].split(';')
+
+            # GATHER THESE AHEAD OF THE LOOP
+            # "state": "Delaware",
+            state_name = item['state']
+            quoting_available = item['Online_Quoting_Available']
+            state = {'name': state_name, 'quoting_available': quoting_available}
+            if state_name not in carrier['available_states']:
+                carrier['available_states'].append(state_name)
+
+            # "Insurance_Type": "Small Group",
+            insurance_type = item['Insurance_Type']
+            for it in carrier['available_insurance_types']:
+                if it['name'] == insurance_type:
+                    current_insurance_type = it
+                    break
+            else:
+                current_insurance_type = {'name': insurance_type, 'order': 6, 'quoting_available': quoting_available}
+                if insurance_type in INSURANCE_TYPE_ORDER:
+                    current_insurance_type['order'] = INSURANCE_TYPE_ORDER[insurance_type]
+                carrier['available_insurance_types'].append(current_insurance_type)
+
+            if quoting_available:
+                current_insurance_type['quoting_available'] = quoting_available
+
+            for product_type in item['Product_Types'].split(';'):
+                for p in carrier['products']:
+                    if p['name'] == product_type:
+                        product = p
+                        break
+                else:
+                    product = {'name': product_type, 'order': 6}
+                    if product_type in PRODUCT_ORDER:
+                        product['order'] = PRODUCT_ORDER[product_type]
+                    carrier['products'].append(product)
+                if insurance_type not in product:
+                    product[insurance_type] = {'name': insurance_type, 'states': []}
+                product[insurance_type]['states'].append(state)
+
 
     # else:
     #     print("cached")
 
-    return HttpResponse(json.dumps(out), content_type='text/json')
+    return HttpResponse(json.dumps(carriers), content_type='text/json')
     # return HttpResponse(r.text, content_type='text/json')
     # return ret
 
