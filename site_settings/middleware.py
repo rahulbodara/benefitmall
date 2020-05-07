@@ -55,6 +55,7 @@ class SiteSettingsMiddleware:
             # jquery, typekit, googlefonts, googlemaps, youtube, gtm, gtm_preview, gtm_custom_vars
             if 'salesforce' in csp_exceptions:
                 # First include UA
+                img_src.append('https://*.force.com')
                 frame_src.append('https://*.salesforce.com')
                 connect_src.append('https://*.salesforce.com')
                 form_action.append('https://*.salesforce.com')
