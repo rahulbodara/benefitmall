@@ -1,146 +1,171 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags static %}
 
 {% block content %}
-    <section class="space--xxs bg--secondary">
+    <section class="space--xxs bg--secondary carrier-header">
         <div class="container">
             <div class="row">
                 <div class="col text-center">
                     {% if carrier.logo_url %}<img src="{{ carrier.logo_url }}"/>{% endif %}
-                    <div><a href="{{ carrier.website_url }}">{{ carrier.name }} Website</a></div>
+{#                    <div><a href="{{ carrier.website_url }}">{{ carrier.name }} Website</a></div>#}
                     <h1>Insurance Products by State</h1>
                     <p class="lead">Broker products to meet your diverse client needs.</p>
                 </div>
             </div>
         </div>
     </section>
-    <section class="space--xxs">
+    <section class="space--xxs carrier-description">
         <div class="container">
             <div class="row">
-                <div class="col-9">
+                <div class="col-md-9 col-sm-12">
                     {{ carrier.description|safe }}
                 </div>
-                <div class="col-3 text-center bg--primary-3">
-                    <div>RATING</div>
-                    <div>{{ carrier.rating_classification }}</div>
-                    <div>{{ carrier.rating_description }}</div>
-                    <div>{{ carrier.rating_company_name }}</div>
+                <div class="col-md-3 col-sm-12">
+                    <div class="carrier-rating boxed boxed--border text-center bg--primary-3">
+                        <h4>Rating</h4>
+                        <p class="h1">{{ carrier.rating_classification }}</p>
+                        <p><span class="lead">{{ carrier.rating_description }}</span></br>
+                            {{ carrier.rating_company_name }}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     {% if carrier.products|length > 0 %}
-        <section class="space--xxs">
+        <section class="space--xxs carrier-products">
             <div class="container">
-                <div class="row">
+                <div class="row text-center">
                     <div class="col-md-2"></div>
-                    <div class="col-md-2">Small Group</div>
-                    <div class="col-md-2">Large Group</div>
-                    <div class="col-md-2">Self-Funded</div>
-                    <div class="col-md-2">Individual</div>
-                    <div class="col-md-2">Senior</div>
+                    <div class="col-md-2"><h4>Small Group</h4></div>
+                    <div class="col-md-2"><h4>Large Group</h4></div>
+                    <div class="col-md-2"><h4>Self-Funded</h4></div>
+                    <div class="col-md-2"><h4>Individual</h4></div>
+                    <div class="col-md-2"><h4>Senior</h4></div>
                 </div>
+                <ul class="accordion accordion-2 carrier-accordion">
                 {% for product in carrier.products|dictsort:"order" %}
-                    <div class="row">
-                        <div class="col-md-2"><h4>{{ product.name }}</h4></div>
-                        <div class="col-md-2">
-                            {% if product.small_group.states|length > 0 %}
-                                <p>Check Icon</p>
-                            {% else %}
-                                <p>X Icon</p>
-                            {% endif %}
-                            <div class="feature__body boxed boxed--border">
-                                <ul>
-                                    {% if product.small_group.states|length > 0 %}
-                                        {% for state in product.small_group.states %}
-                                           <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
-                                        {% endfor %}
-                                    {% else %}
-                                        <li>None</li>
-                                    {% endif %}
-                                </ul>
+                    <li>
+                        <div class="row accordion__title {% cycle '' 'bg--secondary' %}">
+                            <div class="col-md-2"><h4 class="type--bold">{{ product.name }}</h4></div>
+                            <div class="col-md-2 text-center align-middle">
+                                {% if product.small_group.states|length > 0 %}
+                                    <i class="icon icon-Yes icon--sm color--primary"></i>
+                                {% else %}
+                                    <i class="icon icon-Close icon--sm"></i>
+                                {% endif %}
+{#                                <img src="{% static 'images/icon-N-A@2x.png' %}" width="33px" height="33px"/>#}
+                            </div>
+                            <div class="col-md-2 text-center align-middle">
+                                {% if product.large_group.states|length > 0 %}
+                                    <i class="icon icon-Yes icon--sm color--primary"></i>
+                                {% else %}
+                                    <i class="icon icon-Close icon--sm"></i>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-2 text-center align-middle">
+                                {% if product.self_funded.states|length > 0 %}
+                                    <i class="icon icon-Yes icon--sm color--primary"></i>
+                                {% else %}
+                                    <i class="icon icon-Close icon--sm"></i>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-2 text-center align-middle">
+                                {% if product.individual.states|length > 0 %}
+                                    <i class="icon icon-Yes icon--sm color--primary"></i>
+                                {% else %}
+                                    <i class="icon icon-Close icon--sm"></i>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-2 text-center align-middle">
+                                {% if product.senior.states|length > 0 %}
+                                    <i class="icon icon-Yes icon--sm color--primary"></i>
+                                {% else %}
+                                    <i class="icon icon-Close icon--sm"></i>
+                                {% endif %}
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            {% if product.large_group.states|length > 0 %}
-                                <p>Check Icon</p>
-                            {% else %}
-                                <p>X Icon</p>
-                            {% endif %}
-                            <div class="feature__body boxed boxed--border">
-                                <ul>
-                                    {% if product.large_group.states|length > 0 %}
-                                        {% for state in product.large_group.states %}
-                                           <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
-                                        {% endfor %}
-                                    {% else %}
-                                        <li>None</li>
-                                    {% endif %}
-                                </ul>
+                        <div class="row accordion__content bg--secondary">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-2">
+                                <div class="">
+                                    <ul>
+                                        {% if product.small_group.states|length > 0 %}
+                                            {% for state in product.small_group.states %}
+                                               <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li>None</li>
+                                        {% endif %}
+                                    </ul>
+                                    {% if product.small_group.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="">
+                                    <ul>
+                                        {% if product.large_group.states|length > 0 %}
+                                            {% for state in product.large_group.states %}
+                                               <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li>None</li>
+                                        {% endif %}
+                                    </ul>
+                                    {% if product.large_group.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="">
+                                    <ul>
+                                        {% if product.self_funded.states|length > 0 %}
+                                            {% for state in product.self_funded.states %}
+                                               <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li>None</li>
+                                        {% endif %}
+                                    </ul>
+                                    {% if product.self_funded.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="">
+                                    <ul>
+                                        {% if product.individual.states|length > 0 %}
+                                            {% for state in product.individual.states %}
+                                               <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li>None</li>
+                                        {% endif %}
+                                    </ul>
+                                    {% if product.individual.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="">
+                                    <ul>
+                                        {% if product.senior.states|length > 0 %}
+                                            {% for state in product.senior.states %}
+                                               <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li>None</li>
+                                        {% endif %}
+                                    </ul>
+                                    {% if product.senior.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            {% if product.self_funded.states|length > 0 %}
-                                <p>Check Icon</p>
-                            {% else %}
-                                <p>X Icon</p>
-                            {% endif %}
-                            <div class="feature__body boxed boxed--border">
-                                <ul>
-                                    {% if product.self_funded.states|length > 0 %}
-                                        {% for state in product.self_funded.states %}
-                                           <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
-                                        {% endfor %}
-                                    {% else %}
-                                        <li>None</li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            {% if product.individual.states|length > 0 %}
-                                <p>Check Icon</p>
-                            {% else %}
-                                <p>X Icon</p>
-                            {% endif %}
-                            <div class="feature__body boxed boxed--border">
-                                <ul>
-                                    {% if product.individual.states|length > 0 %}
-                                        {% for state in product.individual.states %}
-                                           <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
-                                        {% endfor %}
-                                    {% else %}
-                                        <li>None</li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            {% if product.senior.states|length > 0 %}
-                                <p>Check Icon</p>
-                            {% else %}
-                                <p>X Icon</p>
-                            {% endif %}
-                            <div class="feature__body boxed boxed--border">
-                                <ul>
-                                    {% if product.senior.states|length > 0 %}
-                                        {% for state in product.senior.states %}
-                                           <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
-                                        {% endfor %}
-                                    {% else %}
-                                        <li>None</li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    </li>
                 {% endfor %}
+                </ul>
             </div>
         </section>
     {% endif %}
     {% if carrier.additional_products|length > 0 %}
-        <section class="space--xxs bg--secondary">
+        <section class="space--xxs bg--secondary carrier-additional">
             <div class="container">
                 <div class="row">
                     <div class="col-12 text-center"><h3>Additional Medical &amp; Non-Medical Products</h3></div>

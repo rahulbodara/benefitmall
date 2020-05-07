@@ -6,45 +6,50 @@
         {% include_block block %}
     {% endfor %}
 
-    {% for carrier in carriers.items %}
-        <section class="space--xxs"}>
-            <div class="container boxed boxed--border text-white">
-                <a href="./{{ carrier.1.slug }}">
-                    <div class="row">
-                        <div class="col-md-3 text-center">
-                            {% if carrier.1.logo_url %}<img src="{{ carrier.1.logo_url }}"/>{% endif %}
-                            <h4>{{ carrier.1.name }}</h4>
-                        </div>
-                        <div class="col-md-3 text-center bg--primary-3">
-                            <div><span>RATING</span></div>
-                            <div><span>{{ carrier.1.rating_classification }}</span></div>
-                            <div><span>{{ carrier.1.rating_description }}</span></div>
-                            <div><span>{{ carrier.1.rating_company_name }}</span></div>
-                        </div>
-                        <div class="col-md-3 bg--primary-3">
-                            <ul>
-                            {% for p in carrier.1.available_products|dictsort:"order" %}
-                                {% if forloop.counter < 6 %}
-                                    <li>{{ p.name }}</li>
+        <section class="space--xxs">
+            <div class="container text-white">
+                {% for carrier in carriers.items %}
+
+                    <a class="carrier-link" href="./{{ carrier.1.slug }}">
+                        <div class="row carrier-item">
+                            <div class="col-md-3 text-center boxed boxed--border">
+                                <div class="text-center"><h4>Carrier</h4></div>
+                                {% if carrier.1.logo_url %}<img src="{{ carrier.1.logo_url }}"/>{% endif %}
+                                <h4>{{ carrier.1.name }}</h4>
+                            </div>
+                            <div class="carrier-rating col-md-3 text-center bg--primary-3 boxed boxed--border">
+                                <h4>Rating</h4>
+                                <p class="h1">{{ carrier.1.rating_classification }}</p>
+                                <p><span class="lead">{{ carrier.1.rating_description }}</span></br>
+                                    {{ carrier.1.rating_company_name }}</p>
+                            </div>
+                            <div class="col-md-3 bg--primary-3 text-left-md text-center-xs boxed boxed--border">
+                                <div class="text-center"><h4>Type</h4></div>
+                                <ul>
+                                {% for p in carrier.1.available_products|dictsort:"order" %}
+                                    {% if forloop.counter < 6 %}
+                                        <li>{{ p.name }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if carrier.1.available_products|length > 6 %}
+                                    <li><i>Plus More</i></li>
                                 {% endif %}
-                            {% endfor %}
-                            {% if carrier.1.available_products|length > 6 %}
-                                <li><i>Plus More</i></li>
-                            {% endif %}
-                            </ul>
+                                </ul>
+                            </div>
+                            <div class="col-md-3 bg--primary-3 text-left-md text-center-xs boxed boxed--border">
+                                <div class="text-center"><h4>Best For</h4></div>
+                                <ul>
+                                {% for i in carrier.1.available_insurance_types|dictsort:"order" %}
+                                    <li>{{ i.name }}{% if i.quoting_available %}*{% endif %}</li>
+                                {% endfor %}
+                                </ul>
+                                {% if carrier.1.show_quoting %}<p class="type--fine-print">* Online quoting available in some states</p>{% endif %}
+                            </div>
                         </div>
-                        <div class="col-md-3 bg--primary-3">
-                            <ul>
-                            {% for i in carrier.1.available_insurance_types|dictsort:"order" %}
-                                <li>{{ i.name }}{% if i.quoting_available %}*{% endif %}</li>
-                            {% endfor %}
-                            </ul>
-                            {% if carrier.1.show_quoting %}<span>* Online quoting available in some states</span>{% endif %}
-                        </div>
-                    </div>
-                </a>
+                    </a>
+                {% endfor %}
+
             </div>
         </section>
-    {% endfor %}
 
 {% endblock %}
