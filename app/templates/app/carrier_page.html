@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col text-center">
-                    <img src="{{ carrier.logo_url }}"/>
+                    {% if carrier.logo_url != '' %}<img src="{{ carrier.logo_url }}"/>{% endif %}
                     <div><a href="{{ carrier.website_url }}">{{ carrier.name }} Website</a></div>
                     <h1>Insurance Products by State</h1>
                     <p class="lead">Broker products to meet your diverse client needs.</p>

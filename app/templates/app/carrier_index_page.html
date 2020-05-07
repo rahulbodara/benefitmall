@@ -12,7 +12,7 @@
                 <a href="./{{ carrier.1.slug }}">
                     <div class="row">
                         <div class="col-md-3 text-center">
-                            <img src="{{ carrier.1.logo_url }}"/>
+                            {% if carrier.1.logo_url != '' %}<img src="{{ carrier.1.logo_url }}"/>{% endif %}
                             <h4>{{ carrier.1.name }}</h4>
                         </div>
                         <div class="col-md-3 text-center bg--primary-3">
