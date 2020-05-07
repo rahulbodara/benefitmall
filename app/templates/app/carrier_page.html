@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+    <section class="space--xxs bg--secondary">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <img src="{{ carrier.logo_url }}"/>
+                    <div><a href="{{ carrier.website_url }}">{{ carrier.name }} Website</a></div>
+                    <h1>Insurance Products by State</h1>
+                    <p class="lead">Broker products to meet your diverse client needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="space--xxs">
+        <div class="container">
+            <div class="row">
+                <div class="col-9">
+                    {{ carrier.description|safe }}
+                </div>
+                <div class="col-3 text-center bg--primary-3">
+                    <div>RATING</div>
+                    <div>{{ carrier.rating_classification }}</div>
+                    <div>{{ carrier.rating_description }}</div>
+                    <div>{{ carrier.rating_company_name }}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if carrier.products|length > 0 %}
+        <section class="space--xxs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">Small Group</div>
+                    <div class="col-md-2">Large Group</div>
+                    <div class="col-md-2">Self-Funded</div>
+                    <div class="col-md-2">Individual</div>
+                    <div class="col-md-2">Senior</div>
+                </div>
+                {% for product in carrier.products|dictsort:"order" %}
+                    <div class="row">
+                        <div class="col-md-2"><h4>{{ product.name }}</h4></div>
+                        <div class="col-md-2">
+                            {% if product.small_group.states|length > 0 %}
+                                <p>Check Icon</p>
+                            {% else %}
+                                <p>X Icon</p>
+                            {% endif %}
+                            <div class="feature__body boxed boxed--border">
+                                <ul>
+                                    {% if product.small_group.states|length > 0 %}
+                                        {% for state in product.small_group.states %}
+                                           <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li>None</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            {% if product.large_group.states|length > 0 %}
+                                <p>Check Icon</p>
+                            {% else %}
+                                <p>X Icon</p>
+                            {% endif %}
+                            <div class="feature__body boxed boxed--border">
+                                <ul>
+                                    {% if product.large_group.states|length > 0 %}
+                                        {% for state in product.large_group.states %}
+                                           <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li>None</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            {% if product.self_funded.states|length > 0 %}
+                                <p>Check Icon</p>
+                            {% else %}
+                                <p>X Icon</p>
+                            {% endif %}
+                            <div class="feature__body boxed boxed--border">
+                                <ul>
+                                    {% if product.self_funded.states|length > 0 %}
+                                        {% for state in product.self_funded.states %}
+                                           <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li>None</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            {% if product.individual.states|length > 0 %}
+                                <p>Check Icon</p>
+                            {% else %}
+                                <p>X Icon</p>
+                            {% endif %}
+                            <div class="feature__body boxed boxed--border">
+                                <ul>
+                                    {% if product.individual.states|length > 0 %}
+                                        {% for state in product.individual.states %}
+                                           <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li>None</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            {% if product.senior.states|length > 0 %}
+                                <p>Check Icon</p>
+                            {% else %}
+                                <p>X Icon</p>
+                            {% endif %}
+                            <div class="feature__body boxed boxed--border">
+                                <ul>
+                                    {% if product.senior.states|length > 0 %}
+                                        {% for state in product.senior.states %}
+                                           <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li>None</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+    {% if carrier.additional_products|length > 0 %}
+        <section class="space--xxs bg--secondary">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center"><h3>Additional Medical &amp; Non-Medical Products</h3></div>
+                    <div class="col-12 text-center bg--white">
+                        <ul>
+                            {% for p in carrier.additional_products %}
+                                <li>{{ p }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+
+{% endblock %}

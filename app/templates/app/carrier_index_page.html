@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+    {% for block in page.body %}
+        {% include_block block %}
+    {% endfor %}
+
+    {% for carrier in carriers.items %}
+        <section class="space--xxs"}>
+            <div class="container boxed boxed--border text-white">
+                <a href="./{{ carrier.1.slug }}">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <img src="{{ carrier.1.logo_url }}"/>
+                            <h4>{{ carrier.1.name }}</h4>
+                        </div>
+                        <div class="col-md-3 text-center bg--primary-3">
+                            <div><span>RATING</span></div>
+                            <div><span>{{ carrier.1.rating_classification }}</span></div>
+                            <div><span>{{ carrier.1.rating_description }}</span></div>
+                            <div><span>{{ carrier.1.rating_company_name }}</span></div>
+                        </div>
+                        <div class="col-md-3 bg--primary-3">
+                            <ul>
+                            {% for p in carrier.1.available_products|dictsort:"order" %}
+                                {% if forloop.counter < 6 %}
+                                    <li>{{ p.name }}</li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if carrier.1.available_products|length > 6 %}
+                                <li><i>Plus More</i></li>
+                            {% endif %}
+                            </ul>
+                        </div>
+                        <div class="col-md-3 bg--primary-3">
+                            <ul>
+                            {% for i in carrier.1.available_insurance_types|dictsort:"order" %}
+                                <li>{{ i.name }}{% if i.quoting_available %}*{% endif %}</li>
+                            {% endfor %}
+                            </ul>
+                            {% if carrier.1.show_quoting %}<span>* Online quoting available in some states</span>{% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    {% endfor %}
+
+{% endblock %}

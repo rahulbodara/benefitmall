@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
 import requests
 import json
 from django.core.cache import cache
+from django.utils.text import slugify
 
 
 
@@ -14,8 +15,8 @@ PRODUCT_ORDER = {
     'Disability': 5,
 }
 INSURANCE_TYPE_ORDER = {
-    'Large Group': 1,
-    'Small Group': 2,
+    'Small Group': 1,
+    'Large Group': 2,
     'Self-Funded': 3,
     'Individual': 4,
     'Senior': 5,
@@ -24,6 +25,7 @@ INSURANCE_TYPE_ORDER = {
 def carrier_json(request):
     cachekey = 'carriers'
 
+    cache.clear()
     ret = cache.get(cachekey)
     if not ret:
 
@@ -56,19 +58,22 @@ def carrier_json(request):
             # "Carrier_Id": "001g000002ETUdlAAH",
             id = None
             if 'Carrier_Id' in item:
-                id = item['Carrier_Id']
+                id = item['Carrier_Id'].lower()
 
             # TODO - Respect start and end time
             if id not in carriers:
                 carriers[id] = {'products': [], 'available_states': [], 'available_insurance_types': [], 'available_products': [], 'additional_products': []}
             carrier = carriers[id]
 
+            # "Carrier_Name": "Advantica",
+            if 'Carrier_Name' in item and item['Carrier_Name'] != '':
+                carrier_name = item['Carrier_Name']
+                carrier['name'] = carrier_name
+                carrier['slug'] = slugify(carrier_name + ' ' + id)
+
             # "CDM_Id": "a3Kg0000000KxoZEAS",
             if 'CDM_Id' in item and item['CDM_Id'] != '':
                 carrier['cdm_id'] = item['CDM_Id']
-            # "Carrier_Name": "Advantica",
-            if 'Carrier_Name' in item and item['Carrier_Name'] != '':
-                carrier['name'] = item['Carrier_Name']
             # "Website": "www.advanticabenefits.com",
             if 'Website' in item and item['Website'] != '':
                 carrier['website_url'] = item['Website']
@@ -105,6 +110,7 @@ def carrier_json(request):
 
             # "Insurance_Type": "Small Group",
             insurance_type = item['Insurance_Type']
+            insurance_type_slug = slugify(insurance_type).replace('-','_')
             for it in carrier['available_insurance_types']:
                 if it['name'] == insurance_type:
                     current_insurance_type = it
@@ -116,6 +122,7 @@ def carrier_json(request):
                 carrier['available_insurance_types'].append(current_insurance_type)
             if quoting_available:
                 current_insurance_type['quoting_available'] = quoting_available
+                carrier['show_quoting'] = 'True'
 
             # "Product_Types": "Dental;Vision",
             product_types = item['Product_Types'].split(';')
@@ -130,9 +137,15 @@ def carrier_json(request):
                         if product_type in PRODUCT_ORDER:
                             product['order'] = PRODUCT_ORDER[product_type]
                         carrier['products'].append(product)
-                    if insurance_type not in product:
-                        product[insurance_type] = {'name': insurance_type, 'states': []}
-                    product[insurance_type]['states'].append(state)
+                    if insurance_type_slug not in product:
+                        product[insurance_type_slug] = {'name': insurance_type, 'states': []}
+
+                    for s in product[insurance_type_slug]['states']:
+                        if s['name'] == state['name']:
+                            break
+                    else:
+                        product[insurance_type_slug]['states'].append(state)
+
             else: # It's an additional product
                 for product_type in product_types:
                     if product_type not in carrier['additional_products']:
@@ -149,7 +162,7 @@ def carrier_json(request):
                         product['order'] = PRODUCT_ORDER[product_type]
                     carrier['available_products'].append(product)
         ret = carriers
-        cache.set(cachekey, carriers, 0)
+        cache.set(cachekey, carriers, None)
 
     else:
         tmp = 'already cached'
