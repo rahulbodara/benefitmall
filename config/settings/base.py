@@ -200,3 +200,52 @@ WAGTAILSEARCH_BACKENDS = {
         'ATOMIC_REBUILD': True,
     }
 }
+
+############################## PROD SETTINGS ##############################
+# CARRIER_API_URL = "https://benefitmall.my.salesforce.com"
+# CARRIER_API_ENDPOINT = "/services/apexrest/CarrierAccounts/"
+# CARRIER_API_AUTH_URL = "/services/oauth2/token"
+# CARRIER_API_USER = "insitein@benefitmall.com"
+# CARRIER_API_PASS = "Insite@430"
+# CARRIER_API_TOKEN = "z4CxSuTWooLnmGgfLa7dZCEcI"
+# CARRIER_API_CLIENT_ID = "3MVG98XJQQAccJQc67xDDomk9lYr3DW7CWigK8uC3PPFlbYgGOZpU1MLYfxqtP6JsNJNJMntokckbz99Daxg_"
+# CARRIER_API_CLIENT_SECRET = "F6DA75835F1A15BD9C8884653294335041483166ED44DA0D934E6329E3F0B493"
+
+
+############################## DEV SETTINGS ##############################
+# CARRIER_API_URL = "https://benefitmall--DevKasu.cs17.my.salesforce.com"
+# CARRIER_API_ENDPOINT = "/services/apexrest/CarrierAccounts/services/apexrest/CarrierAccounts/"
+# CARRIER_API_AUTH_URL = "/services/oauth2/token"
+# CARRIER_API_USER = "insitein@benefitmall.com.devkasu"
+# CARRIER_API_PASS = "Test@415"
+# CARRIER_API_TOKEN = "sQk1D2vzH26ZwTBltnQxvnbD"
+# CARRIER_API_CLIENT_ID = "3MVG9ahGHqp.k2_ysR5QacRbHlHN1WYdbcrNhiVY4aE48SzvpJWORIlSZnCR20LCgPE7BAIfPAZBt3sGyLPNP"
+# CARRIER_API_CLIENT_SECRET = "DBCE6F4E5A79087E022DE97FE435DE8157D13FEC28AF66205A9A2611E24C9695"
+
+CARRIER_API_URL = env.str('CARRIER_API_URL', 'https://benefitmall--DevKasu.cs17.my.salesforce.com')
+CARRIER_API_ENDPOINT = env.str('CARRIER_API_ENDPOINT', '/services/apexrest/CarrierAccounts/services/apexrest/CarrierAccounts/')
+CARRIER_API_AUTH_URL = env.str('CARRIER_API_AUTH_URL', '/services/oauth2/token')
+CARRIER_API_USER = env.str('CARRIER_API_USER', 'insitein@benefitmall.com.devkasu')
+CARRIER_API_PASS = env.str('CARRIER_API_PASS', 'Test@415')
+CARRIER_API_TOKEN = env.str('CARRIER_API_TOKEN', 'sQk1D2vzH26ZwTBltnQxvnbD')
+CARRIER_API_CLIENT_ID = env.str('CARRIER_API_CLIENT_ID', '3MVG9ahGHqp.k2_ysR5QacRbHlHN1WYdbcrNhiVY4aE48SzvpJWORIlSZnCR20LCgPE7BAIfPAZBt3sGyLPNP')
+CARRIER_API_CLIENT_SECRET = env.str('CARRIER_API_CLIENT_SECRET', 'DBCE6F4E5A79087E022DE97FE435DE8157D13FEC28AF66205A9A2611E24C9695')
+
+
+# CHAT PROD
+# Chat Button ID: 5731L000000M5rP
+# Chat Deployment: 5721L000000M4Hq
+# Chat Org Identifier: 00DG0000000gEcp
+# CHAT DEV
+# Chat Button ID: 573c0000000CbCw
+# Chat Deployment: 572c0000000Casl
+# Chat Org Identifier: 00Dc0000003wW7y
+
+CHAT_BUTTON_ID = env.str('CHAT_BUTTON_ID', '573c0000000CbCw')
+CHAT_DEPLOYMENT_ID = env.str('CHAT_DEPLOYMENT_ID', '572c0000000Casl')
+CHAT_ORG_ID = env.str('CHAT_ORG_ID', '00Dc0000003wW7y')
+
+
+#LEAD GEN FORM
+LEAD_GEN_FORM_URL = env.str('LEAD_GEN_FORM_URL', 'https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8')
+LEAD_GEN_FORM_OID = env.str('LEAD_GEN_FORM_OID', '00Dc0000003wW7y')

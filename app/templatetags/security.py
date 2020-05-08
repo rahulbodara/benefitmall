@@ -37,3 +37,7 @@ def allow_style(context):
 	nonce = request.session['style_nonce']
 	output = format_html('nonce="' + nonce + '"')
 	return output
+
+@register.simple_tag
+def get_setting(name):
+	return getattr(settings, name, "")

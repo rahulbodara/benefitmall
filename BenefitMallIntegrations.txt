@@ -1,0 +1,76 @@
+
+
+CARRIER SANDBOX
+
+URL endpoint: https://benefitmall--DevKasu.cs17.my.salesforce.com/services/apexrest/CarrierAccounts/services/apexrest/CarrierAccounts/
+User Name: insitein@benefitmall.com.devkasu
+Password: Test@415
+Security token: sQk1D2vzH26ZwTBltnQxvnbD
+ClientID: 3MVG9ahGHqp.k2_ysR5QacRbHlHN1WYdbcrNhiVY4aE48SzvpJWORIlSZnCR20LCgPE7BAIfPAZBt3sGyLPNP
+Client Secret: DBCE6F4E5A79087E022DE97FE435DE8157D13FEC28AF66205A9A2611E24C9695
+When getting access code, append security token to the password and use that as the password.
+
+
+CARRIER PROD
+
+URL endpoint: https://benefitmall.my.salesforce.com/services/apexrest/CarrierAccounts/
+User Name: insitein@benefitmall.com
+Password: Insite@430
+Security Token: z4CxSuTWooLnmGgfLa7dZCEcI
+ClientID: 3MVG98XJQQAccJQc67xDDomk9lYr3DW7CWigK8uC3PPFlbYgGOZpU1MLYfxqtP6JsNJNJMntokckbz99Daxg_
+Client Secret: F6DA75835F1A15BD9C8884653294335041483166ED44DA0D934E6329E3F0B493
+
+
+
+
+CHAT SANDBOX
+
+Environmental Variables with Values for QA
+Chat Button ID: 573c0000000CbCw
+Chat Deployment: 572c0000000Casl
+Chat Org Identifier: 00Dc0000003wW7y
+
+BUTTON CODE DEV
+<a id="liveagent_button_online_573c0000000CbCw" href="javascript://Chat" style="display: none;" onclick="liveagent.startChat('573c0000000CbCw')"><!-- Online Chat Content --></a><div id="liveagent_button_offline_573c0000000CbCw" style="display: none;"><!-- Offline Chat Content --></div><script type="text/javascript">
+if (!window._laq) { window._laq = []; }
+window._laq.push(function(){liveagent.showWhenOnline('573c0000000CbCw', document.getElementById('liveagent_button_online_573c0000000CbCw'));
+liveagent.showWhenOffline('573c0000000CbCw', document.getElementById('liveagent_button_offline_573c0000000CbCw'));
+});</script>
+
+LIVE AGENT SCRIPT DEV
+<script type='text/javascript' src='https://c.la1-c1cs-ord.salesforceliveagent.com/content/g/js/48.0/deployment.js'></script>
+<script type='text/javascript'>
+liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', '572c0000000Casl', '00Dc0000003wW7y');
+</script>
+
+
+
+
+
+CHAT PROD
+
+Chat Button ID: 5731L000000M5rP
+Chat Deployment: 5721L000000M4Hq
+Chat Org Identifier: 00DG0000000gEcp
+
+BUTTON CODE PROD
+<a id="liveagent_button_online_5731L000000M5rP" href="javascript://Chat" style="display: none;" onclick="liveagent.startChat('5731L000000M5rP')"><!-- Online Chat Content --></a>
+<div id="liveagent_button_offline_5731L000000M5rP" style="display: none;"><!-- Offline Chat Content --></div>
+
+<script type="text/javascript">
+if (!window._laq) { window._laq = []; }
+window._laq.push(function(){liveagent.showWhenOnline('5731L000000M5rP', document.getElementById('liveagent_button_online_5731L000000M5rP'));
+liveagent.showWhenOffline('5731L000000M5rP', document.getElementById('liveagent_button_offline_5731L000000M5rP'));
+});
+</script>
+
+LIVE AGENT SCRIPT PROD
+<script type='text/javascript' src='https://c.la1-c1cs-ord.salesforceliveagent.com/content/g/js/48.0/deployment.js'></script>
+<script type='text/javascript'>
+liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', '5721L000000M4Hq', '00DG0000000gEcp');
+</script>
+
+
+
+
+

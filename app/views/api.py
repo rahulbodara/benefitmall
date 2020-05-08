@@ -3,9 +3,28 @@ import requests
 import json
 from django.core.cache import cache
 from django.utils.text import slugify
+from django.conf import settings
+
+############################## PROD SETTINGS ##############################
+# CARRIER_API_URL = "https://benefitmall.my.salesforce.com"
+# CARRIER_API_ENDPOINT = "/services/apexrest/CarrierAccounts/"
+# CARRIER_API_AUTH_URL = "/services/oauth2/token"
+# CARRIER_API_USER = "insitein@benefitmall.com"
+# CARRIER_API_PASS = "Insite@430"
+# CARRIER_API_TOKEN = "z4CxSuTWooLnmGgfLa7dZCEcI"
+# CARRIER_API_CLIENT_ID = "3MVG98XJQQAccJQc67xDDomk9lYr3DW7CWigK8uC3PPFlbYgGOZpU1MLYfxqtP6JsNJNJMntokckbz99Daxg_"
+# CARRIER_API_CLIENT_SECRET = "F6DA75835F1A15BD9C8884653294335041483166ED44DA0D934E6329E3F0B493"
 
 
-
+############################## DEV SETTINGS ##############################
+# CARRIER_API_URL = "https://benefitmall--DevKasu.cs17.my.salesforce.com"
+# CARRIER_API_ENDPOINT = "/services/apexrest/CarrierAccounts/services/apexrest/CarrierAccounts/"
+# CARRIER_API_AUTH_URL = "/services/oauth2/token"
+# CARRIER_API_USER = "insitein@benefitmall.com.devkasu"
+# CARRIER_API_PASS = "Test@415"
+# CARRIER_API_TOKEN = "sQk1D2vzH26ZwTBltnQxvnbD"
+# CARRIER_API_CLIENT_ID = "3MVG9ahGHqp.k2_ysR5QacRbHlHN1WYdbcrNhiVY4aE48SzvpJWORIlSZnCR20LCgPE7BAIfPAZBt3sGyLPNP"
+# CARRIER_API_CLIENT_SECRET = "DBCE6F4E5A79087E022DE97FE435DE8157D13FEC28AF66205A9A2611E24C9695"
 
 PRODUCT_ORDER = {
     'Medical': 1,
@@ -31,13 +50,13 @@ def carrier_json(request):
 
         params = {
             'grant_type': 'password',
-            'client_id': '3MVG9ahGHqp.k2_ysR5QacRbHlHN1WYdbcrNhiVY4aE48SzvpJWORIlSZnCR20LCgPE7BAIfPAZBt3sGyLPNP',
-            'client_secret': 'DBCE6F4E5A79087E022DE97FE435DE8157D13FEC28AF66205A9A2611E24C9695',
-            'username': 'insitein@benefitmall.com.devkasu',
-            'password': 'Test@415sQk1D2vzH26ZwTBltnQxvnbD'
+            'client_id': settings.CARRIER_API_CLIENT_ID,
+            'client_secret': settings.CARRIER_API_CLIENT_SECRET,
+            'username': settings.CARRIER_API_USER,
+            'password': settings.CARRIER_API_PASS+settings.CARRIER_API_TOKEN,
         }
 
-        r = requests.post('https://test.salesforce.com/services/oauth2/token', params=params)
+        r = requests.post(settings.CARRIER_API_URL+settings.CARRIER_API_AUTH_URL, params=params)
         access_token = r.json().get("access_token")
         instance_url = r.json().get("instance_url")
 
@@ -48,7 +67,7 @@ def carrier_json(request):
         }
 
         r = requests.request('get',
-                             instance_url + '/services/apexrest/CarrierAccounts/services/apexrest/CarrierAccounts/',
+                             instance_url + settings.CARRIER_API_ENDPOINT,
                              headers=headers,
                              params=params,
                              )

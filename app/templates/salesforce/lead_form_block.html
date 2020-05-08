@@ -1,4 +1,4 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags security %}
 <section class="">
     <div class="container">
         <div class="row  justify-content-center">
@@ -13,10 +13,10 @@
                 </div>
                 <div role="form">
 
-                    <form action="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
-                        <div style="display: none;">
+                    <form action="{% get_setting 'LEAD_GEN_FORM_URL' %}" method="POST">
+                        <div class="hidden ui-helper-hidden ">
 
-                            <input type=hidden name="oid" value="00Dc0000003wW7y">
+                            <input type=hidden name="oid" value="{% get_setting 'LEAD_GEN_FORM_OID' %}">
 {#                            TODO - UPDATE URL TO PRODUCTION URL #}
                             <input type=hidden name="retURL" value="https://benefitmall.herokuapp.com/thank-you/">
                             <input type=hidden id="lead_source" name="lead_source" value="Website">

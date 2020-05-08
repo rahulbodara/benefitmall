@@ -1,8 +1,8 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags security %}
 {# LIVE CHAT DEPLOYMENT SCRIPT #}
 <script type='text/javascript' src='https://c.la1-c1cs-ord.salesforceliveagent.com/content/g/js/48.0/deployment.js'></script>
 <script type='text/javascript'>
-liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', '572c0000000Casl', '00Dc0000003wW7y');
+liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', {% get_setting 'CHAT_DEPLOYMENT_ID' %}, {% get_setting 'CHAT_ORG_ID' %});
 </script>
 
 
@@ -21,8 +21,8 @@ liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', '572c00000
                                 {% endfor %}
 
                                     <li class="menu-item menu-item-type-custom menu-item-object-custom">
-                                        <a id="liveagent_button_online_573c0000000CbCw" href="javascript://Chat" style="display: none;" onclick="liveagent.startChat('573c0000000CbCw')" class="text-white btn btn--primary">Live Chat Help</a>
-                                        <div id="liveagent_button_offline_573c0000000CbCw" style="display: none;" class="btn">Live Chat Unavailable</div>
+                                        <a id="liveagent_button_online_{% get_setting 'CHAT_BUTTON_ID' %}" href="javascript://Chat" style="display: none;" onclick="liveagent.startChat('{% get_setting 'CHAT_BUTTON_ID' %}')" class="text-white btn btn--primary">Live Chat Help</a>
+                                        <div id="liveagent_button_offline_{% get_setting 'CHAT_BUTTON_ID' %}" style="display: none;" class="btn">Live Chat Unavailable</div>
                                     </li>
 
                             </ul>
@@ -44,8 +44,8 @@ liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', '572c00000
                                 {% endfor %}
 
                                     <li class="menu-item menu-item-type-custom menu-item-object-custom">
-                                        <a id="liveagent_button_online_573c0000000CbCw" href="javascript://Chat" style="display: none;" onclick="liveagent.startChat('573c0000000CbCw')" class="text-white btn btn--primary">Live Chat Help</a>
-                                        <div id="liveagent_button_offline_573c0000000CbCw" style="display: none;" class="btn">Live Chat Unavailable</div>
+                                        <a id="liveagent_button_online_{% get_setting 'CHAT_BUTTON_ID' %}" href="javascript://Chat" style="display: none;" onclick="liveagent.startChat('{% get_setting 'CHAT_BUTTON_ID' %}')" class="text-white btn btn--primary">Live Chat Help</a>
+                                        <div id="liveagent_button_offline_{% get_setting 'CHAT_BUTTON_ID' %}" style="display: none;" class="btn">Live Chat Unavailable</div>
                                     </li>
 
                             </ul>
@@ -60,8 +60,8 @@ liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', '572c00000
 if (!window._laq) { window._laq = []; }
 window._laq.push(
     function(){
-        liveagent.showWhenOnline('573c0000000CbCw', document.getElementById('liveagent_button_online_573c0000000CbCw'));
-        liveagent.showWhenOffline('573c0000000CbCw', document.getElementById('liveagent_button_offline_573c0000000CbCw'));
+        liveagent.showWhenOnline('{% get_setting 'CHAT_BUTTON_ID' %}', document.getElementById('liveagent_button_online_{% get_setting 'CHAT_BUTTON_ID' %}'));
+        liveagent.showWhenOffline('{% get_setting 'CHAT_BUTTON_ID' %}', document.getElementById('liveagent_button_offline_{% get_setting 'CHAT_BUTTON_ID' %}'));
     }
 );
 </script>
