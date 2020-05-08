@@ -1,0 +1,13 @@
+Website Contact Form Submission
+
+Hello -
+
+You have received a request for contact concerning {{ topic }} from BenefitMall.com.
+
+It was submitted on {% now "M j, Y" %} at {% now "g:iA e" %}.
+
+First Name: {{ first_name }}
+Last Name: {{ last_name }}
+Email: {{ email }}
+State: {{ state }}
+Phone: {{ phone }}

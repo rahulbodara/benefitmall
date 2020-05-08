@@ -1,0 +1,8 @@
+Response from BenefitMall
+
+Hi {{ first_name }} {{ last_name }},
+
+We have received the request you sent to us concerning {{ topic }}. Thank you for your interest. Someone will respond to you shortly using the contact information you provided us.
+
+Sincerely,
+The BenefitMall Team

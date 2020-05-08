@@ -1,0 +1,34 @@
+[
+{
+  "model": "app.eventtype",
+  "pk": 1,
+  "fields": {
+    "name": "Benefits Meeting",
+    "slug": "benefits-meeting"
+  }
+},
+{
+  "model": "app.eventtype",
+  "pk": 2,
+  "fields": {
+    "name": "Benefits Training",
+    "slug": "benefits-training"
+  }
+},
+{
+  "model": "app.eventtype",
+  "pk": 3,
+  "fields": {
+    "name": "Compliance Webcast",
+    "slug": "compliance-webcast"
+  }
+},
+{
+  "model": "app.eventtype",
+  "pk": 4,
+  "fields": {
+    "name": "Tradeshow",
+    "slug": "tradeshow"
+  }
+}
+]

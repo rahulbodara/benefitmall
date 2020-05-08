@@ -53,5 +53,7 @@
             </div>
         </div>
     </section>
-    {% include 'blocks/recent_blogs_block.html' %}
+    {% for block in page.body_below %}
+        {% include_block block %}
+    {% endfor %}
 {% endblock %}

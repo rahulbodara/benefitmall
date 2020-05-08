@@ -242,3 +242,9 @@ MEDIA_TITLE_LAYOUT_CHOICES = (
     ('full', 'Full'),
     ('three_column', 'Three Column'),
 )
+MAX_ITEMS_CHOICES = (
+    ('3', '3'),
+    ('6', '6'),
+    ('9', '9'),
+    ('12', '12'),
+)

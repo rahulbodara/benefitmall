@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 import datetime
+from collections import OrderedDict
 
 from django import forms
 from django.db import models
@@ -39,7 +40,7 @@ class BlogIndexPage(RoutablePageMixin, DefaultPage):
         return BlogCategory.objects.order_by('name')
 
     def get_tags(self):
-        return [tag.tag for tag in BlogTag.objects.order_by('tag__name')]
+        return list(OrderedDict.fromkeys([tag.tag.name for tag in BlogTag.objects.order_by('tag__name')]))
 
     @route(r'^$')
     @route(r'^(\d{4})/$')
@@ -63,8 +64,8 @@ class BlogIndexPage(RoutablePageMixin, DefaultPage):
         if self.filter_tag:
             blog_tag = BlogTag.objects.filter(tag__slug=self.filter_tag).first()
             if blog_tag:
-                self.filter_tag = blog_tag.tag
-                blogs = blogs.filter(tags=self.filter_tag)
+                self.filter_tag = blog_tag.tag.name
+                blogs = blogs.filter(tags__name=self.filter_tag)
             else:
                 self.filter_tag = None
 
@@ -83,24 +84,22 @@ class BlogIndexPage(RoutablePageMixin, DefaultPage):
         # Handle pagination
         paginator = Paginator(blogs, 12)
         try:
-            # Return linked page
-            self.blogs = paginator.page(request.GET.get('page'))
+            self.blogs = paginator.page(request.GET.get('page'))  # Return linked page
         except PageNotAnInteger:
-            # Return first page
-            self.blogs = paginator.page(1)
+            self.blogs = paginator.page(1)  # Return first page
         except EmptyPage:
-            # Return last page
-            self.blogs = paginator.page(paginator.num_pages)
+            self.blogs = paginator.page(paginator.num_pages)  # Return last page
 
         return Page.serve(self, request, *args, **kwargs)
 
     @route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
     def blog_page_detail(self, request, year, month, day, slug, *args, **kwargs):
-        blog_page = BlogPage.objects.live().filter(date__year=year, date__month=month, date__day=day, slug=slug).first()
-        if not blog_page:
+        try:
+            blog_page = BlogPage.objects.live().get(date__year=year, date__month=month, date__day=day, slug=slug)
+        except BlogPage.DoesNotExist:
             raise Http404
 
-        self.additional_breadcrumbs = [({'title': blog_page.title, 'url': blog_page.get_url()})]
+        blog_page.additional_breadcrumbs = [({'title': blog_page.title, 'url': blog_page.get_url()})]
         return Page.serve(blog_page, request, *args, **kwargs)
 
 
@@ -165,8 +164,8 @@ class BlogCategory(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
+        verbose_name = 'Blog Category'
+        verbose_name_plural = 'Blog Categories'
 
 
 class BlogTag(TaggedItemBase):

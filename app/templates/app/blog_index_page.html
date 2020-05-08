@@ -48,7 +48,7 @@
                                      {% if tag == page.filter_tag %}
                                          <li class="active type--bold">{{ tag }}</li>
                                      {% else %}
-                                         <li><a href="?{% query_transform tag=tag.slug _remove='page' %}">{{ tag }}</a></li>
+                                         <li><a href="?{% query_transform tag=tag _remove='page' %}">{{ tag }}</a></li>
                                      {% endif %}
                                  {% endfor %}
                             </ul>

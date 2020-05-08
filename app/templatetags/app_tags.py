@@ -1,11 +1,16 @@
+import datetime
+
 from django import template
 from django.template.loader import render_to_string
 from django.utils.html import format_html
+from django.shortcuts import redirect
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
 from wagtail.core.models import Site
-from app.wagtail_hooks import HeaderFooter
 
 from app.models import BlogPage, EventPage, NewsPage, Person, Division
 from app.choices.block_edit_choices import BIO_LAYOUT_CHOICES, SUBHEAD_SIZE_CHOICES
+from app.wagtail_hooks import HeaderFooter
 
 register = template.Library()
 
@@ -72,27 +77,44 @@ def render_person_list(context, layout=BIO_LAYOUT_CHOICES[0][0], title_size=SUBH
 
 
 @register.simple_tag()
-def get_recent_blogs(page):
+def get_recent_blogs(page, category, max_items):
     """
-    Return 3 most recent blog posts, excluding current page.
+    Return recent blog posts, excluding current page.
+    Optionally filter by category.
     """
-    return BlogPage.objects.live().exclude(id=page.id).order_by('-date')[:3]
+    blogs = BlogPage.objects.live().exclude(id=page.id).order_by('-date')
+    if category:
+        blogs = blogs.filter(categories=category)
+    return blogs[:int(max_items)]
 
 
 @register.simple_tag()
-def get_recent_events(page):
+def get_upcoming_events(page, event_type, location_type, max_items):
     """
-    Return 3 upcoming events, excluding current page.
+    Return upcoming events, excluding current page.
+    Optionally filter by event_type.
     """
-    return EventPage.objects.live().exclude(id=page.id).order_by('-start_datetime')[:3]
+    events = EventPage.objects.live().filter(start_datetime__date__gte=datetime.datetime.today()).exclude(id=page.id).order_by('start_datetime')
+    if event_type:
+        print('EVENT_TYPE:', event_type)
+        events = events.filter(event_type=event_type)
+    if location_type:
+        print('LOCATION_TYPE:', location_type)
+        events = events.filter(location_type=location_type)
+    # Limit to active events only
+    active_events = []
+    for event in events:
+        if event.is_active():
+            active_events.append(event)
+    return active_events[:int(max_items)]
 
 
 @register.simple_tag()
-def get_recent_news(page):
+def get_recent_news(page, max_items):
     """
-    Return 3 most recent news items, excluding current page.
+    Return recent news items, excluding current page.
     """
-    return NewsPage.objects.live().exclude(id=page.id).order_by('-news_datetime')[:3]
+    return NewsPage.objects.live().exclude(id=page.id).order_by('-news_datetime')[:int(max_items)]
 
 
 @register.simple_tag(takes_context=True)
@@ -119,3 +141,62 @@ def query_transform(context, **kwargs):
     for k in remove:
         query.pop(k, None)
     return query.urlencode()
+
+
+@register.simple_tag(takes_context=True)
+def get_header_footer_field(context, field):
+    """
+    Returns value from supplied HeaderFooter field.
+    """
+    return getattr(HeaderFooter.for_site(site=get_current_site(context)), field)
+
+
+@register.simple_tag(takes_context=True)
+def get_events(context, page):
+    """
+    Returns events.
+    """
+    if page.archive is None:
+        return None
+
+    now = datetime.datetime.today()
+    today = now.date()
+
+    # Get requested date from URL
+    url_date = datetime.datetime.strptime(
+        '{year}-{month}-{day}'.format(
+            year=page.year or today.year,
+            month=page.month or today.month,
+            day=page.day or today.day
+        ),
+        '%Y-%m-%d'
+    ).date()
+
+    events = EventPage.objects.live()
+
+    # Archived events
+    if page.archive:
+        if url_date > today:
+            return redirect(page.url)
+        events = events.filter(start_datetime__lte=now).order_by('-start_datetime')
+    # Upcoming events
+    else:
+        if url_date < today:
+            return redirect(page.url)
+        events = events.filter(start_datetime__gte=now).order_by('start_datetime')
+
+    if page.year:
+        events = events.filter(start_datetime__year=page.year)
+    if page.month:
+        events = events.filter(start_datetime__month=page.month)
+    if page.day:
+        events = events.filter(start_datetime__day=page.day)
+
+    paginator = Paginator(events, 10)
+    try:
+        events = paginator.page(context['request'].GET.get('page'))  # Return linked page
+    except PageNotAnInteger:
+        events = paginator.page(1)  # Return first page
+    except EmptyPage:
+        events = paginator.page(paginator.num_pages)  # Return last page
+    return events

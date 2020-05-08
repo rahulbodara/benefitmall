@@ -1,16 +1,19 @@
-{% load wagtailcore_tags app_tags %}
-{% get_recent_events page as events %}
+{% load wagtailcore_tags wagtailimages_tags app_tags %}
+{% get_upcoming_events page self.event_type self.location_type self.max_items as events %}
 {% if events %}
-    <section>
-        <div class="container">
+    <section class="{{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+        {% include_block self.background %}
+        <div class="container {{ self.background.size_mode }}">
             <h2 class="text-center">Upcoming Events</h2>
             <div class="row">
                 {% for event in events %}
                     <div class="col-md-4">
                         <div class="feature">
+                            <a href="{{ event.get_url }}">{% image event.image fill-350x220 %}</a>
                             <div class="pt-3 pl-2 pr-2">
-                                <div>{{ event.start_datetime|date:'F jS, Y' }}</div>
+                                <p class="mb-0">{{ event.start_datetime|date:'F jS, Y' }}</p>
                                 <h4><a href="{{ event.get_url }}">{{ event.title }}</a></h4>
+                                <p>{{ event.event_type }} | {{ event.get_location_type_display }}</p>
                             </div>
                         </div>
                     </div>

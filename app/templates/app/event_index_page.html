@@ -1,12 +1,10 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags app_tags %}
 
 {% block content %}
-    {% if not past_events_route %}
-        {% for block in page.body %}
-            {% include_block block %}
-        {% endfor %}
-    {% endif %}
+{% for block in page.body %}
+    {% include_block block %}
+{% endfor %}
 
 <style>
     .calendar {
@@ -45,54 +43,50 @@
     }
 </style>
 
-{% if featured_event %}
-    <section class=" space--sm switchable switchable--switch">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="height-50  border--round space--sm {% if bg_img %}imagebg image--light{% endif %}" data-overlay="6">
-                        {% if featured_event_bg %}
-                            {% image featured_event_bg original as image %}
-                            <div class="background-image-holder" style="background: url(&quot;{{ image.url }}&quot;); opacity: 1;">
-                                <img src="{{ image.url }}" alt="{{ image.alt }} (background)">
+{% get_events page as events %}
+{% for event in events %}
+    {% if events.number == 1 and forloop.counter == 1 %}
+        <!-- Featured Event -->
+        <section class="space--sm">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="height-50 imagebg border--round" data-overlay="6">
+                            {% get_header_footer_field 'featured_event_bg' as featured_event_bg %}
+                            {% if featured_event_bg %}
+                                {% image featured_event_bg original as image %}
+                                <div class="background-image-holder"><img src="{{ image.url }}" alt=""></div>
+                            {% endif %}
+                            <div class="pos-vertical-center col-md-12 boxed boxed--lg bg--none">
+                                <h2>{{ event.title }}</h2>
+                                <h5>{{ event.event_type }}</h5>
+                                <h4>
+                                    <span class="type--bold">{{ event.start_datetime|date:'M d, Y' }}</span><br>
+                                    {{ event.start_datetime|date:'g:i A' }} - {{ event.get_end_datetime|date:'g:i A' }}<br>
+                                    {% if event.location_type == 'online' %}Online{% else %}
+                                    {{ event.address_city }}, {{ event.address_state }}
+                                    {% endif %}
+                                </h4>
+                                <p>{{ event.description|striptags|truncatechars:300 }}</p>
+                                <a href="{{ event.get_url }}" class="btn btn--primary">
+                                    <span class="btn__text">{% if page.archive %}Download Event Materials{% else %}Register for Event{% endif %}</span>
+                                </a>
                             </div>
-                        {% endif %}
-                        <div class="pos-vertical-center col-md-12 boxed boxed--lg bg--none">
-                            <h2>{{ featured_event.title }}</h2>
-                            <h5>{{ featured_event.event_type }}</h5>
-                            <h4>
-                                {{ featured_event.start_datetime|date:'g:i A' }} - {{ featured_event.get_end_datetime|date:'g:i A' }}<br>
-                                {% if featured_event.location_type == 'online' %}Online{% else %}
-                                {{ featured_event.address_city }}, {{ featured_event.address_state }}
-                                {% endif %}
-                            </h4>
-                            <p>{{ featured_event.description|striptags|truncatechars:300 }}</p>
-                            <a href="{{ featured_event.get_url }}" class="btn btn--primary">
-                                <span class="btn__text">Register for Event</span>
-                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-{% endif %}
+        </section>
 
-{% if past_events_route %}
-    <section class="text-center space--xxs">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 col-lg-12">
-                    <h1>Past Events</h1>
-                </div>
-            </div>
-        </div>
-    </section>
-{% endif %}
+        {% if not page.archive %}
+            <section class="space--sm  text-center">
+                <a href="{{ page.get_archive_page.url }}" class="btn btn--primary"><span class="btn__text">View Past Events</span></a>
+            </section>
+        {% endif %}
 
-{% for event in events %}
-    {% if event.is_active or past_events_route %}
-        <section class="space--sm {% if not forloop.counter|divisibleby:2 %} bg--secondary{% endif %}">
+    {% else %}
+        <!-- Events -->
+        <section class="space--sm {% if forloop.counter|divisibleby:2 %}bg--secondary{% endif %}">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3">
@@ -116,7 +110,7 @@
                                 Location: {{ event.get_location_type_display }}
                             </h4>
                             <br>
-                            <a href="{{ event.get_url }}" class="btn btn--sm btn--primary type--uppercase"><span class="btn__text">Register for Event</span></a>
+                            <a href="{{ event.get_url }}" class="btn btn--sm btn--primary"><span class="btn__text">{% if page.archive %}Download Event Materials{% else %}Register for Event{% endif %}</span></a>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -156,4 +150,7 @@
     </section>
 {% endif %}
 
+{% for block in page.body_below %}
+    {% include_block block %}
+{% endfor %}
 {% endblock %}

@@ -93,20 +93,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django_bmemcached.memcached.BMemcached'
-#     }
-# }
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'carrier_data',
     }
 }
-
-
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
