@@ -1,4 +1,4 @@
-{% if self.link_type and self.href and self.href_prefix %}
+{% if self.link_type and self.href %}
     <a href="{{ self.href_prefix }}{{ self.href }}" class="{{ self.link_format }}" {% if self.title_attribute %}title="{{ self.title_attribute }}"{% endif %}>
         <span class="btn__text">{{ self.link_text }}</span>
     </a>
