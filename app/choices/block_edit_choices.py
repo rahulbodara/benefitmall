@@ -61,6 +61,10 @@ IMAGE_INVERT_CHOICES = (
     ('', 'icon-fa-times'),
     ('image--light', 'icon-fa-check'),
 )
+IMAGE_INVERT_CHOICES_LIST = (
+    ('', 'Dark'),
+    ('image--light', 'Light'),
+)
 
 IMAGE_OVERLAY_CHOICES = (
     ('0', 'Off'),

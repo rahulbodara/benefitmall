@@ -51,7 +51,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="height-50 imagebg border--round" data-overlay="6">
+                        <div class="height-50 imagebg border--round {% get_header_footer_field 'featured_event_bg_invert' %}" data-overlay="{% get_header_footer_field 'featured_event_bg_overlay' %}">
                             {% get_header_footer_field 'featured_event_bg' as featured_event_bg %}
                             {% if featured_event_bg %}
                                 {% image featured_event_bg original as image %}

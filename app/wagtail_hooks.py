@@ -20,7 +20,7 @@ from wagtail.core.fields import StreamField
 from app.views import IconReference
 from app.models import Icon
 
-from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES, BACKGROUND_MODE_CHOICES_NO_IMAGE
+from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES, BACKGROUND_MODE_CHOICES_NO_IMAGE, IMAGE_INVERT_CHOICES_LIST, IMAGE_OVERLAY_CHOICES
 from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, HeaderUtilityStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
 
 from app.models import EventPage, EventRegistration, NewsPage, BlogPage, Notification, BusinessType, State, Division, Person, Location
@@ -40,14 +40,47 @@ class HeaderFooter(BaseSetting):
         'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
         help_text='Logo used in header. Recommended transparent PNG',
         related_name='footer_logo')
+
+
     featured_event_bg = models.ForeignKey(
         'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
         help_text='Banner displayed behind the featured event. 1110x700 pixels',
         related_name='featured_event_bg')
+    featured_event_bg_invert = models.CharField(
+        default=IMAGE_INVERT_CHOICES_LIST[0][0],
+        choices=IMAGE_INVERT_CHOICES_LIST,
+        max_length=50,
+        blank=True, null=True,
+        verbose_name='Invert Dark/Light',
+        help_text='Invert the image overlay')
+    featured_event_bg_overlay = models.CharField(
+        default=IMAGE_OVERLAY_CHOICES[0][0],
+        choices=IMAGE_OVERLAY_CHOICES,
+        max_length=50,
+        blank=True, null=True,
+        verbose_name='Overlay Opacity',
+        help_text='Adjust the opacity of the background image overlay')
+
     featured_news_bg = models.ForeignKey(
         'wagtailimages.Image', models.SET_NULL, blank=True, null=True,
         help_text='Banner displayed behind the featured press release. 1110x700 pixels',
         related_name='featured_news_bg')
+    featured_news_bg_invert = models.CharField(
+        default=IMAGE_INVERT_CHOICES_LIST[0][0],
+        choices=IMAGE_INVERT_CHOICES_LIST,
+        max_length=50,
+        blank=True, null=True,
+        verbose_name='Invert Dark/Light',
+        help_text='Invert the image overlay')
+    featured_news_bg_overlay = models.CharField(
+        default=IMAGE_OVERLAY_CHOICES[0][0],
+        choices=IMAGE_OVERLAY_CHOICES,
+        max_length=50,
+        blank=True, null=True,
+        verbose_name='Overlay Opacity',
+        help_text='Adjust the opacity of the background image overlay')
+
+
     social_facebook = models.CharField(
         null=True, blank=True, default='',
         max_length=250,
@@ -93,9 +126,14 @@ class HeaderFooter(BaseSetting):
         ], heading='Logos', classname='collapsible'),
         MultiFieldPanel([
             ImageChooserPanel('featured_event_bg'),
+            FieldPanel('featured_event_bg_invert'),
+            FieldPanel('featured_event_bg_overlay'),
+        ], heading='Featured Event Background', classname='collapsible'),
+        MultiFieldPanel([
             ImageChooserPanel('featured_news_bg'),
-
-        ], heading='Featured Items', classname='collapsible'),
+            FieldPanel('featured_news_bg_invert'),
+            FieldPanel('featured_news_bg_overlay'),
+        ], heading='Featured News Background', classname='collapsible'),
         MultiFieldPanel([
             FieldPanel('social_facebook'),
             FieldPanel('social_instagram'),

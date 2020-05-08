@@ -12,7 +12,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="height-50 imagebg border--round" data-overlay="6">
+                            <div class="height-50 imagebg border--round {% get_header_footer_field 'featured_news_bg_invert' %}" data-overlay="{% get_header_footer_field 'featured_news_bg_overlay' %}">
                                 {% get_header_footer_field 'featured_news_bg' as featured_news_bg %}
                                 {% if featured_news_bg %}
                                     {% image featured_news_bg original as image %}
