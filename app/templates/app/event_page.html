@@ -6,7 +6,7 @@
     {% include_block block %}
 {% endfor %}
 
-    <section class="switchable switchable--switch">
+<section class="switchable switchable--switch">
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-md-5">
@@ -15,7 +15,7 @@
                         <div class="wpb_text_column wpb_content_element ">
                             <div class="wpb_wrapper">
                                 <h3>{{ page.title }}</h3>
-                                <h4>{{ page.get_event_type_display }}</h4>
+                                <h4>{{ page.event_type }}</h4>
                                 <hr>
                                 <h4>{{ page.start_datetime|date:"F d, Y" }} &bull; {{ page.start_datetime|date:"P" }}</h4>
                                 <p><b>Location:</b> {{ page.get_location_type_display }}<br></p>
@@ -28,17 +28,17 @@
                 <p><a href="{{ page.url }}calendar/">Add to Calendar</a></p>
             </div>
             <div class="col-md-6 col-12">
-                {% if registered %}
-                    <h3 style="font-weight:100">Thanks for registering!</h3>
-                    <p><strong>What Happens Next</strong><br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc accuan eget.</p>
-                {% else %}
-                    {% if page.is_active %}
+                {% if page.is_active %}
+                    {% if registered %}
+                        <h3 style="font-weight:100">Thanks for registering!</h3>
+                        <p><strong>What Happens Next</strong><br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc accuan eget.</p>
+                    {% else %}
                         <form action="" method="post" class="row mx-0">
                             <h3 style="font-weight:100">Register for Event</h3>
 
                             {% csrf_token %}
 
-                            {% if form.errors %}
+                            {% if page.form.errors %}
                                 <div class="alert bg--error" style="width:100%">
                                     <div class="alert__body">
                                         <span>One or more fields have an error. Please check and try again.</span>
@@ -47,12 +47,12 @@
                                 </div>
                             {% endif %}
 
-                            {% for field in form %}
+                            {% for field in page.form %}
                                 {% if field.name != 'event' %}
                                     <div class="col-md-12 col-12">
                                         <label>
                                             {{ field.label }}
-                                            {% if field.field.required %}<span style="color:red;">*</span>{% endif %} 
+                                            {% if field.field.required %}<span style="color:red;">*</span>{% endif %}
                                             {% if field.errors %}<span style="color:red;">{% for error in field.errors %}{{ error }}{% endfor %}</span>{% endif %}
                                         </label>
                                         {{ field }}
@@ -65,9 +65,10 @@
                                 <button type="submit" class="btn btn--primary type--uppercase">Register</button>
                             </div>
                         </form>
-                    {% else %}
-                        <h4 style="font-weight:100">Sorry, registration for this event has ended.</h4>
                     {% endif %}
+                {% else %}
+                    <h3 style="font-weight:100">Shared Event Materials</h3>
+                    {{ page.materials|richtext }}
                 {% endif %}
             </div>
         </div>

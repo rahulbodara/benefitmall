@@ -1,18 +1,19 @@
-{% load wagtailcore_tags app_tags %}
-{% get_recent_blogs page as blogs %}
+{% load wagtailcore_tags wagtailimages_tags app_tags %}
+{% get_recent_blogs page self.category self.max_items as blogs %}
 {% if blogs %}
-    <section>
-        <div class="container">
+    <section class="{{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+        {% include_block self.background %}
+        <div class="container {{ self.background.size_mode }}">
             <h2 class="text-center">Recent Blog Articles</h2>
             <div class="row">
                 {% for blog in blogs %}
                     <div class="col-md-4">
                         <div class="feature">
-                            <a href="{{ blog.get_url }}"><img src="{{ blog.image.file.url }}" alt="{{ blog.image.title }}" class="border--round"></a>
+                            <a href="{{ blog.get_url }}">{% image blog.image fill-350x220 %}</a>
                             <div class="pt-3 pl-2 pr-2">
                                 <div>{{ blog.date|date:'F jS, Y' }}</div>
                                 <h4><a href="{{ blog.get_url }}">{{ blog.title }}</a></h4>
-                                <p>{{ blog.excerpt }}</p>
+                                <p>{{ blog.excerpt|truncatechars:250 }}</p>
                             </div>
                         </div>
                     </div>

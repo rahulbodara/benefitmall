@@ -1,4 +1,4 @@
-from wagtail.core.blocks import StreamBlock, CharBlock
+from wagtail.core.blocks import StreamBlock
 
 # content
 from .wysiwyg_block import WYSIWYGBlock

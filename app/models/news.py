@@ -1,19 +1,13 @@
 from django.db import models
-from django.apps import apps
-from django.forms import ModelForm
-from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
-from app.models.pages import DefaultPage, AbstractBasePage
-from wagtail.core.models import Page, Http404, TemplateResponse
-from wagtail.search import index
-from django.dispatch import receiver
 from django.shortcuts import redirect
-from django.utils.text import slugify
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
+from wagtail.core.models import Page, Http404
+from wagtail.admin.edit_handlers import MultiFieldPanel, FieldPanel, ObjectList, StreamFieldPanel, TabbedInterface
+from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
-from site_settings.views import get_page_meta_data
+from app.models.pages import DefaultPage, AbstractBasePage
 
 
 class NewsIndexPage(RoutablePageMixin, DefaultPage):
@@ -28,10 +22,7 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 	@route(r'^(\d{4})/(\d{2})/$')
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/$')
 	def news_list(self, request, year=None, month=None, day=None, *args, **kwargs):
-		context = super().get_context(request, **kwargs)
-		self.additional_breadcrumbs = []
-
-		all_news = NewsPage.objects.all()
+		all_news = NewsPage.objects.all().order_by('-news_datetime')
 		if year:
 			all_news = all_news.filter(news_datetime__year=year)
 		if month:
@@ -39,46 +30,27 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 		if day:
 			all_news = all_news.filter(news_datetime__day=day)
 
-		featured_news = None
-		news = None
-		if all_news.count() > 0:
-			featured_news = all_news[0]
-			news = all_news[1:]
+		paginator = Paginator(all_news, 10)
+		try:
+			news = paginator.page(request.GET.get('page'))  # Return linked page
+		except PageNotAnInteger:
+			news = paginator.page(1)  # Return first page
+		except EmptyPage:
+			news = paginator.page(paginator.num_pages)  # Return last page
 
-			paginator = Paginator(news, 10)
-
-			try:
-				# Return linked page
-				news = paginator.page(request.GET.get('page'))
-			except PageNotAnInteger:
-				# Return first page
-				news = paginator.page(1)
-			except EmptyPage:
-				# Return last page
-				news = paginator.page(paginator.num_pages)
-
-		HeaderFooter = apps.get_model(app_label='app', model_name='HeaderFooter')
-		header_footer = HeaderFooter.for_site(site=request.site)
-		context['featured_news_bg'] = header_footer.featured_news_bg
-		context['featured_news'] = featured_news
-		context['news'] = news
-		return TemplateResponse(request, self.get_template(request), context)
+		self.news = news
+		self.additional_breadcrumbs = []
+		return Page.serve(self, request, *args, **kwargs)
 
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
 	def news_page_detail(self, request, year, month, day, slug, *args, **kwargs):
-		context = super().get_context(request, **kwargs)
-
-		# Get news item
 		try:
-			slug_items = slug.split('-')
-			news_page = NewsPage.objects.get(news_datetime__year=year, news_datetime__month=month, news_datetime__day=day, id=slug_items[-1])
-			self.additional_breadcrumbs = [({'title':news_page.title, 'url': news_page.get_url()})]
+			news_page = NewsPage.objects.get(news_datetime__year=year, news_datetime__month=month, news_datetime__day=day, slug=slug)
 		except NewsPage.DoesNotExist:
 			raise Http404
 
-		context['page'] = news_page
-		context.update(get_page_meta_data(request, news_page))
-		return TemplateResponse(request, "app/news_page.html", context)
+		news_page.additional_breadcrumbs = [({'title': news_page.title, 'url': news_page.get_url()})]
+		return Page.serve(news_page, request, *args, **kwargs)
 
 	@classmethod
 	def can_create_at(cls, parent):
@@ -88,13 +60,17 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 
 class NewsPage(RoutablePageMixin, DefaultPage):
 	news_datetime = models.DateTimeField(verbose_name='Date & Time', help_text="The date and time of the press release.")
+	image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+', help_text='Recommended size: 350 W x 220 H')
 
 	content_panels = Page.content_panels + [
-		FieldPanel('news_datetime'),
+		MultiFieldPanel([
+			FieldPanel('news_datetime'),
+			ImageChooserPanel('image'),
+		], heading="Event"),
 		StreamFieldPanel('body'),
 	]
 
-    # Tabs
+	# Tabs
 	edit_handler = TabbedInterface([
 		ObjectList(content_panels, heading='Content'),
 		AbstractBasePage.meta_panels,
@@ -116,7 +92,7 @@ class NewsPage(RoutablePageMixin, DefaultPage):
 		return self.title
 
 	def get_url(self):
-		return '{}{}{}/'.format(self.get_parent().url, self.news_datetime.strftime('%Y/%m/%d/'), slugify(self.title + ' ' + str(self.id)))
+		return '{}{}{}/'.format(self.get_parent().url, self.news_datetime.strftime('%Y/%m/%d/'), self.slug)
 
 	def get_full_url(self, request=None):
 		url_parts = self.get_url_parts(request=request)

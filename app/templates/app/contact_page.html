@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+    {% for block in page.body %}
+        {% include_block block %}
+    {% endfor %}
+
+    <section>
+        <div class="container">
+            <div class="row justify-content-center no-gutters">
+                <div class="col-md-10 col-lg-8">
+                    <div class="boxed boxed--border">
+                        {% if page.sent %}
+                            {{ page.confirmation_message|richtext }}
+                        {% else %}
+                            <div class="text-center mb-5">{{ page.instruction_message|richtext }}</div>
+                            <form action="{{ page.url }}" method="POST" class="text-left row mx-0" data-error="Please fill in all fields correctly.">
+                                {% csrf_token %}
+                                {% if page.form.errors %}There was an error submitting the form. Please see below{% endif %}
+                                <div class="col-md-12">
+                                    <span>Topic <span class="color--primary">*</span></span> <span class="color--error type--fine-print">{% for error in page.form.topic.errors %}{{ error }}{% endfor %}</span>
+                                    <div class="input-select">
+                                        <select name="topic" class="validate-required">
+                                            <option selected="selected" value="">-- Select One --</option>
+                                            {% for value, label in page.form.topic.field.choices %}
+                                                <option value="{{ value }}">{{ label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <span>First Name <span class="color--primary">*</span></span> <span class="color--error type--fine-print">{% for error in page.form.first_name.errors %}{{ error }}{% endfor %}</span>
+                                    <input type="text" name="first_name" maxlength="200" required="" id="id_first_name" class="validate-required">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <span>Last Name <span class="color--primary">*</span></span> <span class="color--error type--fine-print">{% for error in page.form.last_name.errors %}{{ error }}{% endfor %}</span>
+                                    <input type="text" name="last_name" maxlength="200" required="" id="id_last_name" class="validate-required">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <span>Email <span class="color--primary">*</span></span> <span class="color--error type--fine-print">{% for error in page.form.email.errors %}{{ error }}{% endfor %}</span>
+                                    <input type="email" name="email" maxlength="200" required="" id="id_email" class="validate-required validate-email">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <span>State <span class="color--primary">*</span></span> <span class="color--error type--fine-print">{% for error in page.form.state.errors %}{{ error }}{% endfor %}</span>
+                                    <div class="input-select">
+                                        <select name="state" class="validate-required">
+                                            <option selected="selected" value="">-- Select One --</option>
+                                            {% for value, label in page.form.state.field.choices %}
+                                                <option value="{{ value }}">{{ label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <span>Phone</span> <span class="color--error type--fine-print">{% for error in page.form.phone.errors %}{{ error }}{% endfor %}</span>
+                                    <input type="tel" name="phone">
+                                </div>
+
+                                <div class="col-md-3"></div><div class="col-md-6 boxed"> <button type="submit" class="btn btn--primary type--uppercase">Contact Me</button> </div>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% for block in page.body_below %}
+        {% include_block block %}
+    {% endfor %}
+{% endblock %}

@@ -269,19 +269,16 @@ class EventPageAdmin(ModelAdmin):
         edit_url = self.url_helper.get_action_url('edit', quote(obj.pk))
         return format_html('<h2><a href="{}">{}</a></h2>'.format(edit_url, obj))
     get_title.short_description = 'Title'
-    get_title.admin_order_field = 'Title'
+    get_title.admin_order_field = 'title'
 
     def registrations(self, obj):
         reg_count = EventRegistration.objects.filter(event=obj.id).count()
-        csv_link = ''
         return format_html('{} &nbsp; <a href="/admin/app/eventregistration/?event__id__exact={}" class="button button-small bicolor icon icon-list-ul">View List</a> <a href="/admin/app/event/registrations-download/{}/" class="button button-small bicolor icon icon-download">Download CSV</a>'.format(reg_count, obj.id, obj.id))
     registrations.short_description = 'Registrations'
     registrations.admin_order_field = 'registrations'
 
     def get_extra_class_names_for_field_col(self, obj, field_name):
-        if field_name == 'field-get_title':
-            return ['title']
-        return ['title']
+        return ['title'] if field_name == 'get_title' else []
 
 modeladmin_register(EventPageAdmin)
 
@@ -290,14 +287,14 @@ class EventRegistrationAdmin(ModelAdmin):
     model = EventRegistration
     menu_label = 'Event Registrations'
     menu_icon = 'group'
-    list_display = ('get_event', 'get_date', 'first_name', 'last_name', 'postalcode', 'created_at')
+    list_display = ('get_title', 'get_date', 'first_name', 'last_name', 'postalcode', 'created_at')
     search_fields = ('first_name', 'last_name', 'company', 'email')
 
-    def get_event(self, obj):
+    def get_title(self, obj):
         edit_url = self.url_helper.get_action_url('edit', quote(obj.pk))
         return format_html('<h2><a href="{}">{}</a></h2>'.format(edit_url, obj.event))
-    get_event.short_description = 'Event'
-    get_event.admin_order_field = 'event'
+    get_title.short_description = 'Event'
+    get_title.admin_order_field = 'event'
 
     def get_date(self, obj):
         return obj.event.start_datetime
@@ -305,9 +302,7 @@ class EventRegistrationAdmin(ModelAdmin):
     get_date.admin_order_field = 'event_date'
 
     def get_extra_class_names_for_field_col(self, obj, field_name):
-        if field_name == 'field-get_event':
-            return ['title']
-        return ['title']
+        return ['title'] if field_name == 'get_title' else []
 
 modeladmin_register(EventRegistrationAdmin)
 
@@ -339,9 +334,18 @@ class NewsPageAdmin(ModelAdmin):
     menu_label = 'Press Releases'
     menu_icon = 'fa-newspaper-o'
     exclude_from_explorer = True
-    list_display = ('title', 'news_datetime')
+    list_display = ('get_title', 'news_datetime')
     list_filter = ('news_datetime',)
     search_fields = ('title', 'body')
+
+    def get_title(self, obj):
+        edit_url = self.url_helper.get_action_url('edit', quote(obj.pk))
+        return format_html('<h2><a href="{}">{}</a></h2>'.format(edit_url, obj))
+    get_title.short_description = 'Title'
+    get_title.admin_order_field = 'title'
+
+    def get_extra_class_names_for_field_col(self, obj, field_name):
+        return ['title'] if field_name == 'get_title' else []
 
 modeladmin_register(NewsPageAdmin)
 
@@ -351,7 +355,7 @@ class BlogPageAdmin(ModelAdmin):
     menu_label = 'Blogs'
     menu_icon = 'fa-rss'
     exclude_from_explorer = True
-    list_display = ('title', 'date', 'get_categories', 'get_tags')
+    list_display = ('get_title', 'date', 'get_categories', 'get_tags')
     list_filter = ('date', 'live', 'categories')
     search_fields = ('title', 'body')
 
@@ -364,6 +368,15 @@ class BlogPageAdmin(ModelAdmin):
         return [tag for tag in obj.tags.all()]
     get_tags.short_description = 'Tags'
     get_tags.admin_order_field = 'tags'
+
+    def get_title(self, obj):
+        edit_url = self.url_helper.get_action_url('edit', quote(obj.pk))
+        return format_html('<h2><a href="{}">{}</a></h2>'.format(edit_url, obj))
+    get_title.short_description = 'Title'
+    get_title.admin_order_field = 'title'
+
+    def get_extra_class_names_for_field_col(self, obj, field_name):
+        return ['title'] if field_name == 'get_title' else []
 
 modeladmin_register(BlogPageAdmin)
 

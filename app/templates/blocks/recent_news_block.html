@@ -1,13 +1,15 @@
-{% load wagtailcore_tags app_tags %}
-{% get_recent_news page as news %}
+{% load wagtailcore_tags wagtailimages_tags app_tags %}
+{% get_recent_news page self.max_items as news %}
 {% if news %}
-    <section>
-        <div class="container">
+    <section class="{{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+        {% include_block self.background %}
+        <div class="container {{ self.background.size_mode }}">
             <h2 class="text-center">Recent Press Releases</h2>
             <div class="row">
                 {% for item in news %}
                     <div class="col-md-4">
                         <div class="feature">
+                            <a href="{{ item.get_url }}">{% image item.image fill-350x220 %}</a>
                             <div class="pt-3 pl-2 pr-2">
                                 <div>{{ item.news_datetime|date:'F jS, Y' }}</div>
                                 <h4><a href="{{ item.get_url }}">{{ item.title }}</a></h4>

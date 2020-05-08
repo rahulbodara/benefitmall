@@ -1,29 +1,26 @@
 import datetime
 import pytz
+
 from django.db import models
 from django.forms import ModelForm
 from django.http import HttpResponse
-from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
-from app.models.pages import DefaultPage
-from wagtail.core.models import Page, Http404, TemplateResponse
-from wagtail.search import index
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.utils.text import slugify
 from django.shortcuts import redirect
 from django.core.mail import send_mail
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.forms.utils import ErrorList
 from django.core.exceptions import ValidationError
 
+from wagtail.core.fields import RichTextField
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface
+from wagtail.core.models import Page, Http404
+from wagtail.search import index
+from wagtail.snippets.models import register_snippet
 from wagtail.admin.widgets import AdminTagWidget
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.images.edit_handlers import ImageChooserPanel
 
-from app.models.pages import AbstractBasePage
+from app.models import DefaultPage, AbstractBasePage
 from app.widgets.event_detail_widget import EventDetailWidget
-
-from site_settings.views import get_page_meta_data
+from app.choices.model_choices import EVENT_LOCATION_TYPE_CHOICES
 
 
 class EventIndexPage(RoutablePageMixin, DefaultPage):
@@ -35,7 +32,8 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 			FieldPanel('email_enabled_global'),
 			FieldPanel('email_recipients_global', widget=AdminTagWidget),
 		], heading='Global Email Settings', classname='collapsible collapsed'),
-		FieldPanel('body'),
+		StreamFieldPanel('body'),
+		StreamFieldPanel('body_below'),
 	]
 
 	# Tabs
@@ -52,67 +50,22 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 	@route(r'^(\d{4})/(\d{2})/$')
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/$')
 	def events_list(self, request, year=None, month=None, day=None, *args, **kwargs):
-		context = super().get_context(request, **kwargs)
 		self.additional_breadcrumbs = []
-
-		all_events = EventPage.objects.all()
-		if year:
-			all_events = all_events.filter(start_datetime__year=year)
-		if month:
-			all_events = all_events.filter(start_datetime__month=month)
-		if day:
-			all_events = all_events.filter(start_datetime__day=day)
-
-		paginator = Paginator(all_events, 10)
-
-		try:
-			# Return linked page
-			events = paginator.page(request.GET.get('page'))
-		except PageNotAnInteger:
-			# Return first page
-			events = paginator.page(1)
-		except EmptyPage:
-			# Return last page
-			events = paginator.page(paginator.num_pages)
-
-		context['events'] = events
-		context['additional_breadcrumbs'] = []
-		return TemplateResponse(request, self.get_template(request), context)
-
-	@route(r'^past-events/$')
-	def past_events_list(self, request, *args, **kwargs):
-		context = super().get_context(request, **kwargs)
-		self.additional_breadcrumbs = ['Past Events']
-
-		events = EventPage.objects.live().filter(start_datetime__lte=datetime.datetime.now()).order_by('-start_datetime')
-
-		paginator = Paginator(events, 10)
-
-		try:
-			# Return linked page
-			events = paginator.page(request.GET.get('page'))
-		except PageNotAnInteger:
-			# Return first page
-			events = paginator.page(1)
-		except EmptyPage:
-			# Return last page
-			events = paginator.page(paginator.num_pages)
-
-		context['events'] = events
-		context['past_events_route'] = True
-		return TemplateResponse(request, self.get_template(request), context)
+		self.year = year
+		self.month = month
+		self.day = day
+		self.archive = False
+		return Page.serve(self, request, *args, **kwargs)
 
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
 	def event_detail(self, request, year, month, day, slug, *args, **kwargs):
-		context = super().get_context(request, **kwargs)
-
-		# Get event
 		try:
-			slug_items = slug.split('-')
-			event = EventPage.objects.get(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day, id=slug_items[-1])
-			self.additional_breadcrumbs = [({'title':event.title, 'url': event.get_url()})]
+			event = EventPage.objects.get(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day, slug=slug)
 		except EventPage.DoesNotExist:
 			raise Http404
+
+		if not event.is_active():
+			return redirect(event.get_url())
 
 		registered = request.GET.get('registered', None)
 
@@ -123,7 +76,7 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 
 				# If send email enabled
 				if event.email_setting == 'enabled' or (event.email_setting == '' and self.email_enabled_global):
-					
+
 					# Get recipients
 					if event.email_recipients:
 						recipients = event.email_recipients
@@ -149,11 +102,13 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 		else:
 			form = EventRegistrationForm()
 
-		context['form'] = form
-		context['registered'] = registered
-		context['page'] = event
-		context.update(get_page_meta_data(request, event))
-		return TemplateResponse(request, "app/event_page.html", context)
+		event.additional_breadcrumbs = [({'title': event.title, 'url': event.get_url()})]
+		event.form = form
+		event.registered = registered
+		return Page.serve(event, request, *args, **kwargs)
+
+	def get_archive_page(self):
+		return EventArchiveIndexPage.objects.live().first()
 
 	def clean(self):
 		super().clean()
@@ -165,30 +120,63 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 
 	@classmethod
 	def can_create_at(cls, parent):
-		# Only allow one child instance
-		return super(EventIndexPage, cls).can_create_at(parent) and not cls.objects.exists()
+		# Only allow one instance
+		return super().can_create_at(parent) and not cls.objects.exists()
+
+	class Meta:
+		verbose_name = 'Event Index Page'
+		verbose_name_plural = 'Event Index Pages'
+
+
+class EventArchiveIndexPage(RoutablePageMixin, DefaultPage):
+	subpage_types = []
+	additional_breadcrumbs = []
+
+	@route(r'^$')
+	@route(r'^(\d{4})/$')
+	@route(r'^(\d{4})/(\d{2})/$')
+	@route(r'^(\d{4})/(\d{2})/(\d{2})/$')
+	def events_list(self, request, year=None, month=None, day=None, *args, **kwargs):
+		self.additional_breadcrumbs = []
+		self.year = year
+		self.month = month
+		self.day = day
+		self.archive = True
+		self.template = 'app/event_index_page.html'
+		return Page.serve(self, request, *args, **kwargs)
+
+	@route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
+	def event_detail(self, request, year, month, day, slug, *args, **kwargs):
+		try:
+			event = EventPage.objects.get(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day, slug=slug)
+		except EventPage.DoesNotExist:
+			raise Http404
+
+		if event.is_active():
+			return redirect(event.get_url())
+
+		event.additional_breadcrumbs = [({'title': event.title, 'url': event.get_url()})]
+		return Page.serve(event, request, *args, **kwargs)
+
+	@classmethod
+	def can_create_at(cls, parent):
+		# Only allow one instance
+		return super().can_create_at(parent) and not cls.objects.exists()
+
+	class Meta:
+		verbose_name = 'Event Archive Index Page'
+		verbose_name_plural = 'Event Archive Index Pages'
 
 
 class EventPage(RoutablePageMixin, DefaultPage):
-	LOCATION_TYPE_CHOICES = (
-		('online', 'Online'),
-		('in_person', 'In Person'),
-	)
-	TYPE_CHOICES = (
-		('Benefits Meeting', 'Benefits Meeting'),
-		('Benefits Training', 'Benefits Training'),
-		('Compliance Webcast', 'Compliance Webcast'),
-		('Tradeshow', 'Tradeshow'),
-	)
 	EMAIL_SETTING_CHOICES = (
 		('', '-- Use Default Global Setting --'),
 		('enabled', 'Enabled'),
 		('disabled', 'Disabled'),
 	)
-
-	event_type = models.CharField(max_length=24, choices=TYPE_CHOICES, default='', verbose_name='Event Type')
+	event_type = models.ForeignKey('EventType', verbose_name='Event Type', null=True, on_delete=models.SET_NULL)
 	description = RichTextField(default='', verbose_name='Description')
-	location_type = models.CharField(max_length=24, choices=LOCATION_TYPE_CHOICES, default='', verbose_name='Location Type', help_text="If online, no address is necessary")
+	location_type = models.CharField(max_length=24, choices=EVENT_LOCATION_TYPE_CHOICES[1:], default='', verbose_name='Location Type', help_text="If online, no address is necessary")
 	address_line_1 = models.CharField(max_length=255, default='', null=True, blank=True, verbose_name='Address Line 1')
 	address_line_2 = models.CharField(max_length=255, default='', null=True, blank=True, verbose_name='Address Line 2')
 	address_city = models.CharField(max_length=255, default='', null=True, blank=True, verbose_name='City')
@@ -197,6 +185,8 @@ class EventPage(RoutablePageMixin, DefaultPage):
 	start_datetime = models.DateTimeField(verbose_name='Date & Time', help_text="The date and time the event starts.")
 	duration = models.DecimalField(decimal_places=2, max_digits=4, default=1, null=True, blank=True, help_text="In hours", verbose_name='Duration')
 	cost = models.CharField(max_length=50, default='Free', help_text="If adding a price, please use the currency symbol, e.g. $, £, etc.")
+	image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+', help_text='Recommended size: 350 W x 220 H')
+	materials = RichTextField(blank=True, null=True, help_text='Content displayed when event is over')
 
 	email_setting = models.CharField(verbose_name='Send Registration Email', max_length=20, choices=EMAIL_SETTING_CHOICES, default='', blank=True, help_text='Select a setting for sending registration emails. This overrides the default global setting')
 	email_recipients = models.CharField(verbose_name='Email Recipients', max_length=200, null=True, blank=True, help_text='Add registration email recipients separated by commas. This overrides the default global setting.')
@@ -207,15 +197,12 @@ class EventPage(RoutablePageMixin, DefaultPage):
 			FieldPanel('email_recipients', widget=AdminTagWidget),
 		], heading="Email Settings", classname='collapsible collapsed'),
 		MultiFieldPanel([
-			FieldRowPanel([
-				FieldPanel('event_type'),
-				FieldPanel('cost'),
-			]),
-			FieldRowPanel([
-				FieldPanel('start_datetime'),
-				FieldPanel('duration'),
-			]),
+			FieldPanel('event_type'),
+			FieldPanel('cost'),
+			FieldPanel('start_datetime'),
+			FieldPanel('duration'),
 			FieldPanel('description'),
+			ImageChooserPanel('image'),
 		], heading="Event"),
 		MultiFieldPanel([
 			FieldPanel('location_type'),
@@ -225,9 +212,12 @@ class EventPage(RoutablePageMixin, DefaultPage):
 			FieldPanel('address_state'),
 			FieldPanel('address_zipcode'),
 		], heading="Location", classname='collapsible'),
+		MultiFieldPanel([
+			FieldPanel('materials'),
+		], heading="Materials"),
 	]
 
-    # Tabs
+	# Tabs
 	edit_handler = TabbedInterface([
 		ObjectList(content_panels, heading='Content'),
 		AbstractBasePage.meta_panels,
@@ -257,13 +247,12 @@ class EventPage(RoutablePageMixin, DefaultPage):
 			item = '\n '.join(item[i:i + 74] for i in range(0, len(item), 74))
 			return item
 
-		location = 'Online' if self.location_type == 'online' else '{}{}{}{}{}'.format(
-			self.address_line_1 if self.address_line_1 else '',
-			' ' + self.address_line_2 if self.address_line_2 else '',
-			' ' + self.city + ',' if self.city else '',
-			' ' + self.state if self.state else '',
-			' ' + self.postal_code if self.postal_code else '',
-		)
+		address_line_1 = self.address_line_1 if self.address_line_1 else ''
+		address_line_2 = ' ' + self.address_line_2 if self.address_line_2 else ''
+		city = ' ' + self.address_city + ',' if self.address_city else ''
+		state = ' ' + self.address_state if self.address_state else ''
+		zipcode = ' ' + self.address_zipcode if self.address_zipcode else ''
+		location = 'Online' if self.location_type == 'online' else '{}{}{}{}{}'.format(address_line_1, address_line_2, city, state, zipcode)
 		summary = self.title
 		filename = 'Benefit_Mall_{}.ics'.format(self.title.replace(' ', '_'))
 		start = self.start_datetime.strftime('%Y%m%dT%H%M%S')
@@ -330,7 +319,11 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		return self.title
 
 	def get_url(self):
-		return '{}{}{}/'.format(self.get_parent().url, self.start_datetime.strftime('%Y/%m/%d/'), slugify(self.title + ' ' + str(self.id)))
+		if self.is_active():
+			base_page = self.get_parent()
+		else:
+			base_page = self.get_parent().specific.get_archive_page()
+		return '{}{}{}/'.format(base_page.url, self.start_datetime.strftime('%Y/%m/%d/'), self.slug)
 
 	def get_full_url(self, request=None):
 		url_parts = self.get_url_parts(request=request)
@@ -385,3 +378,23 @@ class EventRegistrationForm(ModelForm):
 	class Meta:
 		model = EventRegistration
 		exclude = ['created']
+
+
+@register_snippet
+class EventType(models.Model):
+	name = models.CharField(max_length=255, help_text='Type display name')
+	slug = models.SlugField(unique=True, max_length=80, help_text='Lowercase alphanumberic version of the display name used in URLs')
+
+	panels = [
+		MultiFieldPanel([
+			FieldPanel('name'),
+			FieldPanel('slug'),
+		], heading='Type'),
+	]
+
+	def __str__(self):
+		return self.name
+
+	class Meta:
+		verbose_name = 'Event Type'
+		verbose_name_plural = 'Event Types'

@@ -1,68 +1,65 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags app_tags %}
 
 {% block content %}
     {% for block in page.body %}
         {% include_block block %}
     {% endfor %}
 
-    {% if featured_news %}
-        <section class="space--sm switchable switchable--switch">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="height-50  border--round space--sm {% if bg_img %}imagebg image--light{% endif %}" data-overlay="6">
-                            {% if featured_news_bg %}
-                                {% image featured_news_bg original as image %}
-                                <div class="background-image-holder" style="background: url(&quot;{{ image.url }}&quot;); opacity: 1;">
-                                    <img src="{{ image.url }}" alt="{{ image.alt }} (background)">
+    {% for news_item in page.news %}
+        {% if page.news.number == 1 and forloop.counter == 1 %}
+            <section class="space--sm">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="height-50 imagebg border--round" data-overlay="6">
+                                {% get_header_footer_field 'featured_news_bg' as featured_news_bg %}
+                                {% if featured_news_bg %}
+                                    {% image featured_news_bg original as image %}
+                                    <div class="background-image-holder"><img src="{{ image.url }}" alt=""></div>
+                                {% endif %}
+                                <div class="pos-vertical-center col-md-12 boxed boxed--lg bg--none">
+                                    <h2>{{ news_item.title }}</h2>
+                                    <h5>{{ news_item.news_datetime|date:'N j, Y' }}</h5>
+                                    <p class="lead">{{ news_item.body|striptags|truncatechars:300 }}</p>
+                                    <a href="{{ news_item.get_url }}" class="btn btn--primary">
+                                        <span class="btn__text">View More</span>
+                                    </a>
                                 </div>
-                            {% endif %}
-                            <div class="pos-vertical-center col-md-12 boxed boxed--lg bg--none">
-                                <h2>{{ featured_news.title }}</h2>
-                                <h5>{{ featured_news.news_datetime|date:'N j, Y' }}</h5>
-                                <p>{{ featured_news.body|striptags|truncatechars:300 }}</p>
-                                <a href="{{ featured_news.get_url }}" class="btn btn--primary">
-                                    <span class="btn__text">View More</span>
-                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    {% endif %}
-
-    {% if news %}
-        <section class="space--xxs">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 col-lg-12">
-                        {% for item in news %}
-                            <span>{{ item.news_datetime|date:"N j, Y" }}</span>
+            </section>
+        {% else %}
+            <section class="space--xxs {% if not forloop.last %}mb-0 pb-0{% endif %}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <span>{{ news_item.news_datetime|date:"N j, Y" }}</span>
                             <h3 style="margin-bottom:0;">
-                                <a href="{{ item.get_url }}">{{ item.title }}</a>
+                                <a href="{{ news_item.get_url }}">{{ news_item.title }}</a>
                             </h3>
-                            <p>{{ item.body|striptags|truncatechars:300 }}</p>
-                            <hr>
-                        {% endfor %}
+                            <p>{{ news_item.body|striptags|truncatechars:300 }}</p>
+                            {% if not forloop.last %}<hr class="mb-0">{% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    {% endif %}
+            </section>
+        {% endif %}
+    {% endfor %}
 
-    {% if news.paginator.num_pages > 1 %}
+    {% if page.news.paginator.num_pages > 1 %}
         <section class="space--xxs">
             <div class="container">
                 <div class="pagination">
-                    {% if news.has_previous %}
-                        <a style="float:none;" href="?page={{ news.previous_page_number }}" class="pagination__prev">« Prev</a>
+                    {% if page.news.has_previous %}
+                        <a style="float:none;" href="?page={{ page.news.previous_page_number }}" class="pagination__prev">« Prev</a>
                     {% endif %}
                     
-                    {% for page_num in news.paginator.page_range %}
+                    {% for page_num in page.news.paginator.page_range %}
                         <ol>
-                            {% if page_num == news.number %}
+                            {% if page_num == page.news.number %}
                                 <li class="pagination__current">{{ page_num }}</li>
                             {% else %}
                                 <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
@@ -70,12 +67,15 @@
                         </ol>
                     {% endfor %}
 
-                    {% if news.has_next %}
-                        <a style="float:none;" href="?page={{ news.next_page_number }}" class="pagination__next">Next »</a>
+                    {% if page.news.has_next %}
+                        <a style="float:none;" href="?page={{ page.news.next_page_number }}" class="pagination__next">Next »</a>
                     {% endif %}
                 </div>
             </div>
         </section>
     {% endif %}
 
+    {% for block in page.body_below %}
+        {% include_block block %}
+    {% endfor %}
 {% endblock %}
