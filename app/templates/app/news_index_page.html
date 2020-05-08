@@ -11,14 +11,14 @@
             <section class="space--sm">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="height-50 imagebg border--round {% get_header_footer_field 'featured_news_bg_invert' %}" data-overlay="{% get_header_footer_field 'featured_news_bg_overlay' %}">
+                        <div class="col">
+                            <div class="feature large-overlay imagebg border--round {% get_header_footer_field 'featured_event_bg_invert' %}" data-overlay="{% get_header_footer_field 'featured_event_bg_overlay' %}">
                                 {% get_header_footer_field 'featured_news_bg' as featured_news_bg %}
                                 {% if featured_news_bg %}
                                     {% image featured_news_bg original as image %}
                                     <div class="background-image-holder"><img src="{{ image.url }}" alt=""></div>
                                 {% endif %}
-                                <div class="pos-vertical-center col-md-12 boxed boxed--lg bg--none">
+                                <div>
                                     <h2>{{ news_item.title }}</h2>
                                     <h5>{{ news_item.news_datetime|date:'N j, Y' }}</h5>
                                     <p class="lead">{{ news_item.body|striptags|truncatechars:300 }}</p>
