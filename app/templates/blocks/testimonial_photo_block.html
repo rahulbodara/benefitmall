@@ -1,6 +1,6 @@
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
-{% image self.image original as image %}
+{% image self.image width-445 as image %}
 <section class="space--sm unpad--bottom text-center testimonial testimonial-1 {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
     {% include_block self.background %}
     <div class="container {{ self.background.size_mode }}">

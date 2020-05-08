@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('wagtailimages', '0022_uploadedimage'),
-        ('app', '0081_auto_20200504_1924'),
+        ('app', '0083_carrierindexpage'),
     ]
 
     operations = [

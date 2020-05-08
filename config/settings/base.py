@@ -95,7 +95,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 CACHES = {
     'default': {
-        'BACKEND': 'django_bmemcached.memcached.BMemcached'
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'carrier_data',
     }
 }
 
@@ -108,9 +109,6 @@ DATABASES = {
         'NAME': PROJECT_NAME,
     },
 }
-
-DATABASE_ROUTERS = [
-]
 
 
 # Password validation

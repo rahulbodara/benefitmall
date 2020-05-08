@@ -48,8 +48,8 @@
                         <div class="feature ">
                             <h4><a href="{{ page.get_url }}{{ loc.get_url_slug }}">{{ loc.name }}</a></h4>
                             <p>
-                                {{ loc.address_1}} {{ loc.address_2 }}<br/>
-                                {{ loc.city }}, {{ loc.state.abbreviation }} {{ loc.postal_code }}<br/>
+                                {% if loc.address_1 %}{{ loc.address_1}}{% endif %}{% if loc.address_2 %} {{ loc.address_2 }}{% endif %}<br/>
+                                {% if loc.city %}{{ loc.city }}{% endif %}{% if loc.state %}, {{ loc.state.abbreviation }}{% endif %}{% if loc.postal_code %} {{ loc.postal_code }}{% endif %}<br/>
                                 {% if loc.phone_number %}
                                     <i class="icon icon-Telephone icon--xs align-middle"></i><span class="align-middle">Phone: <a href="tel:{{ loc.phone_number }}">{{ loc.phone_number }}</a></span><br/>
                                 {% endif %}

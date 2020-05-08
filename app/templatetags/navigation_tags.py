@@ -166,6 +166,7 @@ def render_breadcrumbs(context, calling_page: Page):
         'NewsIndexPage',
         'LocationIndexPage',
         'PersonIndexPage',
+        'CarrierIndexPage',
     ]
 
     menuitems = [m for m in calling_page.get_ancestors(True)][1:]

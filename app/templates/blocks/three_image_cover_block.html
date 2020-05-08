@@ -1,7 +1,7 @@
 {% load wagtailimages_tags wagtailcore_tags %}
-{% image self.image_left original as image_left %}
-{% image self.image_center original as image_center %}
-{% image self.image_right original as image_right %}
+{% image self.image_left fill-370x250 as image_left %}
+{% image self.image_center fill-450x300 as image_center %}
+{% image self.image_right fill-370x250 as image_right %}
 <section class="cover text-center {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
     {% include_block self.background %}
     <div class="container {{ self.background.size_mode }}">

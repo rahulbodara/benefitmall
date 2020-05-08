@@ -8,7 +8,7 @@
             <div class="masonry__container row masonry--active">
                 {% for category in self.categories %}
                     {% for image in category.images %}
-                        {% image image.image original as image %}
+                        {% image image.image fill-350x272 as image %}
                         <div class="masonry__item col-lg-4 col-6 filter-{{category.filter}}" data-masonry-filter="{{category.name}}">
                             <a href="{{image.url}}" data-lightbox="{{category.filter}}"> <img alt="Image" src="{{image.url}}"> </a>
                         </div>
@@ -19,7 +19,7 @@
             <div class="masonry__container row">
             {% for category in self.categories %}
                 {% for images in category.images %}
-                    {% image images.image original as image %}
+                    {% image images.image fill-540x420 as image %}
                     <div class="masonry__item col-md-6 text-center" data-masonry-filter="{{category.name}}">
                         <div class="project-thumb">
                             <a href="#"> <img alt="Image" class="border--round" src="{{ image.url }}"> </a>
@@ -33,7 +33,7 @@
             <div class="masonry__container row masonry--active">
             {% for category in self.categories %}
                 {% for images in category.images %}
-                {% image images.image original as image %}
+                {% image images.image fill-540x420 as image %}
                     <div class="masonry__item col-md-6 col-12 filter-{{category.filter}}" data-masonry-filter="{{category.name}}">
                         <div class="project-thumb hover-element border--round {% if not self.hover %} hover--active{% endif %}">
                             <a href="#">

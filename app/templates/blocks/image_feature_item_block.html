@@ -1,8 +1,15 @@
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
-{% image self.image original as image %}
+{% image self.image fill-540x320 as image %}
 
 {% if layout == 'bordered' %}
+{#    {% if cols == 'col-md-6 col-sm-12' %}{# 2 #}
+{#        {% image self.image fill-540x420 as image %}#}
+{#    {% elif cols == 'col-md-4 col-sm-12' %}{# 3 #}
+{#        {% image self.image fill-350x272 as image %}#}
+{#    {% else %}{# 4 #}
+{#        {% image self.image fill-255x198 as image %}#}
+{#    {% endif %}#}
     <div class="{{ cols }}">
         <div class="feature feature-1">
             <img src="{{ image.url }}" alt="{{ image.alt }}">
@@ -14,6 +21,13 @@
         </div>
     </div>
 {% elif layout == 'overlay' %}
+{#    {% if cols == 'col-md-6 col-sm-12' %}{# 2 #}
+{#        {% image self.image fill-540x420 as image %}#}
+{#    {% elif cols == 'col-md-4 col-sm-12' %}{# 3 #}
+{#        {% image self.image fill-350x420 as image %}#}
+{#    {% else %}{# 4 #}
+{#        {% image self.image fill-255x420 as image %}#}
+{#    {% endif %}#}
     <div class="{{ cols }}">
         <div class="feature large-overlay text-center imagebg d-flex align-items-center justify-content-center {{ invert }}" data-overlay="{{ overlay }}">
             <div class="background-image-holder">
@@ -35,6 +49,13 @@
         </div>
     </div>
 {% else %}
+{#    {% if cols == 'col-md-6 col-sm-12' %}{# 2 #}
+{#        {% image self.image fill-540x420 as image %}#}
+{#    {% elif cols == 'col-md-4 col-sm-12' %}{# 3 #}
+{#        {% image self.image fill-350x272 as image %}#}
+{#    {% else %}{# 4 #}
+{#        {% image self.image fill-255x198 as image %}#}
+{#    {% endif %}#}
     <div class="{{ cols }}">
         <div class="feature">
             <img src="{{ image.url }}" alt="{{ image.alt }}">

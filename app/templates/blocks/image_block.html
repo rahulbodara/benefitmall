@@ -1,13 +1,14 @@
 {% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
-{% image self.image original as bg_image %}
 
 <section class="imagebg {{ self.image_effect }} {{ self.image_invert }} {% if self.sizing_mode == 'percent' %}cover {{ self.sizing }}{% else %}{{ self.padding }}{% endif %}" data-overlay={{ self.image_overlay }}>
     {% if self.mode == 'full' %}
+    {% image self.image fill-1600x600 as bg_image %}
 	<div class="background-image-holder">
 	    <img src="{{ bg_image.url }}" alt="{{ bg_image.alt }} (background)">
 	</div>
     {% else %}
+    {% image self.image fill-1110x740 as bg_image %}
     <div class="container {{ self.size_mode }}">
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
