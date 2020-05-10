@@ -225,11 +225,25 @@
 
 .carrier-item{
 	margin-bottom: 15px;
+	position: relative;
+
 	.boxed{
 		margin-bottom: 0px;
 	}
 	.type--fine-print{
 		font-weight: 400;
+	}
+	&:hover::after {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background: #000;
+		z-index: 1000;
+		display: block;
+		content: "";
+		opacity: .09;
 	}
 }
 .carrier-rating{

@@ -9554,12 +9554,25 @@ footer.footer-7 {
 }
 .carrier-item {
   margin-bottom: 15px;
+  position: relative;
 }
 .carrier-item .boxed {
   margin-bottom: 0px;
 }
 .carrier-item .type--fine-print {
   font-weight: 400;
+}
+.carrier-item:hover::after {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 1000;
+  display: block;
+  content: "";
+  opacity: 0.09;
 }
 .carrier-rating {
   min-width: 250px;
