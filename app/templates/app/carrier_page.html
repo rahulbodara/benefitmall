@@ -33,7 +33,160 @@
     </section>
 
     {% if carrier.products|length > 0 %}
-        <section class="space--xxs carrier-products">
+        <section class="space--xxs carrier-products visible-xs visible-sm">
+            <div class="container">
+                <ul class="accordion accordion-2 carrier-accordion mobile-accordion">
+                {% for product in carrier.products|dictsort:"order" %}
+                    <li>
+                        <div class="row accordion__title">
+                            <div class="col-12"><h4 class="type--bold">{{ product.name }}</h4></div>
+                        </div>
+
+                        <div class="row accordion__content">
+                            <ul class="col-12 accordion accordion-2 carrier-accordion inner-accordion">
+                                <li>
+                                    {# SMALL GROUP #}
+                                    <div class="row accordion__title">
+                                        <div class="col-10"><h4 class="type--bold">Small Group</h4></div>
+                                        <div class="col-2 text-center align-middle">
+                                            {% if product.small_group.states|length > 0 %}
+                                                <i class="icon icon-Yes icon--sm color--primary"></i>
+                                            {% else %}
+                                                <i class="icon icon-Close icon--sm"></i>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row accordion__content">
+                                        <div class="col-12">
+                                            <ul>
+                                                {% if product.small_group.states|length > 0 %}
+                                                    {% for state in product.small_group.states %}
+                                                       <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <li>None</li>
+                                                {% endif %}
+                                            </ul>
+                                            {% if product.small_group.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    {# LARGE GROUP #}
+                                    <div class="row accordion__title">
+                                        <div class="col-10"><h4 class="type--bold">Large Group</h4></div>
+                                        <div class="col-2 text-center align-middle">
+                                            {% if product.large_group.states|length > 0 %}
+                                                <i class="icon icon-Yes icon--sm color--primary"></i>
+                                            {% else %}
+                                                <i class="icon icon-Close icon--sm"></i>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row accordion__content">
+                                        <div class="col-12">
+                                            <ul>
+                                                {% if product.large_group.states|length > 0 %}
+                                                    {% for state in product.large_group.states %}
+                                                       <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <li>None</li>
+                                                {% endif %}
+                                            </ul>
+                                            {% if product.large_group.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    {# SELF-FUNDED #}
+                                    <div class="row accordion__title">
+                                        <div class="col-10"><h4 class="type--bold">Self-Funded</h4></div>
+                                        <div class="col-2 text-center align-middle">
+                                            {% if product.self_funded.states|length > 0 %}
+                                                <i class="icon icon-Yes icon--sm color--primary"></i>
+                                            {% else %}
+                                                <i class="icon icon-Close icon--sm"></i>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row accordion__content">
+                                        <div class="col-12">
+                                            <ul>
+                                                {% if product.self_funded.states|length > 0 %}
+                                                    {% for state in product.self_funded.states %}
+                                                       <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <li>None</li>
+                                                {% endif %}
+                                            </ul>
+                                            {% if product.self_funded.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    {# INDIVIDUAL GROUP #}
+                                    <div class="row accordion__title">
+                                        <div class="col-10"><h4 class="type--bold">Individual</h4></div>
+                                        <div class="col-2 text-center align-middle">
+                                            {% if product.individual.states|length > 0 %}
+                                                <i class="icon icon-Yes icon--sm color--primary"></i>
+                                            {% else %}
+                                                <i class="icon icon-Close icon--sm"></i>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row accordion__content">
+                                        <div class="col-12">
+                                            <ul>
+                                                {% if product.individual.states|length > 0 %}
+                                                    {% for state in product.individual.states %}
+                                                       <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <li>None</li>
+                                                {% endif %}
+                                            </ul>
+                                            {% if product.individual.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    {# SENIOR GROUP #}
+                                    <div class="row accordion__title">
+                                        <div class="col-10"><h4 class="type--bold">Senior</h4></div>
+                                        <div class="col-2 text-center align-middle">
+                                            {% if product.senior.states|length > 0 %}
+                                                <i class="icon icon-Yes icon--sm color--primary"></i>
+                                            {% else %}
+                                                <i class="icon icon-Close icon--sm"></i>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row accordion__content">
+                                        <div class="col-12">
+                                            <ul>
+                                                {% if product.senior.states|length > 0 %}
+                                                    {% for state in product.senior.states %}
+                                                       <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <li>None</li>
+                                                {% endif %}
+                                            </ul>
+                                            {% if product.senior.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </section>
+        <section class="space--xxs carrier-products visible-md visible-lg">
             <div class="container">
                 <div class="row text-center">
                     <div class="col-md-2"></div>
