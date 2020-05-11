@@ -21,7 +21,7 @@
                                 <div>
                                     <h2>{{ news_item.title }}</h2>
                                     <h5>{{ news_item.news_datetime|date:'N j, Y' }}</h5>
-                                    <p class="lead">{{ news_item.body|striptags|truncatechars:300 }}</p>
+                                    <h6 class="lead">{{ news_item.body|striptags|truncatechars:300 }}</h6>
                                     <a href="{{ news_item.get_url }}" class="btn btn--primary">
                                         <span class="btn__text">View More</span>
                                     </a>
