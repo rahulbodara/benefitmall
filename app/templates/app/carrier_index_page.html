@@ -1,55 +1,102 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags security %}
+
+{% block extra_js %}
+    <script {% allow_script %}>
+    $(function () {
+        $('.carrier-type-filter').on('click', function(e){
+            e.preventDefault();
+            $('#carrier_type_value').val($(this).data('filter'))
+            type_filter = $('#carrier_type_value').val();
+            state_filter = $('.carrier-state-filter').val()
+            window.location.href = './?type='+type_filter+'&state='+state_filter;
+        });
+        $('.carrier-state-filter').on('change', function(){
+            type_filter = $('#carrier_type_value').val();
+            state_filter = $(this).val()
+            window.location.href = './?type='+type_filter+'&state='+state_filter;
+        });
+    });
+    </script>
+{% endblock %}
 
 {% block content %}
     {% for block in page.body %}
         {% include_block block %}
     {% endfor %}
-
-        <section class="space--xxs">
-            <div class="container text-white">
-                {% for carrier in carriers.items %}
-
-                    <a class="carrier-link" href="./{{ carrier.1.slug }}">
-                        <div class="row carrier-item">
-                            <div class="col-md-3 text-center boxed boxed--border">
-{#                                <div class="text-center"><h4>Carrier</h4></div>#}
-                                {% if carrier.1.logo_url %}<img src="{{ carrier.1.logo_url }}"/>{% endif %}
-                                <h4>{{ carrier.1.name }}</h4>
-                            </div>
-                            <div class="col-md-3 text-center bg--primary-3 boxed boxed--border">
-                                <h4>Rating</h4>
-                                <p class="h1">{{ carrier.1.rating_classification }}</p>
-                                <p><span class="lead">{{ carrier.1.rating_description }}</span></br>
-                                    {{ carrier.1.rating_company_name }}</p>
-                            </div>
-                            <div class="col-md-3 bg--primary-3 text-left-md text-center-xs boxed boxed--border">
-                                <div class="text-center"><h4>Type</h4></div>
-                                <ul>
-                                {% for p in carrier.1.available_products|dictsort:"order" %}
-                                    {% if forloop.counter < 6 %}
-                                        <li>{{ p.name }}</li>
-                                    {% endif %}
-                                {% endfor %}
-                                {% if carrier.1.available_products|length > 6 %}
-                                    <li><i>Plus More</i></li>
-                                {% endif %}
-                                </ul>
-                            </div>
-                            <div class="col-md-3 bg--primary-3 text-left-md text-center-xs boxed boxed--border">
-                                <div class="text-center"><h4>Best For</h4></div>
-                                <ul>
-                                {% for i in carrier.1.available_insurance_types|dictsort:"order" %}
-                                    <li>{{ i.name }}{% if i.quoting_available %}*{% endif %}</li>
-                                {% endfor %}
-                                </ul>
-                                {% if carrier.1.show_quoting %}<p class="type--fine-print">* Online quoting available in some states</p>{% endif %}
-                            </div>
-                        </div>
-                    </a>
-                {% endfor %}
-
+    <section class="space--xxs carrier-filters">
+        <div class="container text-white">
+            <div class="row">
+                <div class="offset-1 col-10 text-center">
+                    <div class="input-select">
+                        <select class="carrier-state-filter">
+                            <option value="">All</option>
+                            {% for state in states %}
+                                <option value="{{ state.abbreviation }}" {% if state_filter == state.abbreviation %}selected="selected"{% endif %}>{{ state.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
             </div>
-        </section>
+            <div class="row">
+                <div class="col text-center">
+                    <div class="carrier-type-filters">
+                        <input id="carrier_type_value" name="carrier_type_value" type="hidden" value="{{ type_filter }}" />
+                        <a href="#" data-filter-type="type" data-filter="" class="carrier-type-filter btn {% if not type_filter %}btn--secondary{% else %}btn--unfilled{% endif %}">All</a>
+                        <a href="#" data-filter-type="type" data-filter="Small Group" class="carrier-type-filter btn {% if type_filter == 'Small Group' %}btn--secondary{% else %}btn--unfilled{% endif %}">Small Group</a>
+                        <a href="#" data-filter-type="type" data-filter="Large Group" class="carrier-type-filter btn {% if type_filter == 'Large Group' %}btn--secondary{% else %}btn--unfilled{% endif %}">Large Group</a>
+                        <a href="#" data-filter-type="type" data-filter="Self-Funded" class="carrier-type-filter btn {% if type_filter == 'Self-Funded' %}btn--secondary{% else %}btn--unfilled{% endif %}">Self-Funded</a>
+                        <a href="#" data-filter-type="type" data-filter="Individual" class="carrier-type-filter btn {% if type_filter == 'Individual' %}btn--secondary{% else %}btn--unfilled{% endif %}">Individual</a>
+                        <a href="#" data-filter-type="type" data-filter="Senior" class="carrier-type-filter btn {% if type_filter == 'Senior' %}btn--secondary{% else %}btn--unfilled{% endif %}">Senior</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="space--xxs">
+        <div class="container text-white">
+            {% for carrier in carriers.items %}
+
+                <a class="carrier-link" href="./{{ carrier.1.slug }}">
+                    <div class="row carrier-item">
+                        <div class="col-md-3 text-center boxed boxed--border">
+{#                                <div class="text-center"><h4>Carrier</h4></div>#}
+                            {% if carrier.1.logo_url %}<img src="{{ carrier.1.logo_url }}"/>{% endif %}
+                            <h4>{{ carrier.1.name }}</h4>
+                        </div>
+                        <div class="col-md-3 text-center bg--primary-3 boxed boxed--border">
+                            <h4>Rating</h4>
+                            <p class="h1">{{ carrier.1.rating_classification }}</p>
+                            <p><span class="lead">{{ carrier.1.rating_description }}</span></br>
+                                {{ carrier.1.rating_company_name }}</p>
+                        </div>
+                        <div class="col-md-3 bg--primary-3 text-left-md text-center-xs boxed boxed--border">
+                            <div class="text-center"><h4>Type</h4></div>
+                            <ul>
+                            {% for p in carrier.1.available_products|dictsort:"order" %}
+                                {% if forloop.counter < 6 %}
+                                    <li>{{ p.name }}</li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if carrier.1.available_products|length > 6 %}
+                                <li><i>Plus More</i></li>
+                            {% endif %}
+                            </ul>
+                        </div>
+                        <div class="col-md-3 bg--primary-3 text-left-md text-center-xs boxed boxed--border">
+                            <div class="text-center"><h4>Best For</h4></div>
+                            <ul>
+                            {% for i in carrier.1.available_insurance_types|dictsort:"order" %}
+                                <li>{{ i.name }}{% if i.quoting_available %}*{% endif %}</li>
+                            {% endfor %}
+                            </ul>
+                            {% if carrier.1.show_quoting %}<p class="type--fine-print">* Online quoting available in some states</p>{% endif %}
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+
+        </div>
+    </section>
 
 {% endblock %}

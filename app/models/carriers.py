@@ -9,6 +9,7 @@ from django.utils.text import slugify
 from wagtail.images.models import Image
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from django.core.cache import cache
+from app.models import State
 import requests
 
 
@@ -26,9 +27,35 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 		context = super().get_context(request, **kwargs)
 		self.additional_breadcrumbs = []
 
+		state_filter = request.GET.get('state') or None
+		insurance_filter = request.GET.get('type') or None
 		carriers = cache.get('carriers')
+		out = {}
+		by_insurance = []
+		by_state = []
+		if insurance_filter or state_filter:
+			if insurance_filter:
+				for id in carriers:
+					carrier = carriers[id]
+					for it in carrier['available_insurance_types']:
+						if it['name'] == insurance_filter:
+							by_insurance.append(carrier)
+							break
+			if state_filter:
+				for id in carriers:
+					carrier = carriers[id]
+					if state_filter in carrier['available_states']:
+						by_state.append(carrier)
+			combined = list(set(by_insurance.extend(by_state)))
+			for c in combined:
+				out[c.id] = c
+		else:
+			out = carriers
 
-		context['carriers'] = carriers
+		context['carriers'] = out
+		context['type_filter'] = insurance_filter
+		context['state_filter'] = state_filter
+		context['states'] = State.objects.all()
 		return TemplateResponse(request, self.get_template(request), context)
 
 	@route(r'^(.+)/$')
@@ -44,7 +71,6 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 			raise Http404
 
 		context['carrier'] = carrier
-
 		self.additional_breadcrumbs = [({'title': carrier['name'], 'url': self.get_url()+carrier['slug']})]
 		# context.update(self.get_page_meta_data(request, location))
 		return TemplateResponse(request, "app/carrier_page.html", context)

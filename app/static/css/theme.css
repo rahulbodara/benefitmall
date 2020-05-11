@@ -9587,4 +9587,12 @@ a.carrier-link {
 .carrier-accordion .icon {
   font-weight: 900;
 }
+.carrier-filters .input-select:after {
+  font-size: 40px;
+  line-height: 32px;
+  color: #000000;
+}
+.carrier-type-filters {
+  margin-top: 1em;
+}
 /*# sourceMappingURL=theme.css.map */
