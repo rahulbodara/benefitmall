@@ -90,7 +90,7 @@ def search(request):
                             'title': carrier['name'],
                             'url': '/products/carriers/{}'.format(carrier['slug']),
                             'search_description': strip_tags(carrier['description'])[:300]+'...' or 'This page has no search description.',
-                            'full_url': '/products/carriers/{}'.format(carrier['slug']),
+                            'full_url': 'https://{}/products/carriers/{}'.format(request.get_host(), carrier['slug']),
                         }
             if len(carrier_results) > 0:
                 tmp = []
