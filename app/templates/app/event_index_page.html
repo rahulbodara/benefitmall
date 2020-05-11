@@ -68,7 +68,7 @@
                                     {{ event.address_city }}, {{ event.address_state }}
                                     {% endif %}
                                 </h4>
-                                <p>{{ event.description|striptags|truncatechars:300 }}</p>
+                                <h6 class="lead">{{ event.description|striptags|truncatechars:300 }}</h6>
                                 <a href="{{ event.get_url }}" class="btn btn--primary">
                                     <span class="btn__text">{% if page.archive %}Download Event Materials{% else %}Register for Event{% endif %}</span>
                                 </a>
