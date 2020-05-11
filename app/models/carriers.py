@@ -31,30 +31,34 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 		insurance_filter = request.GET.get('type') or None
 		carriers = cache.get('carriers')
 		out = {}
-		by_insurance = []
-		by_state = []
+		by_insurance = {}
+		by_state = {}
 		if insurance_filter or state_filter:
 			if insurance_filter:
 				for id in carriers:
 					carrier = carriers[id]
 					for it in carrier['available_insurance_types']:
 						if it['name'] == insurance_filter:
-							by_insurance.append(carrier)
+							by_insurance[id] = carrier
 							break
+			else:
+				by_insurance = carriers
 			if state_filter:
 				for id in carriers:
 					carrier = carriers[id]
 					if state_filter in carrier['available_states']:
-						by_state.append(carrier)
-			combined = list(set(by_insurance.extend(by_state)))
-			for c in combined:
-				out[c.id] = c
+						by_state[id] = carrier
+			else:
+				by_state = carriers
+			for id in by_insurance:
+				if id in by_state:
+					out[id] = by_insurance[id]
 		else:
 			out = carriers
 
 		context['carriers'] = out
-		context['type_filter'] = insurance_filter
-		context['state_filter'] = state_filter
+		context['type_filter'] = insurance_filter or ''
+		context['state_filter'] = state_filter or ''
 		context['states'] = State.objects.all()
 		return TemplateResponse(request, self.get_template(request), context)
 

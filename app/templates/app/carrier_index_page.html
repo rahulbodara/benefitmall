@@ -32,7 +32,7 @@
                         <select class="carrier-state-filter">
                             <option value="">All</option>
                             {% for state in states %}
-                                <option value="{{ state.abbreviation }}" {% if state_filter == state.abbreviation %}selected="selected"{% endif %}>{{ state.name }}</option>
+                                <option value="{{ state.name }}" {% if state_filter == state.name %}selected="selected"{% endif %}>{{ state.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -55,6 +55,7 @@
     </section>
     <section class="space--xxs">
         <div class="container text-white">
+        {% if carriers.items|length > 0 %}
             {% for carrier in carriers.items %}
 
                 <a class="carrier-link" href="./{{ carrier.1.slug }}">
@@ -95,7 +96,13 @@
                     </div>
                 </a>
             {% endfor %}
-
+        {% else %}
+            <div class="row">
+                <div class="col text-center">
+                    <h3 class="lead">No carriers found matching tht criteria.<br/> Please try a different combination of filters.</h3>
+                </div>
+            </div>
+        {% endif %}
         </div>
     </section>
 
