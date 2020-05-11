@@ -14,12 +14,12 @@
                         {% for result in results %}
                             <li>
                                 <a href="{{ result.url }}">
-                                    <h4>{{ result }}</h4>
-                                    <span>{% get_page_type result %}</span>
+                                    <h4>{{ result.title }}</h4>
+{#                                    <span>{% get_page_type result %}</span>#}
                                 </a>
                                 <p>
                                     {{ result.search_description|default:'This page has no search description.' }}<br>
-                                    <a href="{{ result.url }}" class="color--primary" style="font-style:italic;">{{ result.get_full_url }}</a>
+                                    <a href="{{ result.url }}" class="color--primary" style="font-style:italic;">{{ result.full_url }}</a>
                                 </p>
                             </li>
                         {% endfor %}

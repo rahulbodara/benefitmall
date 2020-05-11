@@ -2,6 +2,8 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from wagtail.core.models import Page, TemplateResponse
 from site_settings.wagtail_hooks import SiteSettings
+from django.core.cache import cache
+from django.utils.html import strip_tags
 import json
 
 import logging
@@ -59,9 +61,45 @@ def search(request):
         results = []
 
         if query:
-            all_results = Page.objects.live().search(query)
-
-            paginator = Paginator(all_results, 10)
+            iniial_results = Page.objects.live().search(query)
+            all_results = []
+            for result in iniial_results:
+                all_results.append({
+                    'title': str(result),
+                    'url': result.url,
+                    'search_description': result.search_description or 'This page has no search description.',
+                    'full_url': result.get_full_url()
+                })
+            carriers = cache.get('carriers')
+            carrier_results = {}
+            for id in carriers:
+                carrier = carriers[id]
+                # Direct match against carrier name or description. If match, add to top of results, if no match, don't include carrier.
+                # Anything more complex requires discussion about how to weight.
+                if 'name' in carrier and carrier['name']:
+                    if query.lower() in carrier['name'].lower():
+                        carrier_results[id] = {
+                            'title': carrier['name'],
+                            'url': '/products/carriers/{}'.format(carrier['slug']),
+                            'search_description': strip_tags(carrier['description'])[:300]+'...' or 'This page has no search description.',
+                            'full_url': '/products/carriers/{}'.format(carrier['slug']),
+                        }
+                if 'description' in carrier and carrier['description']:
+                    if query.lower() in carrier['description'].lower():
+                        carrier_results[id] = {
+                            'title': carrier['name'],
+                            'url': '/products/carriers/{}'.format(carrier['slug']),
+                            'search_description': strip_tags(carrier['description'])[:300]+'...' or 'This page has no search description.',
+                            'full_url': '/products/carriers/{}'.format(carrier['slug']),
+                        }
+            if len(carrier_results) > 0:
+                tmp = []
+                for id in carrier_results:
+                    tmp.append(carrier_results[id])
+                total_results = tmp + all_results
+            else:
+                total_results = all_results
+            paginator = Paginator(total_results, 10)
 
             try:
                 # Return linked page
@@ -75,7 +113,7 @@ def search(request):
 
         context['page'] = Page.objects.get(slug='home')
         context['results'] = results
-        context['results_count'] = len(all_results)
+        context['results_count'] = len(total_results)
         context['query'] = query
         return TemplateResponse(request, "search/search_results.html", context)
     else:
