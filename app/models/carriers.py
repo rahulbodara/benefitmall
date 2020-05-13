@@ -11,7 +11,7 @@ from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from django.core.cache import cache
 from app.models import State
 import requests
-
+import json
 
 
 
@@ -74,7 +74,16 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 		else:
 			raise Http404
 
+		for i in range(len(carrier['products'])):
+			for key, value in carrier['products'][i].items():
+				if key not in ['small_group', 'large_group', 'self_funded', 'individual', 'senior', ]:
+					continue
+				states = carrier['products'][i][key]['states']
+				carrier['products'][i][key]['states_list'] = json.dumps([state['name'] for state in states])
+
 		context['carrier'] = carrier
+
+
 		self.additional_breadcrumbs = [({'title': carrier['name'], 'url': self.get_url()+carrier['slug']})]
 		# context.update(self.get_page_meta_data(request, location))
 		return TemplateResponse(request, "app/carrier_page.html", context)

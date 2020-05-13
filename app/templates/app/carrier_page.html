@@ -33,18 +33,35 @@
     </section>
 
     {% if carrier.products|length > 0 %}
-        <section class="space--xxs carrier-products visible-xs visible-sm">
+        <section class="space--xxs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="input-select">
+                            <select id="state_select">
+                                <option selected class="hidden" value="">Select State</option>
+                                {% for item in carrier.available_states %}
+                                    <option class="filter-{{ item }}" value="{{ item }}">{{ item }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-9 filter-bubbles"></div>
+                </div>
+            </div>
+        </section>
+        <section class="space--xxs carrier-products visible-xs visible-sm carrier-products-mobile">
             <div class="container">
                 <ul class="accordion accordion-2 carrier-accordion mobile-accordion">
                 {% for product in carrier.products|dictsort:"order" %}
-                    <li>
+                    <li class="carrier-product">
                         <div class="row accordion__title">
                             <div class="col-12"><h4 class="type--bold">{{ product.name }}</h4></div>
                         </div>
 
                         <div class="row accordion__content">
                             <ul class="col-12 accordion accordion-2 carrier-accordion inner-accordion">
-                                <li>
+                                <li class="carrier-insurance-group">
                                     {# SMALL GROUP #}
                                     <div class="row accordion__title">
                                         <div class="col-10"><h4 class="type--bold">Small Group</h4></div>
@@ -71,7 +88,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="carrier-insurance-group">
                                     {# LARGE GROUP #}
                                     <div class="row accordion__title">
                                         <div class="col-10"><h4 class="type--bold">Large Group</h4></div>
@@ -98,7 +115,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="carrier-insurance-group">
                                     {# SELF-FUNDED #}
                                     <div class="row accordion__title">
                                         <div class="col-10"><h4 class="type--bold">Self-Funded</h4></div>
@@ -125,7 +142,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="carrier-insurance-group">
                                     {# INDIVIDUAL GROUP #}
                                     <div class="row accordion__title">
                                         <div class="col-10"><h4 class="type--bold">Individual</h4></div>
@@ -186,7 +203,7 @@
                 </ul>
             </div>
         </section>
-        <section class="space--xxs carrier-products visible-md visible-lg">
+        <section class="space--xxs carrier-products visible-md visible-lg carrier-products-desktop">
             <div class="container">
                 <div class="row text-center">
                     <div class="col-md-2"></div>
@@ -198,7 +215,7 @@
                 </div>
                 <ul class="accordion accordion-2 carrier-accordion">
                 {% for product in carrier.products|dictsort:"order" %}
-                    <li>
+                    <li class="carrier-product">
                         <div class="row accordion__title {% cycle '' 'bg--secondary' %}">
                             <div class="col-md-2"><h4 class="type--bold">{{ product.name }}</h4></div>
                             <div class="col-md-2 text-center align-middle">
@@ -238,73 +255,77 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <div class="row accordion__content bg--secondary">
-                            <div class="col-md-2"></div>
-                            <div class="col-md-2">
+                        <div class="row accordion__content bg--secondary carrier-product-list">
+                            <div class="col-md-2 offset-md-2" data-states="{{ product.small_group.states_list }}">
                                 <div class="">
                                     <ul>
                                         {% if product.small_group.states|length > 0 %}
                                             {% for state in product.small_group.states %}
-                                               <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                               <li class="state-item" data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                             {% endfor %}
+                                            <li class="state-item" data-state="None" class="hidden">None</li>
                                         {% else %}
-                                            <li>None</li>
+                                            <li class="state-item" data-state="None">None</li>
                                         {% endif %}
                                     </ul>
                                     {% if product.small_group.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2" data-states="{{ product.large_group.states_list }}">
                                 <div class="">
                                     <ul>
                                         {% if product.large_group.states|length > 0 %}
                                             {% for state in product.large_group.states %}
-                                               <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                <li class="state-item" data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                             {% endfor %}
+                                            <li class="state-item" data-state="None" class="hidden">None</li>
                                         {% else %}
-                                            <li>None</li>
+                                            <li class="state-item" data-state="None">None</li>
                                         {% endif %}
                                     </ul>
                                     {% if product.large_group.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2" data-states="{{ product.self_funded.states_list }}">
                                 <div class="">
                                     <ul>
                                         {% if product.self_funded.states|length > 0 %}
                                             {% for state in product.self_funded.states %}
-                                               <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                               <li class="state-item" data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                             {% endfor %}
+                                            <li class="state-item" data-state="None" class="hidden">None</li>
                                         {% else %}
-                                            <li>None</li>
+                                            <li class="state-item" data-state="None">None</li>
                                         {% endif %}
                                     </ul>
                                     {% if product.self_funded.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2" data-states="{{ product.individual.states_list }}">
                                 <div class="">
                                     <ul>
                                         {% if product.individual.states|length > 0 %}
                                             {% for state in product.individual.states %}
-                                               <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                               <li class="state-item" data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                             {% endfor %}
+                                            <li class="state-item" data-state="None" class="hidden">None</li>
                                         {% else %}
-                                            <li>None</li>
+                                            <li class="state-item" data-state="None">None</li>
                                         {% endif %}
                                     </ul>
                                     {% if product.individual.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2" data-states="{{ product.senior.states_list }}">
                                 <div class="">
                                     <ul>
                                         {% if product.senior.states|length > 0 %}
                                             {% for state in product.senior.states %}
-                                               <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                               <li class="state-item" data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                             {% endfor %}
+                                            <li class="state-item" data-state="None" class="hidden">None</li>
                                         {% else %}
-                                            <li>None</li>
+                                            <li class="state-item" data-state="None">None</li>
                                         {% endif %}
                                     </ul>
                                     {% if product.senior.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
@@ -332,7 +353,98 @@
                 </div>
             </div>
         </section>
+                <div class="col-xs-6 col-md-2">
+                    <div class="filter-pill">
+                        <div class="filter-text">
+                            ${value}
+                        </div>
+                    </div>
+                </div>
     {% endif %}
 
 
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        var filter = []
+        var lastSel = $("#my_select option:selected");
+        var stateSelector = $("#state_select");
+
+        stateSelector.change(function(){
+            let selected = $(this).find(':selected');
+            let value = selected.val();
+            $('.filter-bubbles').append(`
+            `)
+            addFilter(value);
+            selected.addClass('hidden');
+            selected.prop('selected', false);
+            lastSel.prop('selected', true);
+        });
+
+       stateSelector.click(function(){
+            lastSel = $("#my_select option:selected");
+        });
+
+        function addFilter(state) {
+            filter = filter.concat(state);
+            filterCarrierProducts();
+        }
+
+        function filterCarrierProducts() {
+            console.log("=======================================")
+            if(!filter.length) {
+                $('.carrier-products-desktop .state-item:not([data-state="None"])').removeClass("hidden");
+                $('.carrier-products-desktop .carrier-product').removeClass('hidden');
+            } else {
+                // Hide everything, then show only the selected states
+                $('.carrier-products-desktop .state-item').addClass("hidden");
+                filter.forEach(function(item, index) {
+                   $(`.carrier-products-desktop .state-item[data-state="${item}"]`).removeClass('hidden');
+                });
+
+                // For each product
+                $('.carrier-products-desktop .carrier-product').each(function() {
+                    let hide = true;
+
+                    let dataIcons = $(this).find('.accordion__title i');
+                    // For each data div
+                    $(this).find('.accordion__content > div').each(function() {
+                        let states = $(this).data('states') || [];
+
+                        let dataDivIndex = $(this).index();
+
+                        // For each state in the filter
+                        filter.some(function(item, index) {
+                            // If the data div has the state, don't hide the product
+                            console.log(item, states);
+                           if(states.indexOf(item) >= 0) {
+                               hide = false;
+                               // Set Icon to a check
+                               dataIcons.eq(dataDivIndex).addClass('icon-Yes color--primary').removeClass('icon-Close');
+
+                               // Break out of the loop
+                               return true;
+
+                           } else {
+                               // The data div did not have any state, so show "None" in the data div
+                               $(this).find('.state-item[data-state="None"]').removeClass("hidden");
+
+                               // Change the data icon to an X
+                               dataIcons.eq(dataDivIndex).removeClass('icon-Yes color--primary').addClass('icon-Close');
+                           }
+                        });
+                    });
+                    if(hide) {
+                        $(this).addClass('hidden');
+                    } else {
+                        $(this).removeClass('hidden');
+                    }
+                });
+            }
+        }
+        $(function() {
+            filterCarrierProducts();
+        })
+    </script>
 {% endblock %}
