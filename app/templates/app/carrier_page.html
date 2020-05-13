@@ -68,7 +68,7 @@
                                         <div class="col-10"><h4 class="type--bold">Small Group</h4></div>
                                         <div class="col-2 text-center align-middle">
                                             {% if product.small_group.states|length > 0 %}
-                                                <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
+                                                <i data-initial="1" class="fas fa-check-circle"></i>
                                             {% else %}
                                                 <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                             {% endif %}
@@ -97,7 +97,7 @@
                                         <div class="col-10"><h4 class="type--bold">Large Group</h4></div>
                                         <div class="col-2 text-center align-middle">
                                             {% if product.large_group.states|length > 0 %}
-                                                <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
+                                                <i data-initial="1" class="fas fa-check-circle"></i>
                                             {% else %}
                                                 <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                             {% endif %}
@@ -126,7 +126,7 @@
                                         <div class="col-10"><h4 class="type--bold">Self-Funded</h4></div>
                                         <div class="col-2 text-center align-middle">
                                             {% if product.self_funded.states|length > 0 %}
-                                                <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
+                                                <i data-initial="1" class="fas fa-check-circle"></i>
                                             {% else %}
                                                 <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                             {% endif %}
@@ -155,7 +155,7 @@
                                         <div class="col-10"><h4 class="type--bold">Individual</h4></div>
                                         <div class="col-2 text-center align-middle">
                                             {% if product.individual.states|length > 0 %}
-                                                <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
+                                                <i data-initial="1" class="fas fa-check-circle"></i>
                                             {% else %}
                                                 <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                             {% endif %}
@@ -184,7 +184,7 @@
                                         <div class="col-10"><h4 class="type--bold">Senior</h4></div>
                                         <div class="col-2 text-center align-middle">
                                             {% if product.senior.states|length > 0 %}
-                                                <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
+                                                <i data-initial="1" class="fas fa-check-circle"></i>
                                             {% else %}
                                                 <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                             {% endif %}
@@ -231,7 +231,7 @@
                             <div class="col-md-2"><h4 class="type--bold">{{ product.name }}</h4></div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.small_group.states|length > 0 %}
-                                    <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
+                                    <i data-initial="1" class="fas fa-check-circle"></i>
                                 {% else %}
                                     <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                 {% endif %}
@@ -239,28 +239,28 @@
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.large_group.states|length > 0 %}
-                                    <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
+                                    <i data-initial="1" class="fas fa-check-circle"></i>
                                 {% else %}
                                     <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                 {% endif %}
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.self_funded.states|length > 0 %}
-                                    <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
+                                    <i data-initial="1" class="fas fa-check-circle"></i>
                                 {% else %}
                                     <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                 {% endif %}
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.individual.states|length > 0 %}
-                                    <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
+                                    <i data-initial="1" class="fas fa-check-circle"></i>
                                 {% else %}
                                     <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                 {% endif %}
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.senior.states|length > 0 %}
-                                    <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
+                                    <i data-initial="1" class="fas fa-check-circle"></i>
                                 {% else %}
                                     <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                 {% endif %}
@@ -438,9 +438,9 @@
                 $('.carrier-products-mobile .carrier-product').removeClass('hidden');
                 $('.carrier-products-mobile .carrier-product .carrier-insurance-group .accordion__title i').each(function() {
                    if($(this).data('initial')) {
-                       $(this).addClass('icon-Yes color--primary').removeClass('icon-Close');
+                       $(this).addClass('fa-check-circle').removeClass('icon-Close');
                    } else {
-                       $(this).removeClass('icon-Yes color--primary').addClass('icon-Close');
+                       $(this).removeClass('fa-check-circle').addClass('icon-Close');
                    }
                 });
             } else {
@@ -461,14 +461,14 @@
                            if(states.indexOf(item) >= 0) {
                                hide = false;
                                // Set Icon to a check
-                               $(this).find('.accordion__title i').addClass('icon-Yes color--primary').removeClass('icon-Close');
+                               $(this).find('.accordion__title i').addClass('fa-check-circle').removeClass('icon-Close');
 
                                // Break out of the loop
                                return true;
 
                            } else {
                                // The data div did not have any state, so show "None" in the data div and make Icon an X
-                               $(this).find('.accordion__title i').removeClass('icon-Yes color--primary').addClass('icon-Close');
+                               $(this).find('.accordion__title i').removeClass('fa-check-circle').addClass('icon-Close');
 
                            }
                         });
@@ -508,9 +508,9 @@
                 $('.carrier-products-desktop .carrier-product').removeClass('hidden');
                 $('.carrier-products-desktop .carrier-product .accordion__title i').each(function() {
                    if($(this).data('initial')) {
-                       $(this).addClass('icon-Yes color--primary').removeClass('icon-Close');
+                       $(this).addClass('fa-check-circle').removeClass('icon-Close');
                    } else {
-                       $(this).removeClass('icon-Yes color--primary').addClass('icon-Close');
+                       $(this).removeClass('fa-check-circle').addClass('icon-Close');
                    }
                 });
             } else {
@@ -537,7 +537,7 @@
                            if(states.indexOf(item) >= 0) {
                                hide = false;
                                // Set Icon to a check
-                               dataIcons.eq(dataDivIndex).addClass('icon-Yes color--primary').removeClass('icon-Close');
+                               dataIcons.eq(dataDivIndex).addClass('fa-check-circle').removeClass('icon-Close');
                                $(this).find('.state-item[data-state="None"]').addClass("hidden");
 
                                // Break out of the loop
@@ -548,7 +548,7 @@
                                $(this).find('.state-item[data-state="None"]').removeClass("hidden");
 
                                // Change the data icon to an X
-                               dataIcons.eq(dataDivIndex).removeClass('icon-Yes color--primary').addClass('icon-Close');
+                               dataIcons.eq(dataDivIndex).removeClass('fa-check-circle').addClass('icon-Close');
                            }
                         });
 

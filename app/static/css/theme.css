@@ -9582,7 +9582,7 @@ a.carrier-link {
   opacity: 1;
 }
 .carrier-accordion .icon {
-  font-weight: 900;
+  font-weight: 500;
 }
 .carrier-filters .input-select:after {
   font-size: 40px;
@@ -9594,6 +9594,12 @@ a.carrier-link {
 }
 .carrier-product .type--fine-print {
   margin-top: 1em;
+}
+.carrier-product i.fas {
+  font-size: 2.3em;
+}
+.carrier-product i.fas.fa-check-circle {
+  color: #516E26;
 }
 @media (max-width: 768px) {
   .carrier-state-filter .filter-bubbles {
