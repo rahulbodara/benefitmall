@@ -33,20 +33,21 @@
     </section>
 
     {% if carrier.products|length > 0 %}
-        <section class="space--xxs">
+        <section class="space--xxs carrier-state-filter">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-md-3">
                         <div class="input-select">
                             <select id="state_select">
                                 <option selected class="hidden" value="">Select State</option>
                                 {% for item in carrier.available_states %}
-                                    <option class="filter-{{ item }}" value="{{ item }}">{{ item }}</option>
+                                    <option data-filter="{{ item }}" class="filter-{{ item }}" value="{{ item }}">{{ item }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-9 filter-bubbles"></div>
+                    <div class="col-md-9 filter-bubbles">
+                    </div>
                 </div>
             </div>
         </section>
@@ -61,15 +62,15 @@
 
                         <div class="row accordion__content">
                             <ul class="col-12 accordion accordion-2 carrier-accordion inner-accordion">
-                                <li class="carrier-insurance-group">
+                                <li class="carrier-insurance-group" data-states="{{ product.small_group.states_list }}">
                                     {# SMALL GROUP #}
                                     <div class="row accordion__title">
                                         <div class="col-10"><h4 class="type--bold">Small Group</h4></div>
                                         <div class="col-2 text-center align-middle">
                                             {% if product.small_group.states|length > 0 %}
-                                                <i class="icon icon-Yes icon--sm color--primary"></i>
+                                                <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
                                             {% else %}
-                                                <i class="icon icon-Close icon--sm"></i>
+                                                <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -78,25 +79,27 @@
                                             <ul>
                                                 {% if product.small_group.states|length > 0 %}
                                                     {% for state in product.small_group.states %}
-                                                       <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                       <li class="state-item initial{% if state.quoting_available %} has-quoting {% endif %}"
+                                                           data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                                     {% endfor %}
+                                                    <li class="state-item hidden" data-state="None">None</li>
                                                 {% else %}
-                                                    <li>None</li>
+                                                    <li class="state-item initial" data-state="None">None</li>
                                                 {% endif %}
                                             </ul>
                                             {% if product.small_group.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
                                         </div>
                                     </div>
                                 </li>
-                                <li class="carrier-insurance-group">
+                                <li class="carrier-insurance-group" data-states="{{ product.large_group.states_list }}">
                                     {# LARGE GROUP #}
                                     <div class="row accordion__title">
                                         <div class="col-10"><h4 class="type--bold">Large Group</h4></div>
                                         <div class="col-2 text-center align-middle">
                                             {% if product.large_group.states|length > 0 %}
-                                                <i class="icon icon-Yes icon--sm color--primary"></i>
+                                                <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
                                             {% else %}
-                                                <i class="icon icon-Close icon--sm"></i>
+                                                <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -105,25 +108,27 @@
                                             <ul>
                                                 {% if product.large_group.states|length > 0 %}
                                                     {% for state in product.large_group.states %}
-                                                       <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                       <li class="state-item initial{% if state.quoting_available %} has-quoting {% endif %}"
+                                                           data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                                     {% endfor %}
+                                                    <li class="state-item hidden" data-state="None">None</li>
                                                 {% else %}
-                                                    <li>None</li>
+                                                    <li class="state-item initial" data-state="None">None</li>
                                                 {% endif %}
                                             </ul>
                                             {% if product.large_group.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
                                         </div>
                                     </div>
                                 </li>
-                                <li class="carrier-insurance-group">
+                                <li class="carrier-insurance-group" data-states="{{ product.self_funded.states_list }}">
                                     {# SELF-FUNDED #}
                                     <div class="row accordion__title">
                                         <div class="col-10"><h4 class="type--bold">Self-Funded</h4></div>
                                         <div class="col-2 text-center align-middle">
                                             {% if product.self_funded.states|length > 0 %}
-                                                <i class="icon icon-Yes icon--sm color--primary"></i>
+                                                <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
                                             {% else %}
-                                                <i class="icon icon-Close icon--sm"></i>
+                                                <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -132,25 +137,27 @@
                                             <ul>
                                                 {% if product.self_funded.states|length > 0 %}
                                                     {% for state in product.self_funded.states %}
-                                                       <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                       <li class="state-item initial{% if state.quoting_available %} has-quoting {% endif %}"
+                                                           data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                                     {% endfor %}
+                                                    <li class="state-item hidden" data-state="None">None</li>
                                                 {% else %}
-                                                    <li>None</li>
+                                                    <li class="state-item initial" data-state="None">None</li>
                                                 {% endif %}
                                             </ul>
                                             {% if product.self_funded.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
                                         </div>
                                     </div>
                                 </li>
-                                <li class="carrier-insurance-group">
+                                <li class="carrier-insurance-group" data-states="{{ product.individual.states_list }}">
                                     {# INDIVIDUAL GROUP #}
                                     <div class="row accordion__title">
                                         <div class="col-10"><h4 class="type--bold">Individual</h4></div>
                                         <div class="col-2 text-center align-middle">
                                             {% if product.individual.states|length > 0 %}
-                                                <i class="icon icon-Yes icon--sm color--primary"></i>
+                                                <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
                                             {% else %}
-                                                <i class="icon icon-Close icon--sm"></i>
+                                                <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -159,25 +166,27 @@
                                             <ul>
                                                 {% if product.individual.states|length > 0 %}
                                                     {% for state in product.individual.states %}
-                                                       <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                       <li class="state-item initial{% if state.quoting_available %} has-quoting {% endif %}"
+                                                           data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                                     {% endfor %}
+                                                    <li class="state-item hidden" data-state="None">None</li>
                                                 {% else %}
-                                                    <li>None</li>
+                                                    <li class="state-item initial" data-state="None">None</li>
                                                 {% endif %}
                                             </ul>
                                             {% if product.individual.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="carrier-insurance-group" data-states="{{ product.senior.states_list }}">
                                     {# SENIOR GROUP #}
                                     <div class="row accordion__title">
                                         <div class="col-10"><h4 class="type--bold">Senior</h4></div>
                                         <div class="col-2 text-center align-middle">
                                             {% if product.senior.states|length > 0 %}
-                                                <i class="icon icon-Yes icon--sm color--primary"></i>
+                                                <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
                                             {% else %}
-                                                <i class="icon icon-Close icon--sm"></i>
+                                                <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -186,10 +195,12 @@
                                             <ul>
                                                 {% if product.senior.states|length > 0 %}
                                                     {% for state in product.senior.states %}
-                                                       <li>{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                       <li class="state-item initial{% if state.quoting_available %} has-quoting {% endif %}"
+                                                           data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                                     {% endfor %}
+                                                    <li class="state-item hidden" data-state="None">None</li>
                                                 {% else %}
-                                                    <li>None</li>
+                                                    <li class="state-item initial" data-state="None">None</li>
                                                 {% endif %}
                                             </ul>
                                             {% if product.senior.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
@@ -220,38 +231,38 @@
                             <div class="col-md-2"><h4 class="type--bold">{{ product.name }}</h4></div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.small_group.states|length > 0 %}
-                                    <i class="icon icon-Yes icon--sm color--primary"></i>
+                                    <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
                                 {% else %}
-                                    <i class="icon icon-Close icon--sm"></i>
+                                    <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                 {% endif %}
 {#                                <img src="{% static 'images/icon-N-A@2x.png' %}" width="33px" height="33px"/>#}
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.large_group.states|length > 0 %}
-                                    <i class="icon icon-Yes icon--sm color--primary"></i>
+                                    <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
                                 {% else %}
-                                    <i class="icon icon-Close icon--sm"></i>
+                                    <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                 {% endif %}
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.self_funded.states|length > 0 %}
-                                    <i class="icon icon-Yes icon--sm color--primary"></i>
+                                    <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
                                 {% else %}
-                                    <i class="icon icon-Close icon--sm"></i>
+                                    <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                 {% endif %}
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.individual.states|length > 0 %}
-                                    <i class="icon icon-Yes icon--sm color--primary"></i>
+                                    <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
                                 {% else %}
-                                    <i class="icon icon-Close icon--sm"></i>
+                                    <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                 {% endif %}
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.senior.states|length > 0 %}
-                                    <i class="icon icon-Yes icon--sm color--primary"></i>
+                                    <i data-initial="1" class="icon icon-Yes icon--sm color--primary"></i>
                                 {% else %}
-                                    <i class="icon icon-Close icon--sm"></i>
+                                    <i data-initial="0" class="icon icon-Close icon--sm"></i>
                                 {% endif %}
                             </div>
                         </div>
@@ -261,11 +272,12 @@
                                     <ul>
                                         {% if product.small_group.states|length > 0 %}
                                             {% for state in product.small_group.states %}
-                                               <li class="state-item" data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                               <li class="state-item initial{% if state.quoting_available %} has-quoting {% endif %}"
+                                                   data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                             {% endfor %}
-                                            <li class="state-item" data-state="None" class="hidden">None</li>
+                                            <li class="state-item hidden" data-state="None">None</li>
                                         {% else %}
-                                            <li class="state-item" data-state="None">None</li>
+                                            <li class="state-item initial" data-state="None">None</li>
                                         {% endif %}
                                     </ul>
                                     {% if product.small_group.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
@@ -276,11 +288,12 @@
                                     <ul>
                                         {% if product.large_group.states|length > 0 %}
                                             {% for state in product.large_group.states %}
-                                                <li class="state-item" data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                                <li class="state-item initial{% if state.quoting_available %} has-quoting {% endif %}"
+                                                    data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                             {% endfor %}
-                                            <li class="state-item" data-state="None" class="hidden">None</li>
+                                            <li class="state-item hidden" data-state="None">None</li>
                                         {% else %}
-                                            <li class="state-item" data-state="None">None</li>
+                                            <li class="state-item initial" data-state="None">None</li>
                                         {% endif %}
                                     </ul>
                                     {% if product.large_group.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
@@ -291,11 +304,12 @@
                                     <ul>
                                         {% if product.self_funded.states|length > 0 %}
                                             {% for state in product.self_funded.states %}
-                                               <li class="state-item" data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                               <li class="state-item initial{% if state.quoting_available %} has-quoting {% endif %}"
+                                                   data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                             {% endfor %}
-                                            <li class="state-item" data-state="None" class="hidden">None</li>
+                                            <li class="state-item hidden" data-state="None">None</li>
                                         {% else %}
-                                            <li class="state-item" data-state="None">None</li>
+                                            <li class="state-item initial" data-state="None">None</li>
                                         {% endif %}
                                     </ul>
                                     {% if product.self_funded.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
@@ -306,11 +320,12 @@
                                     <ul>
                                         {% if product.individual.states|length > 0 %}
                                             {% for state in product.individual.states %}
-                                               <li class="state-item" data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                               <li class="state-item initial{% if state.quoting_available %} has-quoting {% endif %}"
+                                                   data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                             {% endfor %}
-                                            <li class="state-item" data-state="None" class="hidden">None</li>
+                                            <li class="state-item hidden" data-state="None">None</li>
                                         {% else %}
-                                            <li class="state-item" data-state="None">None</li>
+                                            <li class="state-item initial" data-state="None">None</li>
                                         {% endif %}
                                     </ul>
                                     {% if product.individual.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
@@ -321,11 +336,12 @@
                                     <ul>
                                         {% if product.senior.states|length > 0 %}
                                             {% for state in product.senior.states %}
-                                               <li class="state-item" data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
+                                               <li class="state-item initial{% if state.quoting_available %} has-quoting {% endif %}"
+                                                   data-state="{{ state.name }}">{{ state.name }}{% if state.quoting_available %}*{% endif %}</li>
                                             {% endfor %}
-                                            <li class="state-item" data-state="None" class="hidden">None</li>
+                                            <li class="state-item hidden" data-state="None">None</li>
                                         {% else %}
-                                            <li class="state-item" data-state="None">None</li>
+                                            <li class="state-item initial" data-state="None">None</li>
                                         {% endif %}
                                     </ul>
                                     {% if product.senior.states|length > 0 %}<p class="type--fine-print">* Online quoting available</p>{% endif %}
@@ -353,21 +369,13 @@
                 </div>
             </div>
         </section>
-                <div class="col-xs-6 col-md-2">
-                    <div class="filter-pill">
-                        <div class="filter-text">
-                            ${value}
-                        </div>
-                    </div>
-                </div>
     {% endif %}
-
 
 {% endblock %}
 
 {% block extra_js %}
     <script>
-        var filter = []
+        var filters = []
         var lastSel = $("#my_select option:selected");
         var stateSelector = $("#state_select");
 
@@ -375,6 +383,14 @@
             let selected = $(this).find(':selected');
             let value = selected.val();
             $('.filter-bubbles').append(`
+                <div class="filter-bubble" data-filter="${value}">
+                    <div class="filter-inner">
+                        <p class="filter-text">
+                            ${value}
+                        </p>
+                        <i class="icon icon-Close icon--xs" onclick="removeFilter(this);"></i>
+                    </div>
+                </div>
             `)
             addFilter(value);
             selected.addClass('hidden');
@@ -387,19 +403,120 @@
         });
 
         function addFilter(state) {
-            filter = filter.concat(state);
+            filters = filters.concat(state);
             filterCarrierProducts();
         }
 
+        function removeFilter(icon) {
+            let filterBubble = $(icon).closest('.filter-bubble');
+            let filter = filterBubble.data('filter');
+            $(`#state_select option[data-filter="${filter}"]`).removeClass('hidden');
+
+            filters.splice(filters.indexOf(filter), 1);
+            filterCarrierProducts();
+            filterBubble.remove();
+
+
+        }
+
         function filterCarrierProducts() {
-            console.log("=======================================")
-            if(!filter.length) {
-                $('.carrier-products-desktop .state-item:not([data-state="None"])').removeClass("hidden");
+            $('ul.accordion > li').removeClass('active');
+
+            if($(window).width() <= 768) {
+                filterCarrierProductsMobile();
+            } else {
+                filterCarrierProductsDesktop();
+            }
+        }
+
+        // Different structure
+        function filterCarrierProductsMobile() {
+            if(!filters.length) {
+                // Reset data to intial states
+                $('.carrier-products-mobile .state-item.initial').removeClass("hidden");
+                $('.carrier-products-mobile .state-item:not(.initial)').addClass("hidden");
+                $('.carrier-products-mobile .carrier-product').removeClass('hidden');
+                $('.carrier-products-mobile .carrier-product .carrier-insurance-group .accordion__title i').each(function() {
+                   if($(this).data('initial')) {
+                       $(this).addClass('icon-Yes color--primary').removeClass('icon-Close');
+                   } else {
+                       $(this).removeClass('icon-Yes color--primary').addClass('icon-Close');
+                   }
+                });
+            } else {
+                // Hide everything, then show only the selected states
+                $('.carrier-products-mobile .state-item').addClass("hidden");
+                filters.forEach(function(item, index) {
+                   $(`.carrier-products-mobile .state-item[data-state="${item}"]`).removeClass('hidden');
+                });
+
+                $('.carrier-products-mobile .carrier-product').each(function() {
+                    let hide = true;
+
+                    $(this).find('.carrier-insurance-group').each(function() {
+                        let states = $(this).data('states') || [];
+
+                        let found = filters.some(function(item, index) {
+                            // If the data div has the state, don't hide the product
+                           if(states.indexOf(item) >= 0) {
+                               hide = false;
+                               // Set Icon to a check
+                               $(this).find('.accordion__title i').addClass('icon-Yes color--primary').removeClass('icon-Close');
+
+                               // Break out of the loop
+                               return true;
+
+                           } else {
+                               // The data div did not have any state, so show "None" in the data div and make Icon an X
+                               $(this).find('.accordion__title i').removeClass('icon-Yes color--primary').addClass('icon-Close');
+
+                           }
+                        });
+
+                        // If the data div has at least some states in it
+                        if(found) {
+                           $(this).find('.state-item[data-state="None"]').addClass("hidden");
+                        } else {
+                           $(this).find('.state-item[data-state="None"]').removeClass("hidden");
+                        }
+
+                        // If the data dive has quoting, show the fine print
+                        if($(this).find('.state-item.has-quoting:not(.hidden)').length) {
+                            $(this).find('p.type--fine-print').removeClass('hidden');
+                        } else {
+                            $(this).find('p.type--fine-print').addClass('hidden');
+                        }
+
+                    });
+
+                    // Check to see if the row needs to be hidden
+                    if(hide) {
+                        $(this).addClass('hidden');
+                    } else {
+                        $(this).removeClass('hidden');
+                    }
+                });
+            }
+        }
+
+        function filterCarrierProductsDesktop() {
+            // If there are no filters
+            if(!filters.length) {
+                // Reset data to intial states
+                $('.carrier-products-desktop .state-item.initial').removeClass("hidden");
+                $('.carrier-products-desktop .state-item:not(.initial)').addClass("hidden");
                 $('.carrier-products-desktop .carrier-product').removeClass('hidden');
+                $('.carrier-products-desktop .carrier-product .accordion__title i').each(function() {
+                   if($(this).data('initial')) {
+                       $(this).addClass('icon-Yes color--primary').removeClass('icon-Close');
+                   } else {
+                       $(this).removeClass('icon-Yes color--primary').addClass('icon-Close');
+                   }
+                });
             } else {
                 // Hide everything, then show only the selected states
                 $('.carrier-products-desktop .state-item').addClass("hidden");
-                filter.forEach(function(item, index) {
+                filters.forEach(function(item, index) {
                    $(`.carrier-products-desktop .state-item[data-state="${item}"]`).removeClass('hidden');
                 });
 
@@ -415,13 +532,13 @@
                         let dataDivIndex = $(this).index();
 
                         // For each state in the filter
-                        filter.some(function(item, index) {
+                        let found = filters.some(function(item, index) {
                             // If the data div has the state, don't hide the product
-                            console.log(item, states);
                            if(states.indexOf(item) >= 0) {
                                hide = false;
                                // Set Icon to a check
                                dataIcons.eq(dataDivIndex).addClass('icon-Yes color--primary').removeClass('icon-Close');
+                               $(this).find('.state-item[data-state="None"]').addClass("hidden");
 
                                // Break out of the loop
                                return true;
@@ -434,7 +551,23 @@
                                dataIcons.eq(dataDivIndex).removeClass('icon-Yes color--primary').addClass('icon-Close');
                            }
                         });
+
+                        // If the data div has at least some states in it
+                        if(found) {
+                           $(this).find('.state-item[data-state="None"]').addClass("hidden");
+                        } else {
+                           $(this).find('.state-item[data-state="None"]').removeClass("hidden");
+                        }
+
+                        // If the data dive has quoting, show the fine print
+                        if($(this).find('.state-item.has-quoting:not(.hidden)').length) {
+                            $(this).find('p.type--fine-print').removeClass('hidden');
+                        } else {
+                            $(this).find('p.type--fine-print').addClass('hidden');
+                        }
                     });
+
+                    // Check to see if the row needs to be hidden
                     if(hide) {
                         $(this).addClass('hidden');
                     } else {
