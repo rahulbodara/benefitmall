@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags static %}
+{% load wagtailcore_tags wagtailimages_tags static security %}
 
 {% block content %}
     <section class="space--xxs bg--secondary carrier-header">
@@ -70,7 +70,7 @@
                                             {% if product.small_group.states|length > 0 %}
                                                 <i data-initial="1" class="fas fa-check-circle"></i>
                                             {% else %}
-                                                <i data-initial="0" class="icon icon-Close icon--sm"></i>
+                                                <i data-initial="0" class="far fa-times-circle "></i>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@
                                             {% if product.large_group.states|length > 0 %}
                                                 <i data-initial="1" class="fas fa-check-circle"></i>
                                             {% else %}
-                                                <i data-initial="0" class="icon icon-Close icon--sm"></i>
+                                                <i data-initial="0" class="far fa-times-circle "></i>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -128,7 +128,7 @@
                                             {% if product.self_funded.states|length > 0 %}
                                                 <i data-initial="1" class="fas fa-check-circle"></i>
                                             {% else %}
-                                                <i data-initial="0" class="icon icon-Close icon--sm"></i>
+                                                <i data-initial="0" class="far fa-times-circle "></i>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -157,7 +157,7 @@
                                             {% if product.individual.states|length > 0 %}
                                                 <i data-initial="1" class="fas fa-check-circle"></i>
                                             {% else %}
-                                                <i data-initial="0" class="icon icon-Close icon--sm"></i>
+                                                <i data-initial="0" class="far fa-times-circle "></i>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -186,7 +186,7 @@
                                             {% if product.senior.states|length > 0 %}
                                                 <i data-initial="1" class="fas fa-check-circle"></i>
                                             {% else %}
-                                                <i data-initial="0" class="icon icon-Close icon--sm"></i>
+                                                <i data-initial="0" class="far fa-times-circle"></i>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -233,7 +233,7 @@
                                 {% if product.small_group.states|length > 0 %}
                                     <i data-initial="1" class="fas fa-check-circle"></i>
                                 {% else %}
-                                    <i data-initial="0" class="icon icon-Close icon--sm"></i>
+                                    <i data-initial="0" class="far fa-times-circle "></i>
                                 {% endif %}
 {#                                <img src="{% static 'images/icon-N-A@2x.png' %}" width="33px" height="33px"/>#}
                             </div>
@@ -241,28 +241,28 @@
                                 {% if product.large_group.states|length > 0 %}
                                     <i data-initial="1" class="fas fa-check-circle"></i>
                                 {% else %}
-                                    <i data-initial="0" class="icon icon-Close icon--sm"></i>
+                                    <i data-initial="0" class="far fa-times-circle "></i>
                                 {% endif %}
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.self_funded.states|length > 0 %}
                                     <i data-initial="1" class="fas fa-check-circle"></i>
                                 {% else %}
-                                    <i data-initial="0" class="icon icon-Close icon--sm"></i>
+                                    <i data-initial="0" class="far fa-times-circle "></i>
                                 {% endif %}
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.individual.states|length > 0 %}
                                     <i data-initial="1" class="fas fa-check-circle"></i>
                                 {% else %}
-                                    <i data-initial="0" class="icon icon-Close icon--sm"></i>
+                                    <i data-initial="0" class="far fa-times-circle "></i>
                                 {% endif %}
                             </div>
                             <div class="col-md-2 text-center align-middle">
                                 {% if product.senior.states|length > 0 %}
                                     <i data-initial="1" class="fas fa-check-circle"></i>
                                 {% else %}
-                                    <i data-initial="0" class="icon icon-Close icon--sm"></i>
+                                    <i data-initial="0" class="far fa-times-circle "></i>
                                 {% endif %}
                             </div>
                         </div>
@@ -374,7 +374,7 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script>
+    <script {% allow_script %}>
         var filters = []
         var lastSel = $("#my_select option:selected");
         var stateSelector = $("#state_select");
@@ -388,7 +388,7 @@
                         <p class="filter-text">
                             ${value}
                         </p>
-                        <i class="icon icon-Close icon--xs" onclick="removeFilter(this);"></i>
+                        <i class="far fa-times" onclick="removeFilter(this)"></i>
                     </div>
                 </div>
             `)
@@ -398,7 +398,7 @@
             lastSel.prop('selected', true);
         });
 
-       stateSelector.click(function(){
+        stateSelector.click(function(){
             lastSel = $("#my_select option:selected");
         });
 
@@ -429,6 +429,16 @@
             }
         }
 
+        // Turns icon into a check
+        function checkIcon(icon) {
+            $(icon).addClass('fas fa-check-circle').removeClass('far fa-times-circle');
+        }
+
+        // Turns icon into an X
+        function xIcon(icon) {
+            $(icon).removeClass('fas fa-check-circle').addClass('far fa-times-circle');
+        }
+
         // Different structure
         function filterCarrierProductsMobile() {
             if(!filters.length) {
@@ -438,9 +448,9 @@
                 $('.carrier-products-mobile .carrier-product').removeClass('hidden');
                 $('.carrier-products-mobile .carrier-product .carrier-insurance-group .accordion__title i').each(function() {
                    if($(this).data('initial')) {
-                       $(this).addClass('fa-check-circle').removeClass('icon-Close');
+                       checkIcon($(this));
                    } else {
-                       $(this).removeClass('fa-check-circle').addClass('icon-Close');
+                       xIcon($(this));
                    }
                 });
             } else {
@@ -461,14 +471,14 @@
                            if(states.indexOf(item) >= 0) {
                                hide = false;
                                // Set Icon to a check
-                               $(this).find('.accordion__title i').addClass('fa-check-circle').removeClass('icon-Close');
+                               checkIcon($(this).find('.accordion__title i'));
 
                                // Break out of the loop
                                return true;
 
                            } else {
                                // The data div did not have any state, so show "None" in the data div and make Icon an X
-                               $(this).find('.accordion__title i').removeClass('fa-check-circle').addClass('icon-Close');
+                               xIcon($(this).find('.accordion__title i'));
 
                            }
                         });
@@ -498,7 +508,6 @@
                 });
             }
         }
-
         function filterCarrierProductsDesktop() {
             // If there are no filters
             if(!filters.length) {
@@ -508,9 +517,9 @@
                 $('.carrier-products-desktop .carrier-product').removeClass('hidden');
                 $('.carrier-products-desktop .carrier-product .accordion__title i').each(function() {
                    if($(this).data('initial')) {
-                       $(this).addClass('fa-check-circle').removeClass('icon-Close');
+                       checkIcon($(this));
                    } else {
-                       $(this).removeClass('fa-check-circle').addClass('icon-Close');
+                       xIcon($(this));
                    }
                 });
             } else {
@@ -537,7 +546,7 @@
                            if(states.indexOf(item) >= 0) {
                                hide = false;
                                // Set Icon to a check
-                               dataIcons.eq(dataDivIndex).addClass('fa-check-circle').removeClass('icon-Close');
+                               checkIcon(dataIcons.eq(dataDivIndex));
                                $(this).find('.state-item[data-state="None"]').addClass("hidden");
 
                                // Break out of the loop
@@ -548,7 +557,7 @@
                                $(this).find('.state-item[data-state="None"]').removeClass("hidden");
 
                                // Change the data icon to an X
-                               dataIcons.eq(dataDivIndex).removeClass('fa-check-circle').addClass('icon-Close');
+                               xIcon(dataIcons.eq(dataDivIndex));
                            }
                         });
 

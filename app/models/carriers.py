@@ -27,39 +27,63 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 		context = super().get_context(request, **kwargs)
 		self.additional_breadcrumbs = []
 
-		state_filter = request.GET.get('state') or None
+		states_filter = request.GET.get('states') or None
 		insurance_filter = request.GET.get('type') or None
+
 		carriers = cache.get('carriers')
 		out = {}
 		by_insurance = {}
 		by_state = {}
-		if insurance_filter or state_filter:
-			if insurance_filter:
-				for id in carriers:
-					carrier = carriers[id]
-					for it in carrier['available_insurance_types']:
-						if it['name'] == insurance_filter:
-							by_insurance[id] = carrier
-							break
-			else:
-				by_insurance = carriers
-			if state_filter:
-				for id in carriers:
-					carrier = carriers[id]
-					if state_filter in carrier['available_states']:
-						by_state[id] = carrier
-			else:
-				by_state = carriers
-			for id in by_insurance:
-				if id in by_state:
-					out[id] = by_insurance[id]
+		filterable_states = set()
+		filterable_insurance_types = set()
+
+		if states_filter:
+			states_filter = set(states_filter.split('|'))
+			states_filter &= set(s.name for s in State.objects.all())  # Removes possible malicious states
+
+			for id in carriers:
+				carrier = carriers[id]
+				if states_filter & set(carrier['available_states']):
+					out[id] = carrier
 		else:
 			out = carriers
 
+		# Out is filtered by states or it is just carriers
+		# Either way, it contains all selectable insurance_types
+		for id, carrier in out.items():
+			filterable_insurance_types |= set(it['name'] for it in out[id]['available_insurance_types'])
+
+		# If we were given an insurance filter that does not exist, throw it away
+		if insurance_filter not in filterable_insurance_types:
+			insurance_filter = ''
+
+		if insurance_filter:
+			for id in out:
+				carrier = out[id]
+				for it in carrier['available_insurance_types']:
+					if it['name'] == insurance_filter:
+						# Add this carrier's states to the filter selection since it has the selected insurance type
+						filterable_states |= set(carrier['available_states'])
+						out[id] = carrier
+						break
+
+		else:
+			for _, carrier in out.items():
+				filterable_states |= set(carrier['available_states'])
+
+		if states_filter:
+			filterable_states -= states_filter
+
+		searchable_states = list(filterable_states)
+		searchable_states.sort()
+
 		context['carriers'] = out
 		context['type_filter'] = insurance_filter or ''
-		context['state_filter'] = state_filter or ''
+		context['states_filter'] = json.dumps(list(states_filter or []))
 		context['states'] = State.objects.all()
+		context['filterable_states'] = searchable_states
+		context['filterable_insurance_types'] = json.dumps(list(filterable_insurance_types or []))
+
 		return TemplateResponse(request, self.get_template(request), context)
 
 	@route(r'^(.+)/$')

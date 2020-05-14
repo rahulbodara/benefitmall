@@ -1,22 +1,76 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags security %}
+{% load wagtailcore_tags wagtailimages_tags security static %}
+
+{% block extra_css %}
+        <link href="{% static 'css/bootstrap-tagsinput.css' %}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
 
 {% block extra_js %}
     <script {% allow_script %}>
-    $(function () {
-        $('.carrier-type-filter').on('click', function(e){
-            e.preventDefault();
-            $('#carrier_type_value').val($(this).data('filter'))
-            type_filter = $('#carrier_type_value').val();
-            state_filter = $('.carrier-state-filter').val()
-            window.location.href = './?type='+type_filter+'&state='+state_filter;
+        var filters  = {{ states_filter|safe }}
+        $(function() {
+            let lastSel = $("#my_select option:selected");
+            let stateSelector = $("#state_select");
+
+            stateSelector.change(function(){
+                let selected = $(this).find(':selected');
+                let value = selected.val();
+
+                let type_filter = $('#carrier_type_value').val();
+
+                filters = filters.concat(value);
+                selected.prop('selected', false);
+                lastSel.prop('selected', true);
+
+                window.location.href = './?type='+type_filter+'&states='+filters.join("|");
+
+            });
+
+            stateSelector.click(function(){
+                lastSel = $("#my_select option:selected");
+            });
+
+            function addFilterBubbles() {
+                filters.forEach(function (element) {
+                     $('.filter-bubbles').append(`
+                        <div class="filter-bubble" data-filter="${element}">
+                            <div class="filter-inner">
+                                <p class="filter-text">
+                                    ${element}
+                                </p>
+                                <i class="far fa-times" onclick="removeFilter(this)"></i>
+                            </div>
+                        </div>
+                    `)
+                });
+            }
+
+            $('.carrier-type-filter').on('click', function(e){
+                e.preventDefault();
+                let type_input = $('#carrier_type_value');
+                type_input.val($(this).data('filter'));
+
+                let type_filter = type_input.val();
+
+                window.location.href = './?type='+type_filter+'&states='+filters.join("|");
+            });
+            $('.carrier-type-filter-clear').on('click', function(e) {
+                e.preventDefault();
+
+                window.location.href = './?type=&states=';
+            })
+            addFilterBubbles();
         });
-        $('.carrier-state-filter').on('change', function(){
-            type_filter = $('#carrier_type_value').val();
-            state_filter = $(this).val()
-            window.location.href = './?type='+type_filter+'&state='+state_filter;
-        });
-    });
+
+        function removeFilter(icon) {
+            let filterBubble = $(icon).closest('.filter-bubble');
+            let filter = filterBubble.data('filter');
+            let type_filter = $('#carrier_type_value').val();
+
+            filters.splice(filters.indexOf(filter), 1);
+            window.location.href = './?type='+type_filter+'&states='+filters.join("|");
+
+        }
     </script>
 {% endblock %}
 
@@ -26,28 +80,54 @@
     {% endfor %}
     <section class="space--xxs carrier-filters">
         <div class="container text-white">
-            <div class="row">
-                <div class="offset-1 col-10 text-center">
-                    <div class="input-select">
-                        <select class="carrier-state-filter">
-                            <option value="">All</option>
-                            {% for state in states %}
-                                <option value="{{ state.name }}" {% if state_filter == state.name %}selected="selected"{% endif %}>{{ state.name }}</option>
-                            {% endfor %}
-                        </select>
+            <div class="row carrier-state-filter">
+                <div class="offset-md-1 col-md-10 col-12 text-center">
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-select search">
+                                <select id="state_select" class="carrier-state-filter">
+                                    <option selected class="hidden" value="">Select State</option>
+                                    {% for state in filterable_states %}
+                                        <option value="{{ state }}">{{ state }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <a href="#" class="carrier-type-filter-clear btn btn--unfilled">Clear Filters</a>
+                        </div>
                     </div>
+                </div>
+                <div class="offset-md-1 col-md-10 col-12 filter-bubbles mt-4">
                 </div>
             </div>
             <div class="row">
                 <div class="col text-center">
                     <div class="carrier-type-filters">
                         <input id="carrier_type_value" name="carrier_type_value" type="hidden" value="{{ type_filter }}" />
-                        <a href="#" data-filter-type="type" data-filter="" class="carrier-type-filter btn {% if not type_filter %}btn--secondary{% else %}btn--unfilled{% endif %}">All</a>
-                        <a href="#" data-filter-type="type" data-filter="Small Group" class="carrier-type-filter btn {% if type_filter == 'Small Group' %}btn--secondary{% else %}btn--unfilled{% endif %}">Small Group</a>
-                        <a href="#" data-filter-type="type" data-filter="Large Group" class="carrier-type-filter btn {% if type_filter == 'Large Group' %}btn--secondary{% else %}btn--unfilled{% endif %}">Large Group</a>
-                        <a href="#" data-filter-type="type" data-filter="Self-Funded" class="carrier-type-filter btn {% if type_filter == 'Self-Funded' %}btn--secondary{% else %}btn--unfilled{% endif %}">Self-Funded</a>
-                        <a href="#" data-filter-type="type" data-filter="Individual" class="carrier-type-filter btn {% if type_filter == 'Individual' %}btn--secondary{% else %}btn--unfilled{% endif %}">Individual</a>
-                        <a href="#" data-filter-type="type" data-filter="Senior" class="carrier-type-filter btn {% if type_filter == 'Senior' %}btn--secondary{% else %}btn--unfilled{% endif %}">Senior</a>
+                        <a href="#" data-filter-type="type" data-filter="" class="carrier-type-filter btn
+                            {% if not type_filter %}btn--secondary{% else %}btn--unfilled{% endif %}">All</a>
+
+                        <a href="#" data-filter-type="type" data-filter="Small Group" class="carrier-type-filter btn
+                            {% if type_filter == 'Small Group' %}btn--secondary{% else %}btn--unfilled{% endif %}
+                            {% if 'Small Group' not in filterable_insurance_types %}disabled{% endif %}">Small Group</a>
+
+                        <a href="#" data-filter-type="type" data-filter="Large Group" class="carrier-type-filter btn
+                            {% if type_filter == 'Large Group' %}btn--secondary{% else %}btn--unfilled{% endif %}
+                            {% if 'Large Group' not in filterable_insurance_types %}disabled{% endif %}">Large Group</a>
+
+                        <a href="#" data-filter-type="type" data-filter="Self-Funded" class="carrier-type-filter btn
+                            {% if type_filter == 'Self-Funded' %}btn--secondary{% else %}btn--unfilled{% endif %}
+                            {% if 'Self-Funded' not in filterable_insurance_types %}disabled{% endif %}">Self-Funded</a>
+
+                        <a href="#" data-filter-type="type" data-filter="Individual" class="carrier-type-filter btn
+                            {% if type_filter == 'Individual' %}btn--secondary{% else %}btn--unfilled{% endif %}
+                            {% if 'Individual' not in filterable_insurance_types %}disabled{% endif %}">Individual</a>
+
+                        <a href="#" data-filter-type="type" data-filter="Senior" class="carrier-type-filter btn
+                            {% if type_filter == 'Senior' %}btn--secondary{% else %}btn--unfilled{% endif %}
+                            {% if 'Senior' not in filterable_insurance_types %}disabled{% endif %}">Senior</a>
+
                     </div>
                 </div>
             </div>
@@ -62,16 +142,20 @@
                     <div class="row carrier-item">
                         <div class="col-md-3 text-center boxed boxed--border">
 {#                                <div class="text-center"><h4>Carrier</h4></div>#}
-                            {% if carrier.1.logo_url %}<img src="{{ carrier.1.logo_url }}"/>{% endif %}
-                            <h4>{{ carrier.1.name }}</h4>
+                            <div class="carrier-logo-holder">
+                                <div class="carrier-logo">
+                                    {% if carrier.1.logo_url %}<img src="{{ carrier.1.logo_url }}"/>{% endif %}
+                                    <h4>{{ carrier.1.name }}</h4>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-3 text-center bg--primary-3 boxed boxed--border">
+                        <div class="col-md-3 text-center bg--secondary boxed boxed--border boxed--border--secondary">
                             <h4>Rating</h4>
-                            <p class="h1">{{ carrier.1.rating_classification }}</p>
+                            <p class="h1 carrier-class">{{ carrier.1.rating_classification }}</p>
                             <p><span class="lead">{{ carrier.1.rating_description }}</span></br>
                                 {{ carrier.1.rating_company_name }}</p>
                         </div>
-                        <div class="col-md-3 bg--primary-3 text-left-md text-center-xs boxed boxed--border">
+                        <div class="col-md-3 bg--secondary text-left-md text-center-xs boxed boxed--border boxed--border--secondary">
                             <div class="text-center"><h4>Type</h4></div>
                             <ul>
                             {% for p in carrier.1.available_products|dictsort:"order" %}
@@ -84,7 +168,7 @@
                             {% endif %}
                             </ul>
                         </div>
-                        <div class="col-md-3 bg--primary-3 text-left-md text-center-xs boxed boxed--border">
+                        <div class="col-md-3 bg--secondary text-left-md text-center-xs boxed boxed--border boxed--border--secondary">
                             <div class="text-center"><h4>Best For</h4></div>
                             <ul>
                             {% for i in carrier.1.available_insurance_types|dictsort:"order" %}
