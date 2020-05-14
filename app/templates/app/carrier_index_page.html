@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags wagtailimages_tags security static %}
 
-{% block extra_css %}
-        <link href="{% static 'css/bootstrap-tagsinput.css' %}" rel="stylesheet" type="text/css" media="all" />
-{% endblock %}
-
 {% block extra_js %}
     <script {% allow_script %}>
         var filters  = {{ states_filter|safe }}
