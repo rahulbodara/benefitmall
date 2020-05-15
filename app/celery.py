@@ -2,7 +2,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
 from django.conf import settings
-
+from app.management.commands.update_carrier_data import Command as carrier_update_command
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.dev')
@@ -23,7 +23,7 @@ if settings.TRIGGERS_ON:
         # For debug
         app.conf.beat_schedule = {
             'daily-every-5minutes': {
-                'task': 'app.management.commands.update_carrier_data.Command.handle',
+                'task': 'app.tasks.update_carrier_cache',
                 'schedule': 300.0,
             },
         }
@@ -32,12 +32,7 @@ if settings.TRIGGERS_ON:
         # For production
         app.conf.beat_schedule = {
             'daily-every-5minutes': {
-                'task': 'app.management.commands.update_carrier_data.Command.handle',
+                'task': 'app.tasks.update_carrier_cache',
                 'schedule': 300.0,
             },
         }
-
-
-@app.task(bind=True)
-def debug_task(self):
-    print('Request: {0!r}'.format(self.request))
