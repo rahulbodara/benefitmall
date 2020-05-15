@@ -1,10 +1,4 @@
-import json
-from functools import reduce
-
 from django.core.management.base import BaseCommand
-from django.db.models import Q
-
-from app.models import DefaultPage
 from django.core.cache import cache
 from django.utils.text import slugify
 from django.conf import settings
