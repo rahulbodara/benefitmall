@@ -144,7 +144,7 @@ LANGUAGES = (
     ('en', _('English')),
 )
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 
@@ -249,3 +249,11 @@ CHAT_ORG_ID = env.str('CHAT_ORG_ID', '00Dc0000003wW7y')
 #LEAD GEN FORM
 LEAD_GEN_FORM_URL = env.str('LEAD_GEN_FORM_URL', 'https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8')
 LEAD_GEN_FORM_OID = env.str('LEAD_GEN_FORM_OID', '00Dc0000003wW7y')
+
+
+CELERY_BROKER_URL = env('REDIS_URL', default='redis://localhost:6379')
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
