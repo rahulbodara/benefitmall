@@ -9,6 +9,8 @@ from django.core.cache import cache
 from django.utils.text import slugify
 from django.conf import settings
 import requests
+import logging
+logger = logging.getLogger(__name__)
 
 PRODUCT_ORDER = {
 	'Medical': 1,
@@ -49,7 +51,7 @@ class Command(BaseCommand):
 				'Authorization': 'Bearer %s' % access_token
 			}
 
-			r = requests.request('get', instance_url + settings.CARRIER_API_ENDPOINT, headers=headers, params=params,)
+			r = requests.request('get', settings.CARRIER_API_URL + settings.CARRIER_API_ENDPOINT, headers=headers, params=params,)
 			ret = r.json()
 			carriers = {}
 			for item in ret:
@@ -66,7 +68,6 @@ class Command(BaseCommand):
 
 				# "Carrier_Name": "Advantica",
 				if 'Carrier_Name' in item and item['Carrier_Name'] != '':
-					print('Importing ' + carrier_name)
 					carrier_name = item['Carrier_Name']
 					carrier['name'] = carrier_name
 					carrier['slug'] = slugify(carrier_name + ' ' + id)
@@ -162,5 +163,6 @@ class Command(BaseCommand):
 						carrier['available_products'].append(product)
 
 			cache.set(cachekey, carriers, None)
+			logger.info('Successfully updated carrier cache')
 		except Exception as ex:
-			print(ex)
+			logger.error('Error updating carrier cache', ex)
