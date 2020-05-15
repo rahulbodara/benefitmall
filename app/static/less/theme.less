@@ -226,13 +226,16 @@
 .carrier-item{
 	margin-bottom: 15px;
 	position: relative;
+	color: #000;
 
 	.boxed{
 		margin-bottom: 0px;
 	}
+
 	.type--fine-print{
 		font-weight: 400;
 	}
+
 	&:hover::after {
 		position: absolute;
 		left: 0;
@@ -245,23 +248,45 @@
 		content: "";
 		opacity: .09;
 	}
+	.carrier-logo-holder {
+		position: relative;
+		height: 100%;
+
+		@media (min-width: 768px) {
+			.carrier-logo {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+
+				h4 {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+	.carrier-class {
+		color: @color-primary;
+	}
 }
 
 .carrier-rating{
-	min-width: 250px;
 	.h1{
 		font-size: 4em;
 	}
 }
+
 a.carrier-link{
   text-decoration: none;
   opacity: 1;
 }
+
 .carrier-accordion{
 	.icon{
-		font-weight: 900;
+		font-weight: 500;
 	}
 }
+
 .carrier-filters {
 	.input-select {
 		&:after {
@@ -271,6 +296,99 @@ a.carrier-link{
 		}
 	}
 }
+
 .carrier-type-filters{
 	margin-top: 1em;
+	.btn {
+		margin-top: 1em;
+	}
+	@media (max-width: 767px) {
+		.btn {
+			margin-bottom: 0;
+			margin-top: 2em;
+		}
+	}
+}
+
+.carrier-product {
+	.type--fine-print {
+		margin-top: 1em;
+	}
+	i.fas, i.far {
+		font-size: 2.3em;
+		&.fa-check-circle {
+			color: #516E26;
+		}
+	}
+}
+
+.carrier-filters {
+	.carrier-state-filter {
+		.input-select:after {
+			height: unset;
+			top: 50%;
+			transform: translateY(-65%);
+		}
+	}
+}
+
+.carrier-state-filter {
+	.input-select:after {
+		height: unset;
+		top: 50%;
+		transform: translateY(-58%);
+	}
+
+	.carrier-type-filter-clear {
+		padding-top: 9px;
+		padding-bottom: 9px;
+	}
+
+	.filter-bubbles {
+		@media (max-width: 768px) {
+			margin-top: 20px;
+			justify-content: center;
+		}
+
+		.filter-bubble {
+			position: relative;
+			background-color: #e8e8e8;
+			border: none;
+			color: black;
+			padding: 5px 50px 5px 15px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			margin-bottom: 4px;
+			margin-right: 10px;
+			border-radius: 16px;
+
+			@media (max-width: 768px) {
+				width: 48%;
+				margin-right: 2%;
+				&:nth-child(even) {
+					margin-right: 0;
+				}
+			}
+
+			.filter-inner {
+				.filter-text {
+					font-weight: bold;
+					margin-bottom: 0;
+					text-align: left;
+				}
+
+				i {
+					cursor: pointer;
+					font-size: 1.25em;
+					font-weight: bold;
+					position: absolute;
+					top: 50%;
+					right: 15px;
+					transform: translateY(-50%);
+
+				}
+			}
+		}
+	}
 }

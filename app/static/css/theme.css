@@ -1647,6 +1647,9 @@ div.recaptcha iframe {
 .boxed.boxed--border {
   border: 1px solid #ECECEC;
 }
+.boxed.boxed--border--secondary {
+  border-color: #DDD;
+}
 .boxed > div[class*='col-']:first-child:not(.boxed) {
   padding-left: 0;
 }
@@ -4737,7 +4740,7 @@ section.parallax .row .background-image-holder {
   padding-top: 1.85714286em;
 }
 /*! -- Stack Labels -- */
-.label {
+.label:not(.tag) {
   display: inline-block;
   font-size: 9px;
   font-weight: 700;
@@ -4754,23 +4757,23 @@ section.parallax .row .background-image-holder {
   top: 1.23809524em;
   right: 1.23809524em;
 }
-.label:not([class*='bg--']) {
+.label:not(.tag):not([class*='bg--']) {
   background: #31639C;
 }
-.label.label--inline {
+.label:not(.tag).label--inline {
   position: relative;
   top: 0;
   right: 0;
 }
-.label.label--inline:not(:last-child) {
+.label:not(.tag).label--inline:not(:last-child) {
   margin-right: 0.92857143em;
 }
-.label.label--inline + span,
-.label.label--inline + p {
+.label:not(.tag).label--inline + span,
+.label:not(.tag).label--inline + p {
   position: relative;
   top: 1px;
 }
-.label.switchable-toggle {
+.label:not(.tag).switchable-toggle {
   left: 50%;
   right: auto;
   transform: translate3d(-50%, 0, 0);
@@ -6432,7 +6435,7 @@ a.block:hover > .feature {
 .accordion.carrier-accordion li.active > .accordion__content {
   animation: fadeUp 0.5s ease forwards;
   -webkit-animation: fadeUp 0.5s ease forwards;
-  max-height: 1000px;
+  max-height: unset;
 }
 .accordion.carrier-accordion.mobile-accordion > li.active > .accordion__title {
   background: #016faf;
@@ -9555,6 +9558,7 @@ footer.footer-7 {
 .carrier-item {
   margin-bottom: 15px;
   position: relative;
+  color: #000;
 }
 .carrier-item .boxed {
   margin-bottom: 0px;
@@ -9574,8 +9578,23 @@ footer.footer-7 {
   content: "";
   opacity: 0.09;
 }
-.carrier-rating {
-  min-width: 250px;
+.carrier-item .carrier-logo-holder {
+  position: relative;
+  height: 100%;
+}
+@media (min-width: 768px) {
+  .carrier-item .carrier-logo-holder .carrier-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .carrier-item .carrier-logo-holder .carrier-logo h4 {
+    margin-bottom: 0;
+  }
+}
+.carrier-item .carrier-class {
+  color: #016faf;
 }
 .carrier-rating .h1 {
   font-size: 4em;
@@ -9585,7 +9604,7 @@ a.carrier-link {
   opacity: 1;
 }
 .carrier-accordion .icon {
-  font-weight: 900;
+  font-weight: 500;
 }
 .carrier-filters .input-select:after {
   font-size: 40px;
@@ -9594,5 +9613,81 @@ a.carrier-link {
 }
 .carrier-type-filters {
   margin-top: 1em;
+}
+.carrier-type-filters .btn {
+  margin-top: 1em;
+}
+@media (max-width: 767px) {
+  .carrier-type-filters .btn {
+    margin-bottom: 0;
+    margin-top: 2em;
+  }
+}
+.carrier-product .type--fine-print {
+  margin-top: 1em;
+}
+.carrier-product i.fas,
+.carrier-product i.far {
+  font-size: 2.3em;
+}
+.carrier-product i.fas.fa-check-circle,
+.carrier-product i.far.fa-check-circle {
+  color: #516E26;
+}
+.carrier-filters .carrier-state-filter .input-select:after {
+  height: unset;
+  top: 50%;
+  transform: translateY(-65%);
+}
+.carrier-state-filter .input-select:after {
+  height: unset;
+  top: 50%;
+  transform: translateY(-58%);
+}
+.carrier-state-filter .carrier-type-filter-clear {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+@media (max-width: 768px) {
+  .carrier-state-filter .filter-bubbles {
+    margin-top: 20px;
+    justify-content: center;
+  }
+}
+.carrier-state-filter .filter-bubbles .filter-bubble {
+  position: relative;
+  background-color: #e8e8e8;
+  border: none;
+  color: black;
+  padding: 5px 50px 5px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 4px;
+  margin-right: 10px;
+  border-radius: 16px;
+}
+@media (max-width: 768px) {
+  .carrier-state-filter .filter-bubbles .filter-bubble {
+    width: 48%;
+    margin-right: 2%;
+  }
+  .carrier-state-filter .filter-bubbles .filter-bubble:nth-child(even) {
+    margin-right: 0;
+  }
+}
+.carrier-state-filter .filter-bubbles .filter-bubble .filter-inner .filter-text {
+  font-weight: bold;
+  margin-bottom: 0;
+  text-align: left;
+}
+.carrier-state-filter .filter-bubbles .filter-bubble .filter-inner i {
+  cursor: pointer;
+  font-size: 1.25em;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
 }
 /*# sourceMappingURL=theme.css.map */
