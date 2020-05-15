@@ -37,7 +37,7 @@ def return_tile_wide(request):
 
 
 urlpatterns = [
-    url('^api/$', carrier_json),
+    # url('^api/$', carrier_json),
     url(r'', include(site_settings_urls)),
     url('^sitemap\.xml$', sitemap),
     url(r'^django-admin/', admin.site.urls),
