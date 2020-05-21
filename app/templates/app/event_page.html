@@ -9,7 +9,7 @@
 <section class="switchable switchable--switch">
     <div class="container">
         <div class="row justify-content-between">
-            <div class="col-md-5">
+            <div class="{% if page.require_registration %}col-md-5{% else %}col-md-12{% endif %}">
                 <div class="  bg--primary box-shadow boxed boxed--border">
                     <div class="container">
                         <div class="wpb_text_column wpb_content_element ">
@@ -19,16 +19,19 @@
                                 <hr>
                                 <h4>{{ page.start_datetime|date:"F d, Y" }} &bull; {{ page.start_datetime|date:"P" }}</h4>
                                 <p><b>Location:</b> {{ page.get_location_type_display }}<br></p>
-
                             </div>
                         </div>
                     </div>
                 </div>
                 <p>{{ page.description|richtext }}</p>
                 <p><a href="{{ page.url }}calendar/">Add to Calendar</a></p>
+                {% if not page.is_active and page.materials %}
+                    <h3 style="font-weight:100">Shared Event Materials</h3>
+                    {{ page.materials|richtext }}
+                {% endif %}
             </div>
-            <div class="col-md-6 col-12">
-                {% if page.is_active %}
+            {% if page.require_registration %}
+               <div class="col-md-6">
                     {% if registered %}
                         <h3 style="font-weight:100">Thanks for registering!</h3>
                         <p><strong>What Happens Next</strong><br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc accuan eget.</p>
@@ -66,11 +69,8 @@
                             </div>
                         </form>
                     {% endif %}
-                {% else %}
-                    <h3 style="font-weight:100">Shared Event Materials</h3>
-                    {{ page.materials|richtext }}
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 </section>

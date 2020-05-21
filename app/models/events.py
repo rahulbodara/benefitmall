@@ -10,7 +10,7 @@ from django.forms.utils import ErrorList
 from django.core.exceptions import ValidationError
 
 from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
 from wagtail.core.models import Page, Http404
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -175,7 +175,9 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		('disabled', 'Disabled'),
 	)
 	event_type = models.ForeignKey('EventType', verbose_name='Event Type', null=True, on_delete=models.SET_NULL)
+	summary = models.TextField(null=True, blank=True, default='', max_length=300, verbose_name='Summary')
 	description = RichTextField(default='', verbose_name='Description')
+	require_registration = models.BooleanField(default=False, verbose_name='Requires Registration')
 	location_type = models.CharField(max_length=24, choices=EVENT_LOCATION_TYPE_CHOICES[1:], default='', verbose_name='Location Type', help_text="If online, no address is necessary")
 	address_line_1 = models.CharField(max_length=255, default='', null=True, blank=True, verbose_name='Address Line 1')
 	address_line_2 = models.CharField(max_length=255, default='', null=True, blank=True, verbose_name='Address Line 2')
@@ -198,9 +200,13 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		], heading="Email Settings", classname='collapsible collapsed'),
 		MultiFieldPanel([
 			FieldPanel('event_type'),
-			FieldPanel('cost'),
+			FieldRowPanel([
+				FieldPanel('require_registration'),
+				FieldPanel('cost'),
+			]),
 			FieldPanel('start_datetime'),
 			FieldPanel('duration'),
+			FieldPanel('summary'),
 			FieldPanel('description'),
 			ImageChooserPanel('image'),
 		], heading="Event"),
@@ -227,6 +233,7 @@ class EventPage(RoutablePageMixin, DefaultPage):
 	subpage_types = []
 
 	search_fields = DefaultPage.search_fields + [
+		index.SearchField('summary'),
 		index.SearchField('description'),
 	]
 

@@ -68,9 +68,19 @@
                                     {{ event.address_city }}, {{ event.address_state }}
                                     {% endif %}
                                 </h4>
-                                <h6 class="lead">{{ event.description|striptags|truncatechars:300 }}</h6>
+                                {% if event.summary %}
+                                    <h6 class="lead">{{ event.summary }}</h6>
+                                {% endif %}
                                 <a href="{{ event.get_url }}" class="btn btn--primary">
-                                    <span class="btn__text">{% if page.archive %}Download Event Materials{% else %}Register for Event{% endif %}</span>
+                                    <span class="btn__text">
+                                        {% if page.archive %}
+                                            Download Event Materials
+                                        {% elif event.require_registration %}
+                                            Register for Event
+                                        {% else %}
+                                            View Event Details
+                                        {% endif %}
+                                    </span>
                                 </a>
                             </div>
                         </div>
@@ -111,13 +121,25 @@
                                 Location: {{ event.get_location_type_display }}
                             </h4>
                             <br>
-                            <a href="{{ event.get_url }}" class="btn btn--sm btn--primary"><span class="btn__text">{% if page.archive %}Download Event Materials{% else %}Register for Event{% endif %}</span></a>
+                            <a href="{{ event.get_url }}" class="btn btn--sm btn--primary">
+                                <span class="btn__text">
+                                    {% if page.archive %}
+                                        Download Event Materials
+                                    {% elif event.require_registration %}
+                                        Register for Event
+                                    {% else %}
+                                        View Event Details
+                                    {% endif %}
+                                </span>
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="text-block">
-                            {{ event.description|richtext }}
-                        </div>
+                        {% if event.summary %}
+                            <div class="text-block">
+                                {{ event.summary }}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
