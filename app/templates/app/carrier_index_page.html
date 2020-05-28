@@ -131,35 +131,35 @@
     </section>
     <section class="space--xxs">
         <div class="container text-white">
-        {% if carriers.items|length > 0 %}
-            {% for carrier in carriers.items %}
+        {% if carriers|length > 0 %}
+            {% for carrier in carriers %}
 
-                <a class="carrier-link" href="./{{ carrier.1.slug }}">
+                <a class="carrier-link" href="./{{ carrier.slug }}">
                     <div class="row carrier-item">
                         <div class="col-md-3 text-center boxed boxed--border">
 {#                                <div class="text-center"><h4>Carrier</h4></div>#}
                             <div class="carrier-logo-holder">
                                 <div class="carrier-logo">
-                                    {% if carrier.1.logo_url %}<img src="{{ carrier.1.logo_url }}"/>{% endif %}
-                                    <h4>{{ carrier.1.name }}</h4>
+                                    {% if carrier.logo_url %}<img src="{{ carrier.logo_url }}"/>{% endif %}
+                                    <h4>{{ carrier.name }}</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3 text-center bg--secondary boxed boxed--border boxed--border--secondary">
                             <h4>Rating</h4>
-                            <p class="h1 carrier-class">{{ carrier.1.rating_classification }}</p>
-                            <p><span class="lead">{{ carrier.1.rating_description }}</span></br>
-                                {{ carrier.1.rating_company_name }}</p>
+                            <p class="h1 carrier-class">{{ carrier.rating_classification }}</p>
+                            <p><span class="lead">{{ carrier.rating_description }}</span></br>
+                                {{ carrier.rating_company_name }}</p>
                         </div>
                         <div class="col-md-3 bg--secondary text-left-md text-center-xs boxed boxed--border boxed--border--secondary">
                             <div class="text-center"><h4>Type</h4></div>
                             <ul>
-                            {% for p in carrier.1.available_products|dictsort:"order" %}
+                            {% for p in carrier.available_products|dictsort:"order" %}
                                 {% if forloop.counter < 6 %}
                                     <li>{{ p.name }}</li>
                                 {% endif %}
                             {% endfor %}
-                            {% if carrier.1.available_products|length > 6 %}
+                            {% if carrier.available_products|length > 6 %}
                                 <li><i>Plus More</i></li>
                             {% endif %}
                             </ul>
@@ -167,11 +167,11 @@
                         <div class="col-md-3 bg--secondary text-left-md text-center-xs boxed boxed--border boxed--border--secondary">
                             <div class="text-center"><h4>Best For</h4></div>
                             <ul>
-                            {% for i in carrier.1.available_insurance_types|dictsort:"order" %}
+                            {% for i in carrier.available_insurance_types|dictsort:"order" %}
                                 <li>{{ i.name }}{% if i.quoting_available %}*{% endif %}</li>
                             {% endfor %}
                             </ul>
-                            {% if carrier.1.show_quoting %}<p class="type--fine-print">* Online quoting available in some states</p>{% endif %}
+                            {% if carrier.show_quoting %}<p class="type--fine-print">* Online quoting available in some states</p>{% endif %}
                         </div>
                     </div>
                 </a>

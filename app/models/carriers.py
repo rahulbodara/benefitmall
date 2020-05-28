@@ -77,7 +77,21 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 		searchable_states = list(filterable_states)
 		searchable_states.sort()
 
-		context['carriers'] = out
+		# Order carriers alphaetically
+		carrier_order = []
+		for id in out:
+			carrier = out[id]
+			carrier_order.append({'id': id, 'name': carrier['name']})
+		carrier_order.sort(key=lambda x: x['name'].lower())
+		for idx, val in enumerate(carrier_order):
+			id = val['id']
+			carrier = out[id]
+			carrier['order'] = idx
+		carrier_list = []
+		for key, value in sorted(out.items(), key=lambda x: x[1]['order']):
+			carrier_list.append(value)
+
+		context['carriers'] = carrier_list
 		context['type_filter'] = insurance_filter or ''
 		context['states_filter'] = json.dumps(list(states_filter or []))
 		context['states'] = State.objects.all()
