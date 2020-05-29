@@ -44,7 +44,7 @@ DATABASES['default'] = env.db('DATABASE_URL')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env.str('SMTP_SERVER', 'benefitmall-com.mail.protection.outlook.com')
-EMAIL_PORT = '25'
+EMAIL_PORT = env.str('SMTP_PORT', '25')
 EMAIL_USE_TLS = True
 
 
