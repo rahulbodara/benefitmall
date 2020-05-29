@@ -32,15 +32,23 @@ MIDDLEWARE = WHITENOISE_MIDDLEWARE + MIDDLEWARE
 DATABASES['default'] = env.db('DATABASE_URL')
 
 
-# ANYMAIL
-# ------------------------------------------------------------------------------
-# https://anymail.readthedocs.io/en/stable/installation/#installing-anymail
-INSTALLED_APPS += ['anymail']  # noqa F405
-EMAIL_BACKEND = 'anymail.backends.sendgrid.EmailBackend'
-# https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
-ANYMAIL = {
-    'SENDGRID_API_KEY': env('SENDGRID_API_KEY')
-}
+# # ANYMAIL
+# # ------------------------------------------------------------------------------
+# # https://anymail.readthedocs.io/en/stable/installation/#installing-anymail
+# INSTALLED_APPS += ['anymail']  # noqa F405
+# EMAIL_BACKEND = 'anymail.backends.sendgrid.EmailBackend'
+# # https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
+# ANYMAIL = {
+#     'SENDGRID_API_KEY': env('SENDGRID_API_KEY')
+# }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env.str('SMTP_SERVER', 'benefitmall-com.mail.protection.outlook.com')
+EMAIL_PORT = '25'
+EMAIL_USE_TLS = True
+
+
+
 
 # SECURITY SETTINGS - THESE SHOULD ALWAYS BE IN PRODUCTION
 # ------------------------------------------------------------------------------
