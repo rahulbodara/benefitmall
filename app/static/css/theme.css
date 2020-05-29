@@ -9690,4 +9690,11 @@ a.carrier-link {
   right: 15px;
   transform: translateY(-50%);
 }
+.custom-notification {
+  padding: 1em 0;
+}
+.custom-notification h5,
+.custom-notification p {
+  margin-bottom: 0;
+}
 /*# sourceMappingURL=theme.css.map */

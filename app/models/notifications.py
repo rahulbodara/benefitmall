@@ -41,8 +41,8 @@ class Notification(models.Model):
 
     panels = [
         MultiFieldPanel([
-            FieldPanel('size'),
-            FieldPanel('location'),
+            # FieldPanel('size'),
+            # FieldPanel('location'),
             FieldPanel('starttime'),
             FieldPanel('endtime'),
             FieldPanel('text_alignment'),
