@@ -12,6 +12,7 @@ from django.core.cache import cache
 from app.models import State
 import requests
 import json
+from datetime import datetime
 
 
 
@@ -31,6 +32,21 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 		insurance_filter = request.GET.get('type') or None
 
 		carriers = cache.get('carriers')
+		# Remove based on publish dates
+		published_carriers = {}
+		for id in carriers:
+			carrier = carriers[id]
+			# '2014-11-12T06:00:00.000Z'
+			if (carrier['start_time'] == None or
+					datetime.strptime(carrier['start_time'], '%Y-%m-%dT%H:%M:%S.%fZ') < datetime.now()
+					) and (
+					carrier['end_time'] == None or
+					datetime.strptime(carrier['end_time'], '%Y-%m-%dT%H:%M:%S.%fZ') > datetime.now()):
+				published_carriers[id] = carrier
+			if 'Premier' in carrier['name']:
+				check = carrier
+		carriers = published_carriers
+
 		out = {}
 		by_insurance = {}
 		by_state = {}
