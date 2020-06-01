@@ -72,5 +72,12 @@ liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', '5721L0000
 
 
 
+LEAD GEN FORM
 
+PROD
+LEAD_GEN_FORM_URL: https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8
+LEAD_GEN_FORM_OID: 00DG0000000gEcp
 
+DEV
+LEAD_GEN_FORM_URL: https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8
+LEAD_GEN_FORM_OID: 00Dc0000003wW7y
