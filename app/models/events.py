@@ -1,6 +1,7 @@
 import datetime
 import pytz
 
+from django.conf import settings
 from django.db import models
 from django.forms import ModelForm
 from django.http import HttpResponse
@@ -8,6 +9,7 @@ from django.shortcuts import redirect
 from django.core.mail import send_mail
 from django.forms.utils import ErrorList
 from django.core.exceptions import ValidationError
+from django.utils.html import strip_tags
 
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
@@ -262,12 +264,15 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		location = 'Online' if self.location_type == 'online' else '{}{}{}{}{}'.format(address_line_1, address_line_2, city, state, zipcode)
 		summary = self.title
 		filename = 'Benefit_Mall_{}.ics'.format(self.title.replace(' ', '_'))
-		start = self.start_datetime.strftime('%Y%m%dT%H%M%S')
-		end = self.get_end_datetime().strftime('%Y%m%dT%H%M%S')
-		now = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
-		description = 'Event: {}'.format(self.title)
-		description += '\\n\\nLocation Type:\\n{}'.format(self.location_type)
-		# description += '\\n{}'.format(clinic.get_full_address(directions=False).replace('<br/>','\\n'))
+		settings_time_zone = pytz.timezone(settings.TIME_ZONE)
+		start_datetime = self.start_datetime.astimezone(settings_time_zone)
+		end_datetime = self.get_end_datetime().astimezone(settings_time_zone)
+		now_datetime = datetime.datetime.now().astimezone(settings_time_zone)
+		start = start_datetime.strftime('%Y%m%dT%H%M%S')
+		end = end_datetime.strftime('%Y%m%dT%H%M%S')
+		now = now_datetime.strftime('%Y%m%dT%H%M%S')
+		description = 'Location Type: {}'.format(self.get_location_type_display())
+		description += '\\n\\n{}'.format(strip_tags(self.description.replace('<br/>', '\\n').replace('.', '. ')))
 
 		content = ''
 		content += 'BEGIN:VCALENDAR\n'
