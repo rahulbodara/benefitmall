@@ -41,7 +41,7 @@ DATABASES['default'] = env.db('DATABASE_URL')
 # ANYMAIL = {
 #     'SENDGRID_API_KEY': env('SENDGRID_API_KEY')
 # }
-
+DEFAULT_FROM_EMAIL = 'www_no-reply@benefitmall.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env.str('EMAIL_HOST', 'benefitmall-com.mail.protection.outlook.com')
 EMAIL_PORT = env.str('EMAIL_PORT', '25')
