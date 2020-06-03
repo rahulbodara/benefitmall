@@ -1,6 +1,8 @@
 from django.db import models
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
+from django.utils.html import strip_tags
+
 
 NOTIFICATION_WIDTH_CHOICES = (
     ('col-md-3', 'Extra Small'),
@@ -34,7 +36,7 @@ class Notification(models.Model):
     starttime = models.DateTimeField(verbose_name='Published Date', help_text="The date and time of the start of notification.")
     endtime = models.DateTimeField(verbose_name='Unpublished Date', help_text="The date and time of the end of notification.")
     text_alignment = models.CharField(max_length=50, choices=HORIZONTAL_ALIGNMENT_CHOICES, default=HORIZONTAL_ALIGNMENT_CHOICES[0][0], null=True, blank=True)
-    header = models.CharField(max_length=255, verbose_name='Title')
+    header = models.CharField(max_length=255, null=True, blank=True, verbose_name='Title')
     body = RichTextField(default='', verbose_name='Body', features=['bold', 'italic', 'ol', 'ul', 'hr', 'link', 'document-link'])
     background_color = models.CharField(max_length=50, choices=BACKGROUND_MODE_CHOICES_NO_IMAGE, default=BACKGROUND_MODE_CHOICES_NO_IMAGE[0][0])
 
@@ -55,7 +57,11 @@ class Notification(models.Model):
 
 
     def __str__(self):
-        return self.header
+        if self.header:
+            return self.header
+        else:
+            return strip_tags(self.body)[:297]+'...'
+
 
     class Meta:
         ordering = ['starttime']

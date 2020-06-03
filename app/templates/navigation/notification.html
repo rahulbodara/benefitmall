@@ -1,7 +1,9 @@
 {#<div class="{{ notification.text_alignment }} notification {{ notification.location }} {{ notification.size }} notification--reveal" data-animation="{% if 'pos-top' in notification.location %}from-top{% else %}from-bottom{% endif %}">#}
 <div class="custom-notification {{ notification.text_alignment }} {{ notification.background_color }}" >
     <div class="container">
-        <h5>{{ notification.header }}</h5>
+        {% if notification.header %}
+            <h5>{{ notification.header }}</h5>
+        {% endif %}
         {{ notification.body | safe }}
     </div>
 {#<div class="notification-close-cross notification-close"></div>#}
