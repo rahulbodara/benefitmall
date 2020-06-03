@@ -4,6 +4,7 @@ from wagtail.core.models import Page, TemplateResponse
 from site_settings.wagtail_hooks import SiteSettings
 from django.core.cache import cache
 from django.utils.html import strip_tags
+from datetime import datetime
 import json
 
 import logging
@@ -74,24 +75,31 @@ def search(request):
             carrier_results = {}
             for id in carriers:
                 carrier = carriers[id]
-                # Direct match against carrier name or description. If match, add to top of results, if no match, don't include carrier.
-                # Anything more complex requires discussion about how to weight.
-                if 'name' in carrier and carrier['name']:
-                    if query.lower() in carrier['name'].lower():
-                        carrier_results[id] = {
-                            'title': carrier['name'],
-                            'url': '/products/carriers/{}'.format(carrier['slug']),
-                            'search_description': strip_tags(carrier['description'])[:300]+'...' or 'This page has no search description.',
-                            'full_url': '/products/carriers/{}'.format(carrier['slug']),
-                        }
-                if 'description' in carrier and carrier['description']:
-                    if query.lower() in carrier['description'].lower():
-                        carrier_results[id] = {
-                            'title': carrier['name'],
-                            'url': '/products/carriers/{}'.format(carrier['slug']),
-                            'search_description': strip_tags(carrier['description'])[:300]+'...' or 'This page has no search description.',
-                            'full_url': 'https://{}/products/carriers/{}'.format(request.get_host(), carrier['slug']),
-                        }
+
+                # '2014-11-12T06:00:00.000Z'
+                if (carrier['start_time'] == None or
+                            datetime.strptime(carrier['start_time'], '%Y-%m-%dT%H:%M:%S.%fZ') < datetime.now()
+                            ) and (
+                            carrier['end_time'] == None or
+                            datetime.strptime(carrier['end_time'], '%Y-%m-%dT%H:%M:%S.%fZ') > datetime.now()):
+                    # Direct match against carrier name or description. If match, add to top of results, if no match, don't include carrier.
+                    # Anything more complex requires discussion about how to weight.
+                    if 'name' in carrier and carrier['name']:
+                        if query.lower() in carrier['name'].lower():
+                            carrier_results[id] = {
+                                'title': carrier['name'],
+                                'url': '/products/carriers/{}'.format(carrier['slug']),
+                                'search_description': strip_tags(carrier['description'])[:300]+'...' or 'This page has no search description.',
+                                'full_url': '/products/carriers/{}'.format(carrier['slug']),
+                            }
+                    if 'description' in carrier and carrier['description']:
+                        if query.lower() in carrier['description'].lower():
+                            carrier_results[id] = {
+                                'title': carrier['name'],
+                                'url': '/products/carriers/{}'.format(carrier['slug']),
+                                'search_description': strip_tags(carrier['description'])[:300]+'...' or 'This page has no search description.',
+                                'full_url': 'https://{}/products/carriers/{}'.format(request.get_host(), carrier['slug']),
+                            }
             if len(carrier_results) > 0:
                 tmp = []
                 for id in carrier_results:
