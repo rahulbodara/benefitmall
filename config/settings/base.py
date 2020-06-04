@@ -180,7 +180,7 @@ WAGTAIL_SITE_NAME = PROJECT_NAME
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'http://localhost:8000'
+BASE_URL = 'http://www.benefitmall.com'
 
 # django-honeypot - provides utilities for preventing automated form spam.
 HONEYPOT_FIELD_NAME = 'official_title'
