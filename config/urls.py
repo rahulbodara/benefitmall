@@ -37,7 +37,6 @@ def return_tile_wide(request):
 
 
 urlpatterns = [
-    # url('^api/$', carrier_json),
     url(r'', include(site_settings_urls)),
     url('^sitemap\.xml$', sitemap),
     url(r'^django-admin/', admin.site.urls),
@@ -51,10 +50,8 @@ urlpatterns = [
     url('^tile_wide\.png$', return_tile_wide),
 ]
 
-# urlpatterns += i18n_patterns(
-#     # These URLs will have /<language_code>/ appended to the beginning
-#     url(r'', include(wagtail_urls)),
-# )
+if settings.SHOW_CARRIER_API_DATA:
+    urlpatterns.insert(0, url('^api/$', carrier_json),)
 
 if settings.LOCAL_STATIC:
     from django.views.static import serve
