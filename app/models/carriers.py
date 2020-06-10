@@ -113,7 +113,7 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 					lambda available_product: any(
 						available_product['name'] in insurance_type_entry['product_types']
 						for chosen_state in states_filter
-						for k, insurance_type_entry in carrier['available_states'][chosen_state].items()
+						for k, insurance_type_entry in carrier['available_states'].get(chosen_state, dict()).items()
 						if k != 'name'  # Exclude name, since that is in the state datastructure too
 					),
 
@@ -123,7 +123,7 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 				# Filter the available insurance types by the ones available for this state
 				carrier['available_insurance_types'] = list(filter(
 					lambda available_insurance_type: any(
-						available_insurance_type['name'] in carrier['available_states'][chosen_state]
+						available_insurance_type['name'] in carrier['available_states'].get(chosen_state, set())
 						for chosen_state in states_filter
 					),
 
