@@ -1,6 +1,7 @@
 from .base import *
 
 DEBUG = True
+SHOW_CARRIER_API_DATA = True
 # USE_CSP_HEADER = True
 # USE_CSP_EXCEPTIONS = 'jquery,typekit,googlefonts,googlemaps,youtube,gtm,gtm_preview,gtm_custom_vars,salesforce,vidyard'
 
