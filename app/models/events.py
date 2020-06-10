@@ -62,7 +62,7 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
 	def event_detail(self, request, year, month, day, slug, *args, **kwargs):
 		try:
-			event = EventPage.objects.get(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day, slug=slug)
+			event = EventPage.objects.live().get(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day, slug=slug)
 		except EventPage.DoesNotExist:
 			raise Http404
 
@@ -150,7 +150,7 @@ class EventArchiveIndexPage(RoutablePageMixin, DefaultPage):
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
 	def event_detail(self, request, year, month, day, slug, *args, **kwargs):
 		try:
-			event = EventPage.objects.get(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day, slug=slug)
+			event = EventPage.objects.live().get(start_datetime__year=year, start_datetime__month=month, start_datetime__day=day, slug=slug)
 		except EventPage.DoesNotExist:
 			raise Http404
 

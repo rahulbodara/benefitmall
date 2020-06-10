@@ -22,7 +22,7 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 	@route(r'^(\d{4})/(\d{2})/$')
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/$')
 	def news_list(self, request, year=None, month=None, day=None, *args, **kwargs):
-		all_news = NewsPage.objects.all().order_by('-news_datetime')
+		all_news = NewsPage.objects.live().order_by('-news_datetime')
 		if year:
 			all_news = all_news.filter(news_datetime__year=year)
 		if month:
@@ -45,7 +45,7 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 	@route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
 	def news_page_detail(self, request, year, month, day, slug, *args, **kwargs):
 		try:
-			news_page = NewsPage.objects.get(news_datetime__year=year, news_datetime__month=month, news_datetime__day=day, slug=slug)
+			news_page = NewsPage.objects.live().get(news_datetime__year=year, news_datetime__month=month, news_datetime__day=day, slug=slug)
 		except NewsPage.DoesNotExist:
 			raise Http404
 
