@@ -82,7 +82,12 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 					if it['name'] == insurance_filter:
 						# Add this carrier's states to the filter selection since it has the selected insurance type
 						filterable_states |= set(carrier['available_states'])
-						new_list[id] = carrier
+						if not states_filter or any(it['name'] in carrier['available_states'].get(chosen_state, set())
+													for chosen_state in states_filter):
+							# Only add this to the new list if there is no states filter OR the selected insurance type
+							#	works for this state.
+							new_list[id] = carrier
+
 						break
 			out = new_list
 		else:
