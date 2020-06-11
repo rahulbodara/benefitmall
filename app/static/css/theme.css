@@ -9525,7 +9525,7 @@ footer.footer-7 {
   margin-inline-start: 1em;
   margin-inline-end: 1em;
 }
-.rich-text li {
+.rich-text ul li {
   list-style: disc;
 }
 .accordion__content ul:not(.accordion) {
