@@ -50,21 +50,24 @@ class Command(BaseCommand):
 			carriers = {}
 			for item in ret:
 				# "Carrier_Id": "001g000002ETUdlAAH",
-				id = None
 				if 'Carrier_Id' in item:
-					id = item['Carrier_Id'].lower()
+					carrier_id = item['Carrier_Id'].lower()
+				else:
+					logger.error("Carrier ID missing from item!")
+					logger.debug("%s", item)
+					continue
 
 				# TODO - Respect start and end time
-				if id not in carriers:
-					carriers[id] = {'products': [], 'available_states': [], 'available_insurance_types': [],
-									'available_products': [], 'additional_products': []}
-				carrier = carriers[id]
+				if carrier_id not in carriers:
+					carriers[carrier_id] = {'products': [], 'available_states': dict(), 'available_insurance_types': [],
+									        'available_products': [], 'additional_products': []}
+				carrier = carriers[carrier_id]
 
 				# "Carrier_Name": "Advantica",
 				if 'Carrier_Name' in item and item['Carrier_Name'] != '':
 					carrier_name = item['Carrier_Name']
 					carrier['name'] = carrier_name
-					carrier['slug'] = slugify(carrier_name + ' ' + id)
+					carrier['slug'] = slugify(carrier_name + ' ' + carrier_id)
 				# "CDM_Id": "a3Kg0000000KxoZEAS",
 				if 'CDM_Id' in item and item['CDM_Id'] != '':
 					carrier['cdm_id'] = item['CDM_Id']
@@ -96,15 +99,24 @@ class Command(BaseCommand):
 				# GATHER THESE AHEAD OF THE LOOP
 
 				# "state": "Delaware",
-				state_name = item['state']
-				quoting_available = item['Online_Quoting_Available']
-				state = {'name': state_name, 'quoting_available': quoting_available}
-				if state_name not in carrier['available_states']:
-					carrier['available_states'].append(state_name)
-
-				# "Insurance_Type": "Small Group",
 				insurance_type = item['Insurance_Type']
 				insurance_type_slug = slugify(insurance_type).replace('-', '_')
+				state_name = item['state']
+				quoting_available = item['Online_Quoting_Available']
+				state = {'name': state_name}
+				product_types = item['Product_Types'].split(';')
+				if state_name not in carrier['available_states']:
+					carrier['available_states'][state_name] = state
+				else:
+					state = carrier['available_states'][state_name]
+
+				if insurance_type not in state:
+					state[insurance_type] = {
+						'quoting_available': quoting_available,
+						'product_types': product_types,
+					}
+
+				# "Insurance_Type": "Small Group",
 				for it in carrier['available_insurance_types']:
 					if it['name'] == insurance_type:
 						current_insurance_type = it
@@ -119,7 +131,6 @@ class Command(BaseCommand):
 					carrier['show_quoting'] = 'True'
 
 				# "Product_Types": "Dental;Vision",
-				product_types = item['Product_Types'].split(';')
 				if insurance_type in INSURANCE_TYPE_ORDER:  # if it's one of the columns
 					for product_type in product_types:
 						for p in carrier['products']:

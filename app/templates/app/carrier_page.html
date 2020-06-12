@@ -379,6 +379,28 @@
         var lastSel = $("#my_select option:selected");
         var stateSelector = $("#state_select");
 
+        var fils = decodeURIComponent(location.search.substr(1)).split('&')
+        for (var i in fils){
+            fil = fils[i];
+            if(fil.indexOf('states=')>-1){
+                filters = fil.substr(7).split('|')
+            };
+        }
+        for (var i in filters){
+            fil = filters[i] = filters[i].replace('+',' ');
+            $('.filter-bubbles').append(`
+                <div class="filter-bubble" data-filter="${fil}">
+                    <div class="filter-inner">
+                        <p class="filter-text">
+                            ${fil}
+                        </p>
+                        <i class="far fa-times" onclick="removeFilter(this)"></i>
+                    </div>
+                </div>
+            `)
+        }
+
+
         stateSelector.change(function(){
             let selected = $(this).find(':selected');
             let value = selected.val();

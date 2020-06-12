@@ -134,7 +134,7 @@
         {% if carriers|length > 0 %}
             {% for carrier in carriers %}
 
-                <a class="carrier-link" href="./{{ carrier.slug }}">
+                <a class="carrier-link" href="./{{ carrier.slug }}?{{ request.GET.urlencode }}">
                     <div class="row carrier-item">
                         <div class="col-md-3 text-center boxed boxed--border">
 {#                                <div class="text-center"><h4>Carrier</h4></div>#}

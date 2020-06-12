@@ -1,3 +1,4 @@
+from copy import deepcopy
 from django.db import models
 from django.forms.widgets import CheckboxSelectMultiple
 from wagtail.core.fields import RichTextField
@@ -58,7 +59,7 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 			states_filter &= set(s.name for s in State.objects.all())  # Removes possible malicious states
 
 			for id in carriers:
-				carrier = carriers[id]
+				carrier = deepcopy(carriers[id])  # We will modify this later, create a copy.
 				if states_filter & set(carrier['available_states']):
 					out[id] = carrier
 		else:
@@ -81,7 +82,12 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 					if it['name'] == insurance_filter:
 						# Add this carrier's states to the filter selection since it has the selected insurance type
 						filterable_states |= set(carrier['available_states'])
-						new_list[id] = carrier
+						if not states_filter or any(it['name'] in carrier['available_states'].get(chosen_state, set())
+													for chosen_state in states_filter):
+							# Only add this to the new list if there is no states filter OR the selected insurance type
+							#	works for this state.
+							new_list[id] = carrier
+
 						break
 			out = new_list
 		else:
@@ -105,8 +111,31 @@ class CarrierIndexPage(RoutablePageMixin, DefaultPage):
 			carrier = out[id]
 			carrier['order'] = idx
 		carrier_list = []
-		for key, value in sorted(out.items(), key=lambda x: x[1]['order']):
-			carrier_list.append(value)
+		for key, carrier in sorted(out.items(), key=lambda x: x[1]['order']):
+			if states_filter:
+				# Filter the available products by the ones available for this state
+				carrier['available_products'] = list(filter(
+					lambda available_product: any(
+						available_product['name'] in insurance_type_entry['product_types']
+						for chosen_state in states_filter
+						for k, insurance_type_entry in carrier['available_states'].get(chosen_state, dict()).items()
+						if k != 'name'  # Exclude name, since that is in the state datastructure too
+					),
+
+					carrier['available_products']
+				))
+
+				# Filter the available insurance types by the ones available for this state
+				carrier['available_insurance_types'] = list(filter(
+					lambda available_insurance_type: any(
+						available_insurance_type['name'] in carrier['available_states'].get(chosen_state, set())
+						for chosen_state in states_filter
+					),
+
+					carrier['available_insurance_types']
+				))
+
+			carrier_list.append(carrier)
 
 		context['carriers'] = carrier_list
 		context['type_filter'] = insurance_filter or ''
