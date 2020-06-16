@@ -17,7 +17,7 @@
                                 <h3>{{ page.title }}</h3>
                                 <h4>{{ page.event_type }}</h4>
                                 <hr>
-                                <h4>{{ page.start_datetime|date:"F d, Y" }} &bull; {{ page.start_datetime|date:"P" }}</h4>
+                                <h4>{{ page.start_datetime|date:"F d, Y" }} &bull; {{ page.start_datetime|date:"P T" }}</h4>
                                 <p><b>Location:</b> {{ page.get_location_type_display }}<br></p>
                             </div>
                         </div>
