@@ -27,8 +27,6 @@ LOG_COLOR="\e[1;36m"
 #-------------------------------------------------------------
 # UTILITIES
 #-------------------------------------------------------------
-
-
 #    SUMMARY:  Logging Utility
 #    EXAMPLE:  logit "This is a console log"
 #    PARAMETERS:
@@ -37,12 +35,10 @@ logit () {
     echo -e "${LOG_COLOR} $1"
 }
 
-
 #-------------------------------------------------------------
 # INSTALL SOFTWARE
 #-------------------------------------------------------------
 # Update to postgres 12
-
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee  /etc/apt/sources.list.d/PostgreSQL.list
 #
