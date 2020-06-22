@@ -120,7 +120,11 @@ def carrier_json(request):
         state_name = item['state']
         quoting_available = item['Online_Quoting_Available']
         state = {'name': state_name}
-        product_types = item['Product_Types'].split(';')
+        if item['Product_Types']:
+            product_types = item['Product_Types'].split(';')
+        else:
+            # Broken carrier, skip it
+            continue
         if state_name not in carrier['available_states']:
             carrier['available_states'][state_name] = state
         else:
