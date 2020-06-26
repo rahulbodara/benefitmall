@@ -131,6 +131,10 @@ class SiteSettingsMiddleware:
                 img_src.append('https://www.google.com')
                 font_src.append("https://fonts.gstatic.com")
                 font_src.append("data:")
+                img_src.append('https://*.googleusercontent.com')
+                # This is for an IP reverse loopup to control traffic
+                connect_src.append('https://extreme-ip-lookup.com')
+                connect_src.append('https://*.extreme-ip-lookup.com')
                 # Then custom vars
                 if 'gtm_custom_vars' in csp_exceptions:
                     script_src.append("'unsafe-eval'")
