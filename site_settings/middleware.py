@@ -135,6 +135,9 @@ class SiteSettingsMiddleware:
                 # This is for an IP reverse loopup to control traffic
                 connect_src.append('https://extreme-ip-lookup.com')
                 connect_src.append('https://*.extreme-ip-lookup.com')
+                connect_src.append('https://ipmeta.io')
+                connect_src.append('https://*.ipmeta.io')
+
                 # Then custom vars
                 if 'gtm_custom_vars' in csp_exceptions:
                     script_src.append("'unsafe-eval'")
