@@ -3,6 +3,7 @@ from django.core.cache import cache
 from django.utils.text import slugify
 from django.conf import settings
 import requests
+import json
 import logging
 logger = logging.getLogger(__name__)
 
@@ -47,6 +48,9 @@ class Command(BaseCommand):
 
 			r = requests.request('get', settings.CARRIER_API_URL + settings.CARRIER_API_ENDPOINT, headers=headers, params=params,)
 			ret = r.json()
+			if 'errorCode' in ret[0]:
+				logger.error('Error connecting, do not update: {}'.format(json.dumps(ret)))
+				raise Exception('Error connecting, do not update: {}'.format(json.dumps(ret)))
 			carriers = {}
 			for item in ret:
 				# "Carrier_Id": "001g000002ETUdlAAH",
