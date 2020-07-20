@@ -56,6 +56,7 @@ class SiteSettingsMiddleware:
             if 'salesforce' in csp_exceptions:
                 # First include UA
                 img_src.append('https://*.force.com')
+                img_src.append('https://*.documentforce.com')
                 frame_src.append('https://*.salesforce.com')
                 connect_src.append('https://*.salesforce.com')
                 form_action.append('https://*.salesforce.com')
