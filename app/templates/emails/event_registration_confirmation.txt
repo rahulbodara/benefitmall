@@ -1,0 +1,17 @@
+Hi {{ first_name }} {{ last_name }},
+
+You have been registered for the following {{ event.event_type }} event:
+
+{{ event.title }}
+{{ event.start_datetime|date:"F d, Y" }}
+{{ event.start_datetime|date:"P T" }}
+
+{% if event.get_location_type == 'in_person' %}
+    Location:
+    {{ event.address_line_1 }} {{ event.address_line_2 }}
+    {{ event.address_city }}, {{ event.address_state }} {{ event.address_zipcode }}
+{% endif %}
+
+{{ event.description }}
+
+Add to Calendar: {{ event.get_calendar_url }}
