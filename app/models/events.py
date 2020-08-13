@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.forms.utils import ErrorList
 from django.core.exceptions import ValidationError
 from django.utils.html import strip_tags
+from django.template.loader import render_to_string
 
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface, FieldRowPanel
@@ -76,7 +77,7 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 			if form.is_valid():
 				form.save()
 
-				# If send email enabled
+				# SEND ADMIN EMAIL
 				if event.email_setting == 'enabled' or (event.email_setting == '' and self.email_enabled_global):
 
 					# Get recipients
@@ -96,10 +97,31 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 						subject='Event Registration',
 						message=mail_message,
 						html_message=mail_message.replace('\n', '<br>'),
-						from_email='noreply@' + request.site.hostname,
+						from_email='noreply@benefitmall.com',
 						recipient_list=recipients.split(','),
 						fail_silently=False
 					)
+
+				context = {
+					'event': event,
+					'first_name': form.cleaned_data['first_name'],
+					'last_name': form.cleaned_data['last_name'],
+				}
+
+				# SEND CONFIRMATION EMAIL
+				message_plain = render_to_string('emails/event_registration_confirmation.txt', context)
+				message_html = render_to_string('emails/event_registration_confirmation.html', context)
+
+				# Send email
+				send_mail(
+					subject='Registration Confirmation: ' + event.title,
+					message=message_plain,
+					html_message=message_html,
+					from_email='noreply@benefitmall.com',
+					recipient_list=[form.cleaned_data['email']],
+					fail_silently=False
+				)
+
 				return redirect('{}{}/{}/{}/{}/?registered=yes'.format(self.url, year, month, day, slug))
 		else:
 			form = EventRegistrationForm()
@@ -341,6 +363,11 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		url_parts = self.get_url_parts(request=request)
 		site_id, root_url, page_path = url_parts
 		return root_url + self.get_url()
+
+	def get_calendar_url(self, request=None):
+		url_parts = self.get_url_parts(request=request)
+		site_id, root_url, page_path = url_parts
+		return root_url + page_path + 'calendar/'
 
 	def get_end_datetime(self):
 		hours, minutes = str(self.duration).split('.')

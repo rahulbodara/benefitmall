@@ -1,0 +1,17 @@
+{% load wagtailcore_tags %}
+
+<p>Hi {{ first_name }} {{ last_name }},<br><br>You have been registered for the following <b>{{ event.event_type }}</b> event:</p>
+
+<h2 style="margin-bottom:0px;">{{ event.title }}</h2>
+
+<h3 style="margin-top:0px;">{{ event.start_datetime|date:"F d, Y" }} &bull; {{ event.start_datetime|date:"P T" }}</h3>
+
+{% if event.get_location_type == 'in_person' %}
+    <b>Location:</b><br>
+    {{ event.address_line_1 }} {{ event.address_line_2 }}<br>
+    {{ event.address_city }}, {{ event.address_state }} {{ event.address_zipcode }}
+{% endif %}
+
+<p>{{ event.description|richtext }}</p>
+
+<h4><a href="{{ event.get_calendar_url }}">Add to Calendar</a></h4>
