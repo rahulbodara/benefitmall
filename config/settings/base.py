@@ -65,6 +65,9 @@ MIDDLEWARE = [
     'site_settings.middleware.SiteSettingsMiddleware',
     'wagtail.core.middleware.SiteMiddleware',
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+
+    'app.middleware.NavigationItemRedirectMiddleware',
+
     'honeypot.middleware.HoneypotMiddleware',
 ]
 

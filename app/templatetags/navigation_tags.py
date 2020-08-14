@@ -78,6 +78,7 @@ def get_links_recursive(context, parent, calling_page):
         menuitem.active = (calling_page.url.startswith(menuitem.url) if calling_page.url else False)
         menuitem.destination = menuitem.url
         menuitem.show_dropdown = has_menu_children(menuitem)
+        menuitem.destination = (get_path(menuitem, context) if menuitem.__class__.__name__ != 'NavigationItem' else menuitem.destination)
         if menuitem.show_dropdown:
             menuitem.children = get_links_recursive(context, menuitem, calling_page)
     return menuitems

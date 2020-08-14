@@ -13,6 +13,31 @@ from site_settings.models import AbstractBasePage, AbstractBaseEmailForm
 
 from app.blocks import DefaultStreamBlock
 
+class NavigationItem(Page):
+
+    destination = models.TextField(null=True, blank=True, verbose_name="Destination URL", help_text='When clicked in the navigation, this URL wis where the user will browse to.')
+    hide_in_sitemap = models.BooleanField(default=False, verbose_name="Hide in sitemap", help_text="Don't show this page in the sitemap.")
+
+    def get_admin_display_title(self):
+        return '[Nav Item] {}'.format(self.title)
+
+    content_panels = [
+        MultiFieldPanel([
+            FieldPanel('title'),
+            FieldPanel('destination'),
+            FieldRowPanel([
+                FieldPanel('show_in_menus'),
+                FieldPanel('hide_in_sitemap'),
+            ]),
+        ]),
+    ]
+
+    # Tabs
+    edit_handler = TabbedInterface([
+        ObjectList(content_panels, heading='Navigation Information'),
+    ])
+
+
 
 class DefaultPage(AbstractBasePage):
     body = StreamField(DefaultStreamBlock(required=False), blank=True, null=True)
