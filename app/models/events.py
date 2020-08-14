@@ -97,7 +97,7 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 						subject='Event Registration',
 						message=mail_message,
 						html_message=mail_message.replace('\n', '<br>'),
-						from_email='noreply@benefitmall.com',
+						from_email='www_no-reply@benefitmall.com',
 						recipient_list=recipients.split(','),
 						fail_silently=False
 					)
@@ -117,7 +117,7 @@ class EventIndexPage(RoutablePageMixin, DefaultPage):
 					subject='Registration Confirmation: ' + event.title,
 					message=message_plain,
 					html_message=message_html,
-					from_email='noreply@benefitmall.com',
+					from_email='www_no-reply@benefitmall.com',
 					recipient_list=[form.cleaned_data['email']],
 					fail_silently=False
 				)
