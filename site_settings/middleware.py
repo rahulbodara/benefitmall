@@ -65,6 +65,12 @@ class SiteSettingsMiddleware:
                 form_action.append('https://*.salesforceliveagent.com')
 
 
+            if 'crazyegg' in csp_exceptions:
+                connect_src.append('https://snap.licdn.com')
+                script_src.append("https://snap.licdn.com")
+                connect_src.append('https://script.crazyegg.com')
+                script_src.append("https://script.crazyegg.com")
+
             if 'jquery' in csp_exceptions:
                 connect_src.append('https://code.jquery.com')
                 script_src.append("https://code.jquery.com")
