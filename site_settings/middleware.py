@@ -66,10 +66,11 @@ class SiteSettingsMiddleware:
 
 
             if 'crazyegg' in csp_exceptions:
-                connect_src.append('https://snap.licdn.com')
-                script_src.append("https://snap.licdn.com")
-                connect_src.append('https://script.crazyegg.com')
-                script_src.append("https://script.crazyegg.com")
+                connect_src.append('https://*.licdn.com')
+                script_src.append("https://*.licdn.com")
+                connect_src.append('https://*.crazyegg.com')
+                script_src.append("https://*.crazyegg.com")
+                img_src.append('https://*.linkedin.com')
 
             if 'jquery' in csp_exceptions:
                 connect_src.append('https://code.jquery.com')
