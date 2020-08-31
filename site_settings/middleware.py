@@ -71,6 +71,7 @@ class SiteSettingsMiddleware:
                 connect_src.append('https://*.crazyegg.com')
                 script_src.append("https://*.crazyegg.com")
                 img_src.append('https://*.linkedin.com')
+                img_src.append('https://*.adsymptotic.com')
 
             if 'jquery' in csp_exceptions:
                 connect_src.append('https://code.jquery.com')
