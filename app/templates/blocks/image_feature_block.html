@@ -1,8 +1,17 @@
-{% load wagtailimages_tags %}
-{% load wagtailcore_tags %}
-<section class="{{ self.text.alignment }} {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+{% load wagtailimages_tags wagtailcore_tags app_tags %}
+<section class="{{ self.title_alignment }} {{ self.layout }} {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
     {% include_block self.background %}
     <div class="container {{ self.background.size_mode }}">
+        {% if self.title_heading or self.title_body %}
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <{{ self.title_heading_size }}>{{ self.title_heading }}</{{ self.title_heading_size }}>
+                    {% if self.title_body %}{% format_paragraph self.title_body self.title_body_size %}<br>{% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+
         <div class="row">
             {% for block in self.items %}
                 {% include_block block with layout=self.layout overlay=self.image_overlay cols=self.columns invert=self.image_invert heading_size=self.heading_size body_size=self.body_size%}
