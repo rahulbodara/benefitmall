@@ -14,4 +14,6 @@ You have been registered for the following {{ event.event_type }} event:
 
 {{ event.description }}
 
+{{ event.credentials }}
+
 Add to Calendar: {{ event.get_calendar_url }}
