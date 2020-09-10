@@ -1,5 +1,7 @@
 import datetime
 import pytz
+import html
+import re
 
 from django.conf import settings
 from django.db import models
@@ -9,7 +11,7 @@ from django.shortcuts import redirect
 from django.core.mail import send_mail
 from django.forms.utils import ErrorList
 from django.core.exceptions import ValidationError
-from django.utils.html import strip_tags
+from django.utils.html import strip_tags, format_html
 from django.template.loader import render_to_string
 
 from wagtail.core.fields import RichTextField
@@ -213,6 +215,7 @@ class EventPage(RoutablePageMixin, DefaultPage):
 	cost = models.CharField(max_length=50, default='Free', help_text="If adding a price, please use the currency symbol, e.g. $, £, etc.")
 	image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+', help_text='Recommended size: 350 W x 220 H')
 	materials = RichTextField(blank=True, null=True, help_text='Content displayed when event is over')
+	credentials = models.TextField(blank=True)
 
 	email_setting = models.CharField(verbose_name='Send Registration Email', max_length=20, choices=EMAIL_SETTING_CHOICES, default='', blank=True, help_text='Select a setting for sending registration emails. This overrides the default global setting')
 	email_recipients = models.CharField(verbose_name='Email Recipients', max_length=200, null=True, blank=True, help_text='Add registration email recipients separated by commas. This overrides the default global setting.')
@@ -232,6 +235,7 @@ class EventPage(RoutablePageMixin, DefaultPage):
 			FieldPanel('duration'),
 			FieldPanel('summary'),
 			FieldPanel('description'),
+			FieldPanel('credentials'),
 			ImageChooserPanel('image'),
 		], heading="Event"),
 		MultiFieldPanel([
@@ -272,11 +276,11 @@ class EventPage(RoutablePageMixin, DefaultPage):
 
 	@route(r'^calendar/$')
 	def generate_ics(self, request, *args, **kwargs):
-		# Method to reformat lines to specific length
-		def reformat_lines(item):
-			item = item[:61] + '\n ' + item[61:]
-			item = '\n '.join(item[i:i + 74] for i in range(0, len(item), 74))
-			return item
+		def add_line_breaks_after_tags(item):
+			return re.sub(r'(<\/(?:h1|h2|h3|h4|h5|h6|p)>|<br\/>)', r'\1\\r\\n', item)
+
+		def reformat_cms_line_breaks(item):
+			return item.replace('\r\n', '\\n').replace('\\r\\n\\r\\n', '\\r\\n')
 
 		address_line_1 = self.address_line_1 if self.address_line_1 else ''
 		address_line_2 = ' ' + self.address_line_2 if self.address_line_2 else ''
@@ -294,7 +298,8 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		end = end_datetime.strftime('%Y%m%dT%H%M%S')
 		now = now_datetime.strftime('%Y%m%dT%H%M%S')
 		description = 'Location Type: {}'.format(self.get_location_type_display())
-		description += '\\n\\n{}'.format(strip_tags(self.description.replace('<br/>', '\\n').replace('.', '. ')))
+		description += '\\n\\n{}'.format(html.unescape(strip_tags(add_line_breaks_after_tags(self.description))))
+		description += '\\n{}'.format(html.unescape(self.credentials))
 
 		content = ''
 		content += 'BEGIN:VCALENDAR\n'
@@ -326,8 +331,8 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		content += 'DTSTART;TZID=America/Chicago:{}\n'.format(start)
 		content += 'DTEND;TZID=America/Chicago:{}\n'.format(end)
 		content += 'SUMMARY:{}\n'.format(summary)
-		content += 'DESCRIPTION:{}\n'.format(reformat_lines(description))
-		content += 'LOCATION:{}\n'.format(reformat_lines(location))
+		content += 'DESCRIPTION:{}\n'.format(reformat_cms_line_breaks(description))
+		content += 'LOCATION:{}\n'.format(reformat_cms_line_breaks(location))
 		content += 'BEGIN:VALARM\n'
 		content += 'ACTION:DISPLAY\n'
 		content += 'DESCRIPTION:{}\n'.format(summary)

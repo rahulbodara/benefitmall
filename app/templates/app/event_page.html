@@ -24,7 +24,9 @@
                     </div>
                 </div>
                 <p>{{ page.description|richtext }}</p>
-                <p><a href="{{ page.get_calendar_url }}">Add to Calendar</a></p>
+                {% if not page.require_registration %}
+                    <p><a href="{{ page.get_calendar_url }}">Add to Calendar</a></p>
+                {% endif %}
                 {% if not page.is_active and page.materials %}
                     <h3 style="font-weight:100">Shared Event Materials</h3>
                     {{ page.materials|richtext }}
