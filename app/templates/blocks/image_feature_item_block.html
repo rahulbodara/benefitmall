@@ -13,7 +13,7 @@
     <div class="{{ cols }}">
         <div class="feature feature-1">
             <img src="{{ image.url }}" alt="{{ image.alt }}">
-            <div class="feature__body boxed boxed--border">
+            <div class="feature__body boxed boxed--border bg--white">
                 <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
                 {% if self.text %}<p class="{{ body_size }}"> {{ self.text }} </p>{% endif %}
                 {% include_block self.link %}
