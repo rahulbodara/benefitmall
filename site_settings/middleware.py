@@ -70,6 +70,7 @@ class SiteSettingsMiddleware:
                 script_src.append("https://*.licdn.com")
                 connect_src.append('https://*.crazyegg.com')
                 script_src.append("https://*.crazyegg.com")
+                img_src.append("https://*.crazyegg.com")
                 img_src.append('https://*.linkedin.com')
                 img_src.append('https://*.adsymptotic.com')
 
