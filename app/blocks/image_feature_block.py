@@ -1,6 +1,6 @@
 from wagtail.core.blocks import StreamBlock, StructBlock, CharBlock, RichTextBlock
 
-from app.choices import IMAGE_FEATURE_CHOICES, COLUMNS_BREAKPOINT_CHOICES, SUBHEAD_SIZE_CHOICES, IMAGE_OVERLAY_CHOICES, IMAGE_INVERT_CHOICES, PARAGRAPH_SIZE_CHOICES, HORIZONTAL_ALIGNMENT_CHOICES, HEADING_SIZE_CHOICES
+from app.choices import IMAGE_FEATURE_CHOICES, COLUMNS_BREAKPOINT_CHOICES_5, SUBHEAD_SIZE_CHOICES, IMAGE_OVERLAY_CHOICES, IMAGE_INVERT_CHOICES, PARAGRAPH_SIZE_CHOICES, HORIZONTAL_ALIGNMENT_CHOICES, HEADING_SIZE_CHOICES
 from app.widgets import CustomRadioSelect
 from .custom_choice_block import CustomChoiceBlock
 from .image_feature_item_block import ImageFeatureItemBlock
@@ -23,8 +23,8 @@ class ImageFeatureBlock(StructBlock):
 
 
     columns = CustomChoiceBlock(
-        choices=COLUMNS_BREAKPOINT_CHOICES,
-        default=COLUMNS_BREAKPOINT_CHOICES[0][0],
+        choices=COLUMNS_BREAKPOINT_CHOICES_5,
+        default=COLUMNS_BREAKPOINT_CHOICES_5[0][0],
         required=True,
         widget=CustomRadioSelect
     )

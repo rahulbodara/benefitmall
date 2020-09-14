@@ -219,6 +219,12 @@ COLUMNS_BREAKPOINT_CHOICES = (
     ('col-md-4 col-sm-12', '3'),
     ('col-md-3 col-sm-6 col-xs-12', '4'),
 )
+COLUMNS_BREAKPOINT_CHOICES_5 = (
+    ('col-md-6 col-sm-12', '2'),
+    ('col-md-4 col-sm-12', '3'),
+    ('col-md-3 col-sm-6 col-xs-12', '4'),
+    ('col-lg-2 col-md-6 col-xs-12', '5'),
+)
 
 IMAGE_SLIDER_ARROW_CHOICES = (
     ('false', 'icon-fa-times'),
