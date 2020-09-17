@@ -14,6 +14,6 @@
 
 <p>{{ event.description|richtext }}</p>
 
-<p>{{ event.credentials }}</p>
+<p>{{ event.credentials|linebreaks }}</p>
 
 <h4><a href="{{ event.get_calendar_url }}">Add to Calendar</a></h4>
