@@ -4243,7 +4243,7 @@ label a {
 p + a:not(.btn) {
   line-height: 2.16666667em;
 }
-.imagebg:not(.image--light) a:not(.btn, .btn__text) {
+.imagebg:not(.image--light) a:not(.btn):not(.btn__text) {
   color: #fff;
   font-weight: 600;
   text-decoration: underline;
