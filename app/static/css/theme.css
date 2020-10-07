@@ -2803,7 +2803,7 @@ a {
 .bg--white p,
 .bg--white span,
 .bg--white ul,
-.bg--white a:not(.btn, .btn__text) {
+.bg--white a:not(.btn):not(.btn__text) {
   color: #000000;
 }
 .bg--white h1,
@@ -2824,7 +2824,7 @@ a {
 .imagebg:not(.image--light) .bg--white p,
 .imagebg:not(.image--light) .bg--white span,
 .imagebg:not(.image--light) .bg--white ul,
-.imagebg:not(.image--light) .bg--white a:not(.btn, .btn__text) {
+.imagebg:not(.image--light) .bg--white a:not(.btn):not(.btn__text) {
   color: #000000;
 }
 .imagebg:not(.image--light) .bg--white h1,

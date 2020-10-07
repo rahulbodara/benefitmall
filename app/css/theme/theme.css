@@ -2824,7 +2824,7 @@ a {
 .imagebg:not(.image--light) .bg--white p,
 .imagebg:not(.image--light) .bg--white span,
 .imagebg:not(.image--light) .bg--white ul,
-.imagebg:not(.image--light) .bg--white a:not(.btn):not(.btn__text) {
+.imagebg:not(.image--light) .bg--white a:not(.btn, .btn__text) {
   color: #000000;
 }
 .imagebg:not(.image--light) .bg--white h1,
@@ -4243,7 +4243,7 @@ label a {
 p + a:not(.btn) {
   line-height: 2.16666667em;
 }
-.imagebg:not(.image--light) a:not(.btn):not(.btn__text) {
+.imagebg:not(.image--light) a:not(.btn, .btn__text) {
   color: #fff;
   font-weight: 600;
   text-decoration: underline;
