@@ -10,13 +10,13 @@ a{
 	color: @color-primary;
 }
 
-&when (@has-primary-1 = true){
+& when (@has-primary-1 = true){
 	.color--primary-1{
 		color: @color-primary-1 !important;
 	}
 }
 
-&when (@has-primary-2 = true){
+& when (@has-primary-2 = true){
 	.color--primary-2{
 		color: @color-primary-2 !important;
 	}
@@ -74,7 +74,7 @@ a{
 
 .bg--white{
 	background: #fff;
-	p,span,ul,a:not(.btn, .btn__text){
+	p,span,ul,a:not(.btn):not(.btn__text){
 		color: @color-body;
 	}
 	h1,h2,h3,h4,h5,h6,i{
@@ -92,7 +92,7 @@ a{
 
 .imagebg:not(.image--light){
 	.bg--white{
-		p,span,ul,a:not(.btn, .btn__text){
+		p,span,ul,a:not(.btn):not(.btn__text){
 			color: @color-body;
 		}
 		h1,h2,h3,h4,h5,h6,i{
@@ -104,7 +104,7 @@ a{
 	}
 }
 
-&when (@has-primary-1 = true){
+& when (@has-primary-1 = true){
 	.bg--primary-1{
 		background: @color-primary-1;
 		p,span,ul,a:not(.btn){
@@ -116,7 +116,7 @@ a{
 	}
 }
 
-&when (@has-primary-2 = true){
+& when (@has-primary-2 = true){
 	.bg--primary-2{
 		background: @color-primary-2;
 		p,span,ul,a:not(.btn){
