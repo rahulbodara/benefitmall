@@ -14,7 +14,7 @@
 
         <div class="row">
             {% for block in self.items %}
-                {% include_block block with layout=self.layout overlay=self.image_overlay cols=self.columns offset=forloop.first invert=self.image_invert heading_size=self.heading_size body_size=self.body_size%}
+                {% include_block block with layout=self.layout overlay=self.image_overlay cols=self.columns offset=forloop.first invert=self.image_invert heading_size=self.heading_size body_size=self.body_size item_alignment=self.item_alignment%}
             {% endfor %}
         </div>
     </div>
