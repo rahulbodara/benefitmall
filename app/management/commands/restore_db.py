@@ -21,8 +21,8 @@ class Command(BaseCommand):
             if confirm != 'YES':
                 return
 
-        os.system('dropdb stack_theme')  # nosec
-        os.system('createdb stack_theme')  # nosec
+        # os.system('dropdb stack_theme')  # nosec
+        # os.system('createdb stack_theme')  # nosec
         os.system('pg_restore --clean --if-exists --no-acl --no-owner -d stack_theme latest.dump')  # nosec
         # Re-own all of the stuff, so it won't give errors on save
 

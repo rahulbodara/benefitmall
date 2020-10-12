@@ -33,6 +33,8 @@ class ImageFeatureBlock(StructBlock):
 
     item_image_invert = CustomChoiceBlock(choices=IMAGE_INVERT_CHOICES, default=IMAGE_INVERT_CHOICES[0][0], required=False, widget=CustomRadioSelect, label='Invert Dark/Light')
 
+    item_alignment = CustomChoiceBlock(choices=HORIZONTAL_ALIGNMENT_CHOICES, default=HORIZONTAL_ALIGNMENT_CHOICES[0][0], required=False, widget=CustomRadioSelect, label='Item Alignment')
+
     heading_size = CustomChoiceBlock(
         choices=SUBHEAD_SIZE_CHOICES,
         default=SUBHEAD_SIZE_CHOICES[0][0],

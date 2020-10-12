@@ -11,7 +11,7 @@
 {#        {% image self.image fill-255x198 as image %}#}
 {#    {% endif %}#}
     <div class="{{ cols }}{% if offset and cols == 'col-lg-2 col-md-6 col-xs-12' %} offset-lg-1{% endif %}">
-        <div class="feature feature-1">
+        <div class="feature feature-1 {{ item_alignment }}">
             <img src="{{ image.url }}" alt="{{ image.alt }}">
             <div class="feature__body boxed boxed--border bg--white">
                 <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
@@ -29,7 +29,7 @@
 {#        {% image self.image fill-255x420 as image %}#}
 {#    {% endif %}#}
     <div class="{{ cols }}">
-        <div class="feature large-overlay text-center imagebg d-flex align-items-center justify-content-center {{ invert }}" data-overlay="{{ overlay }}">
+        <div class="feature large-overlay text-center imagebg d-flex align-items-center justify-content-center {{ item_alignment }} {{ invert }}" data-overlay="{{ overlay }}">
             <div class="background-image-holder">
                 <img alt="{{ image.alt }}" src="{{ image.url }}">
             </div>
@@ -57,7 +57,7 @@
 {#        {% image self.image fill-255x198 as image %}#}
 {#    {% endif %}#}
     <div class="{{ cols }}">
-        <div class="feature">
+        <div class="feature {{item_alignment}}">
             <img src="{{ image.url }}" alt="{{ image.alt }}">
             <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
             {% if self.text %}<p class="{{ body_size }}">{{ self.text }}</p>{% endif %}
