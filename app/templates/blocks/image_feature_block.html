@@ -4,7 +4,7 @@
     <div class="container {{ self.background.size_mode }}">
         {% if self.title_heading or self.title_body %}
             <div class="row">
-                <div class="col-md-12 col-lg-12 col-centered">
+                <div class="col-md-12 col-lg-12">
                     <{{ self.title_heading_size }} class="{{ self.title_alignment }}">{{ self.title_heading }}</{{ self.title_heading_size }}>
                     {% if self.title_body %}{% format_paragraph self.title_body self.title_body_size %}<br>{% endif %}
                 </div>
