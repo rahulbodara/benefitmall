@@ -206,7 +206,7 @@ def get_events(context, page):
 @register.simple_tag()
 def format_tz(tz):
     """
-    Return the abbreviated timezone tag
+    Return the abbreviated timezone formatting
     """
     for tup in TIME_ZONE_CHOICES:
         if tz == tup[0]:
