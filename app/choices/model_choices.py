@@ -5,8 +5,8 @@ EVENT_LOCATION_TYPE_CHOICES = (
 )
 
 TIME_ZONE_CHOICES = (
-    ('US/Eastern', 'EST'),
-    ('US/Central', 'CST'),
-    ('US/Mountain', 'MST'),
-    ('US/Pacific', 'PST'),
+    ('US/Eastern', 'Eastern'),
+    ('US/Central', 'Central'),
+    ('US/Mountain', 'Mountain'),
+    ('US/Pacific', 'Pacific'),
 )

@@ -299,7 +299,7 @@ class EventPageAdmin(ModelAdmin):
     menu_label = 'Events'
     menu_icon = 'fa-calendar'
     exclude_from_explorer = True
-    list_display = ('get_title', 'event_type', 'location_type', 'start_datetime', 'registrations')
+    list_display = ('get_title', 'event_type', 'location_type', 'start_datetime', 'time_zone', 'registrations')
     list_filter = ('location_type', 'event_type', 'address_city', 'address_state', )
     search_fields = ('title', 'address_city', 'address_state', 'description', )
 

@@ -1,10 +1,10 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags app_tags%}
 
 <p>Hi {{ first_name }} {{ last_name }},<br><br>You have been registered for the following <b>{{ event.event_type }}</b> event:</p>
 
 <h2 style="margin-bottom:0px;">{{ event.title }}</h2>
 
-<h3 style="margin-top:0px;">{{ event.start_datetime|date:"F d, Y" }} &bull; {{ event.start_datetime|date:"P T" }}</h3>
+<h3 style="margin-top:0px;">{{ event.start_datetime|date:"F d, Y" }} &bull; {% format_tz page.time_zone %}</h3>
 
 {% if event.get_location_type == 'in_person' %}
     <b>Location:</b><br>

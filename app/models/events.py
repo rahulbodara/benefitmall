@@ -19,6 +19,7 @@ from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, ObjectList,
 from wagtail.core.models import Page, Http404
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
+from wagtail.admin.forms import WagtailAdminPageForm
 from wagtail.admin.widgets import AdminTagWidget
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.images.edit_handlers import ImageChooserPanel
@@ -194,6 +195,23 @@ class EventArchiveIndexPage(RoutablePageMixin, DefaultPage):
 		verbose_name_plural = 'Event Archive Index Pages'
 
 
+# class EventPageForm(WagtailAdminPageForm):
+#
+# 	# def save(self, commit=True):
+# 	# 	page = super().save(commit=False)
+# 	#
+# 	# 	# Set the timezone of the startdatetime to the timezone of the selection
+# 	# 	# get the date time field
+# 	# 	# take date time, replace zone
+# 	# 	# save
+# 	# 	tz = pytz.timezone(page.time_zone)
+# 	# 	page.start_datetime = page.start_datetime.replace(tzinfo=tz)
+# 	#
+# 	# 	if commit:
+# 	# 		page.save()
+# 	# 	return page
+
+
 class EventPage(RoutablePageMixin, DefaultPage):
 	EMAIL_SETTING_CHOICES = (
 		('', '-- Use Default Global Setting --'),
@@ -267,6 +285,8 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		index.SearchField('description'),
 	]
 
+	# base_form_class = EventPageForm
+
 	class Meta:
 		verbose_name = 'Event'
 		verbose_name_plural = 'Events'
@@ -292,10 +312,17 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		location = 'Online' if self.location_type == 'online' else '{}{}{}{}{}'.format(address_line_1, address_line_2, city, state, zipcode)
 		summary = self.title
 		filename = 'Benefit_Mall_{}.ics'.format(self.title.replace(' ', '_'))
+		# Get Timezone to convert to, by default the system is America/Chicago
+		# get central time, since that what the admin is in.
+		central_tz = pytz.timezone('America/Chicago')
+		start_central = self.start_datetime.astimezone(central_tz)
+		#######
+		
 		settings_time_zone = pytz.timezone(self.time_zone)
-		start_datetime = self.start_datetime.astimezone(settings_time_zone)
-		end_datetime = self.get_end_datetime().astimezone(settings_time_zone)
-		now_datetime = datetime.datetime.now().astimezone(settings_time_zone)
+
+		start_datetime = start_central.replace(tzinfo=settings_time_zone)
+		end_datetime = self.get_end_datetime(start_datetime)
+		now_datetime = datetime.datetime.now()
 		start = start_datetime.strftime('%Y%m%dT%H%M%S')
 		end = end_datetime.strftime('%Y%m%dT%H%M%S')
 		now = now_datetime.strftime('%Y%m%dT%H%M%S')
@@ -344,20 +371,20 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		content += 'PRODID:-//benefitmall.com\n'
 		content += 'CALSCALE:GREGORIAN\n'
 		content += 'BEGIN:VTIMEZONE\n'
-		content += 'TZID:{}\n'.format(settings_time_zone)
-		content += 'TZURL:http://tzurl.org/zoneinfo-outlook/{}\n'.format(settings_time_zone)
-		content += 'X-LIC-LOCATION:{}\n'.format(settings_time_zone)
+		content += 'TZID:{}\n'.format(self.time_zone)
+		content += 'TZURL:http://tzurl.org/zoneinfo-outlook/{}\n'.format(self.time_zone)
+		content += 'X-LIC-LOCATION:{}\n'.format(self.time_zone)
 		content += 'BEGIN:DAYLIGHT\n'
-		content += 'TZOFFSETFROM:{}\n'.format(tztable[settings_time_zone]['daylight_offset_from'])
-		content += 'TZOFFSETTO:{}\n'.format(tztable[settings_time_zone]['daylight_offset_to'])
-		content += 'TZNAME:{}\n'.format(tztable[settings_time_zone]['daylight_tzname'])
+		content += 'TZOFFSETFROM:{}\n'.format(tztable[self.time_zone]['daylight_offset_from'])
+		content += 'TZOFFSETTO:{}\n'.format(tztable[self.time_zone]['daylight_offset_to'])
+		content += 'TZNAME:{}\n'.format(tztable[self.time_zone]['daylight_tzname'])
 		content += 'DTSTART:19700308T020000\n'
 		content += 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU\n'
 		content += 'END:DAYLIGHT\n'
 		content += 'BEGIN:STANDARD\n'
-		content += 'TZOFFSETFROM:{}\n'.format(tztable[settings_time_zone]['std_offset_from'])
-		content += 'TZOFFSETTO:{}\n'.format(tztable[settings_time_zone]['std_offset_to'])
-		content += 'TZNAME:{}\n'.format(tztable[settings_time_zone]['std_tzname'])
+		content += 'TZOFFSETFROM:{}\n'.format(tztable[self.time_zone]['std_offset_from'])
+		content += 'TZOFFSETTO:{}\n'.format(tztable[self.time_zone]['std_offset_to'])
+		content += 'TZNAME:{}\n'.format(tztable[self.time_zone]['std_tzname'])
 		content += 'DTSTART:19701101T020000\n'
 		content += 'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU\n'
 		content += 'END:STANDARD\n'
@@ -365,8 +392,8 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		content += 'BEGIN:VEVENT\n'
 		content += 'DTSTAMP:{}\n'.format(now)
 		content += 'UID:{}-{}@benefitmall.com\n'.format(now, hash(self.title))
-		content += 'DTSTART;TZID={}:{}\n'.format(settings_time_zone, start)
-		content += 'DTEND;TZID={}:{}\n'.format(settings_time_zone, end)
+		content += 'DTSTART;TZID={}:{}\n'.format(self.time_zone, start)
+		content += 'DTEND;TZID={}:{}\n'.format(self.time_zone, end)
 		content += 'SUMMARY:{}\n'.format(summary)
 		content += 'DESCRIPTION:{}\n'.format(reformat_cms_line_breaks(description))
 		content += 'LOCATION:{}\n'.format(reformat_cms_line_breaks(location))
@@ -411,10 +438,13 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		site_id, root_url, page_path = url_parts
 		return root_url + page_path + 'calendar/'
 
-	def get_end_datetime(self):
+	def get_end_datetime(self, dt=None):
 		hours, minutes = str(self.duration).split('.')
-		return self.start_datetime + datetime.timedelta(hours=int(hours), minutes=int(minutes)/100 * 60)
-		
+		start = self.start_datetime
+		if dt:
+			start = dt
+		return start + datetime.timedelta(hours=int(hours), minutes=int(minutes)/100 * 60)
+
 	def is_active(self):
 		central_timezone = pytz.timezone('America/Chicago')
 		return self.get_end_datetime().replace(tzinfo=central_timezone) > datetime.datetime.now().replace(tzinfo=central_timezone)
