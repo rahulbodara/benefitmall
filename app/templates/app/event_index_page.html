@@ -63,7 +63,7 @@
                                 <h5>{{ event.event_type }}</h5>
                                 <h4>
                                     <span class="type--bold">{{ event.start_datetime|date:'M d, Y' }}</span><br>
-                                    {{ event.start_datetime|date:'g:i A' }} - {{ event.get_end_datetime|date:'g:i A' }} {{ event.time_zone }}<br>
+                                    {{ event.start_datetime|date:'g:i A' }} - {{ event.get_end_datetime|date:'g:i A' }} {% format_tz event.time_zone %}<br>
                                     {% if event.location_type == 'online' %}Online{% else %}
                                     {{ event.address_city }}, {{ event.address_state }}
                                     {% endif %}
@@ -117,7 +117,7 @@
                             <h5>{{ event.event_type }}</h5>
                             <br>
                             <h4>
-                                {{ event.start_datetime|date:'g:i A' }} - {{ event.get_end_datetime|date:'g:i A' }} {% format_tz page.time_zone %}<br>
+                                {{ event.start_datetime|date:'g:i A' }} - {{ event.get_end_datetime|date:'g:i A' }} {% format_tz event.time_zone %}<br>
                                 Location: {{ event.get_location_type_display }}
                             </h4>
                             <br>
