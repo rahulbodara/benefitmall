@@ -19,7 +19,6 @@ from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, ObjectList,
 from wagtail.core.models import Page, Http404
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
-from wagtail.admin.forms import WagtailAdminPageForm
 from wagtail.admin.widgets import AdminTagWidget
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.images.edit_handlers import ImageChooserPanel
@@ -195,23 +194,6 @@ class EventArchiveIndexPage(RoutablePageMixin, DefaultPage):
 		verbose_name_plural = 'Event Archive Index Pages'
 
 
-# class EventPageForm(WagtailAdminPageForm):
-#
-# 	# def save(self, commit=True):
-# 	# 	page = super().save(commit=False)
-# 	#
-# 	# 	# Set the timezone of the startdatetime to the timezone of the selection
-# 	# 	# get the date time field
-# 	# 	# take date time, replace zone
-# 	# 	# save
-# 	# 	tz = pytz.timezone(page.time_zone)
-# 	# 	page.start_datetime = page.start_datetime.replace(tzinfo=tz)
-# 	#
-# 	# 	if commit:
-# 	# 		page.save()
-# 	# 	return page
-
-
 class EventPage(RoutablePageMixin, DefaultPage):
 	EMAIL_SETTING_CHOICES = (
 		('', '-- Use Default Global Setting --'),
@@ -317,7 +299,7 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		central_tz = pytz.timezone('America/Chicago')
 		start_central = self.start_datetime.astimezone(central_tz)
 		#######
-		
+
 		settings_time_zone = pytz.timezone(self.time_zone)
 
 		start_datetime = start_central.replace(tzinfo=settings_time_zone)
