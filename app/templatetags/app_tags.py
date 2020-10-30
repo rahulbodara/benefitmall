@@ -11,6 +11,7 @@ from wagtail.core.models import Site
 from app.models import BlogPage, EventPage, NewsPage, Person, Division
 from app.choices.block_edit_choices import BIO_LAYOUT_CHOICES, SUBHEAD_SIZE_CHOICES
 from app.wagtail_hooks import HeaderFooter
+from app.choices.model_choices import TIME_ZONE_CHOICES
 
 register = template.Library()
 
@@ -200,3 +201,13 @@ def get_events(context, page):
     except EmptyPage:
         events = paginator.page(paginator.num_pages)  # Return last page
     return events
+
+
+@register.simple_tag()
+def format_tz(tz):
+    """
+    Return the abbreviated timezone formatting
+    """
+    for tup in TIME_ZONE_CHOICES:
+        if tz == tup[0]:
+            return tup[1]
