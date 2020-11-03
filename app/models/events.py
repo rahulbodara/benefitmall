@@ -408,7 +408,9 @@ class EventPage(RoutablePageMixin, DefaultPage):
 			base_page = self.get_parent()
 		else:
 			base_page = self.get_parent().specific.get_archive_page()
-		return '{}{}{}/'.format(base_page.url, self.start_datetime.strftime('%Y/%m/%d/'), self.slug)
+		central_tz = pytz.timezone('America/Chicago')
+		start_central = self.start_datetime.astimezone(central_tz)
+		return '{}{}{}/'.format(base_page.url, start_central.strftime('%Y/%m/%d/'), self.slug)
 
 	def get_full_url(self, request=None):
 		url_parts = self.get_url_parts(request=request)
