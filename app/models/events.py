@@ -217,6 +217,8 @@ class EventPage(RoutablePageMixin, DefaultPage):
 	image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+', help_text='Recommended size: 350 W x 220 H')
 	materials = RichTextField(blank=True, null=True, help_text='Content displayed when event is over')
 	credentials = models.TextField(blank=True)
+	capacity = models.PositiveIntegerField(blank=True, null=True, default=100, help_text="The max number of event registrants")
+	close_registration = models.BooleanField(default=False, help_text="To close an event's registration")
 
 	email_setting = models.CharField(verbose_name='Send Registration Email', max_length=20, choices=EMAIL_SETTING_CHOICES, default='', blank=True, help_text='Select a setting for sending registration emails. This overrides the default global setting')
 	email_recipients = models.CharField(verbose_name='Email Recipients', max_length=200, null=True, blank=True, help_text='Add registration email recipients separated by commas. This overrides the default global setting.')
@@ -228,8 +230,10 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		], heading="Email Settings", classname='collapsible collapsed'),
 		MultiFieldPanel([
 			FieldPanel('event_type'),
+			FieldPanel('capacity'),
 			FieldRowPanel([
 				FieldPanel('require_registration'),
+				FieldPanel('close_registration'),
 				FieldPanel('cost'),
 			]),
 			FieldPanel('start_datetime'),
@@ -397,6 +401,8 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		events = EventIndexPage.objects.first()
 		if self.email_setting == 'enabled' and not (self.email_recipients or events.email_recipients_global):
 			errors['email_recipients'] = ErrorList(['Email Recipients is required here or globally when Send Registration Emails is enabled'])
+		if self.require_registration and (self.capacity == None or self.capacity == 0):
+			errors['capacity'] = ErrorList(['The event capacity is required, it must be an positive integer greater than zero'])
 		if len(errors) > 0:
 			raise ValidationError(errors)
 
@@ -433,6 +439,12 @@ class EventPage(RoutablePageMixin, DefaultPage):
 		central_timezone = pytz.timezone('America/Chicago')
 		return self.get_end_datetime().replace(tzinfo=central_timezone) > datetime.datetime.now().replace(tzinfo=central_timezone)
 
+	def has_reached_capacity(self):
+		registrations = EventRegistration.objects.filter(event=self).count()
+		print(registrations)
+		if registrations < self.capacity:
+			return False
+		return True
 
 class EventRegistration(models.Model):
 	event = models.ForeignKey(EventPage, on_delete=models.PROTECT, null=True, blank=True, related_name='registered_event')
@@ -467,6 +479,15 @@ class EventRegistration(models.Model):
 		], heading="Registration"),
 	]
 
+	def clean(self):
+		super().clean()
+		errors = {}
+
+		existing_registration = EventRegistration.objects.filter(event=self.event, email=self.email).exists()
+		if existing_registration:
+			errors['email'] = ErrorList(['This email has already been registered for this event'])
+		if len(errors) > 0:
+			raise ValidationError(errors)
 
 class EventRegistrationForm(ModelForm):
 
