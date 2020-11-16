@@ -38,6 +38,11 @@
                         <h3 style="font-weight:100">Thanks for registering!</h3>
                         <p>We have sent you a confirmation email with event details.</p>
                     {% else %}
+                        {% if page.require_registration and page.close_registration %}
+                            Sorry, this event is no longer accepting registration
+                        {% elif page.has_reached_capacity %}
+                            Sorry, this event has reached max capacity
+                        {% else %}
                         <form action="" method="post" class="row mx-0">
                             <h3 style="font-weight:100">Register for Event</h3>
 
@@ -70,6 +75,7 @@
                                 <button type="submit" class="btn btn--primary type--uppercase">Register</button>
                             </div>
                         </form>
+                        {% endif %}
                     {% endif %}
                 </div>
             {% endif %}
