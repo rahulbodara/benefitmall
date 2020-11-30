@@ -71,6 +71,11 @@
                                 {% if event.summary %}
                                     <h6 class="lead">{{ event.summary }}</h6>
                                 {% endif %}
+                                {% if event.require_registration and event.close_registration %}
+                                    <h5 class="type--bold">Sorry, this event is closed.</h5>
+                                {% elif event.require_registration and event.has_reached_capacity %}
+                                    <h5 class="type--bold">Sorry, this event has reached max capacity.</h5>
+                                {% else %}
                                 <a href="{{ event.get_url }}" class="btn btn--primary">
                                     <span class="btn__text">
                                         {% if page.archive %}
@@ -82,6 +87,7 @@
                                         {% endif %}
                                     </span>
                                 </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -121,6 +127,11 @@
                                 Location: {{ event.get_location_type_display }}
                             </h4>
                             <br>
+                            {% if event.require_registration and event.close_registration %}
+                                <h5 class="type--bold">Sorry, this event is closed.</h5>
+                            {% elif event.require_registration and event.has_reached_capacity %}
+                                <h5 class="type--bold">Sorry, this event has reached max capacity.</h5>
+                            {% else %}
                             <a href="{{ event.get_url }}" class="btn btn--sm btn--primary">
                                 <span class="btn__text">
                                     {% if page.archive %}
@@ -132,6 +143,7 @@
                                     {% endif %}
                                 </span>
                             </a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-lg-6">
