@@ -39,9 +39,9 @@
                         <p>We have sent you a confirmation email with event details.</p>
                     {% else %}
                         {% if page.require_registration and page.close_registration %}
-                            Sorry, this event is no longer accepting registration
+                            Sorry, this event is closed.
                         {% elif page.has_reached_capacity %}
-                            Sorry, this event has reached max capacity
+                            Sorry, this event has reached max capacity.
                         {% else %}
                         <form action="" method="post" class="row mx-0">
                             <h3 style="font-weight:100">Register for Event</h3>

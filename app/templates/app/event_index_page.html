@@ -71,11 +71,6 @@
                                 {% if event.summary %}
                                     <h6 class="lead">{{ event.summary }}</h6>
                                 {% endif %}
-                                {% if event.require_registration and event.close_registration %}
-                                    Sorry, this event is no longer accepting registration
-                                {% elif event.require_registration and event.has_reached_capacity %}
-                                    Sorry, this event has reached max capacity
-                                {% else %}
                                 <a href="{{ event.get_url }}" class="btn btn--primary">
                                     <span class="btn__text">
                                         {% if page.archive %}
@@ -87,7 +82,6 @@
                                         {% endif %}
                                     </span>
                                 </a>
-                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -127,11 +121,6 @@
                                 Location: {{ event.get_location_type_display }}
                             </h4>
                             <br>
-                            {% if event.require_registration and event.close_registration %}
-                                Sorry, this event is no longer accepting registration
-                            {% elif event.require_registration and event.has_reached_capacity %}
-                                Sorry, this event has reached max capacity
-                            {% else %}
                             <a href="{{ event.get_url }}" class="btn btn--sm btn--primary">
                                 <span class="btn__text">
                                     {% if page.archive %}
@@ -143,7 +132,6 @@
                                     {% endif %}
                                 </span>
                             </a>
-                            {% endif %}
                         </div>
                     </div>
                     <div class="col-lg-6">
