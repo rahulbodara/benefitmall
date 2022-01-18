@@ -58,8 +58,12 @@
 {#    {% endif %}#}
     <div class="{{ cols }} col-centered">
         <div class="feature {{item_alignment}}">
-            <img src="{{ image.url }}" alt="{{ image.alt }}">
-            <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
+            <a href="{{ self.link.page.url }}">
+                <img src="{{ image.url }}" alt="{{ image.alt }}">
+            </a>
+            <a href="{{ self.link.page.url }}">
+                <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
+            </a>
             {% if self.text %}<p class="{{ body_size }}">{{ self.text }}</p>{% endif %}
             {% include_block self.link %}
         </div>
