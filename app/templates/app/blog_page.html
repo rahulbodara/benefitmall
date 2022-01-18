@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-8">
-                    <article>
+                    <article style="margin-bottom: 20px;">
                         <div class="article__title">
                             <h1 class="h2">{{ page.title }}</h1>
                             {% if page.author %}<div class="type--bold">by {{ page.author }}</div>{% endif %}
@@ -37,20 +37,25 @@
                             {% endif %}
                         </div>
 
-                        <div class="article__share text-center">
+                        <div class="text-center">
                             <a class="btn" href="{{ page.get_parent.url }}">
                                 <span class="btn__text">&laquo; Back</span>
-                            </a>
-
-                            <a class="btn bg--facebook btn--icon popup" href="https://www.facebook.com/sharer/sharer.php?u={{ page.get_site.root_url }}{{ page.get_url }}">
-                                <span class="btn__text"><i class="socicon socicon-facebook"></i>SHARE ON FACEBOOK</span>
-                            </a>
-                            <a class="btn bg--twitter btn--icon popup" href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ page.get_site.root_url }}{{ page.get_url }}">
-                                <span class="btn__text"><i class="socicon socicon-twitter"></i>SHARE ON TWITTER</span>
                             </a>
                         </div>
                     </article>
                 </div>
+                <div class="text-center">
+                    <a class="btn bg--facebook btn--icon popup" href="https://www.facebook.com/sharer/sharer.php?u={{ page.get_site.root_url }}{{ page.get_url }}">
+                        <span class="btn__text"><i class="socicon socicon-facebook"></i>SHARE ON FACEBOOK</span>
+                    </a>
+                    <a class="btn bg--twitter btn--icon popup" href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ page.get_site.root_url }}{{ page.get_url }}">
+                        <span class="btn__text"><i class="socicon socicon-twitter"></i>SHARE ON TWITTER</span>
+                    </a>
+                    <a class="btn bg--linkedin btn--icon popup" href="https://www.linkedin.com/sharing/share-offsite/?url={{ page.get_site.root_url }}{{ page.get_url }}">
+                        <span class="btn__text"><i class="socicon socicon-linkedin"></i>SHARE ON LINKEDIN</span>
+                    </a>
+                </div>
+
             </div>
         </div>
     </section>
