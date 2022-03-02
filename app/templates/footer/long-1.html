@@ -1,4 +1,4 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 <footer class="space--sm footer-2">
     <div class="container">
         <div class="row">
@@ -17,23 +17,28 @@
                 {% endif %}
             </div>
             <div class="col-sm-6 text-right text-left-xs">
-                <ul class="social-list list-inline list--hover">
-                    {% if social_linkedin %}
-                        <li><a href="{{ social_linkedin }}"><i class="socicon socicon-linkedin icon icon--sm"></i></a></li>
-                    {% endif %}
-                    {% if social_twitter %}
-                        <li><a href="{{ social_twitter }}"><i class="socicon socicon-twitter icon icon--sm"></i></a></li>
-                    {% endif %}
-                    {% if social_facebook %}
-                        <li><a href="{{ social_facebook }}"><i class="socicon socicon-facebook icon icon--sm"></i></a></li>
-                    {% endif %}
-                    {% if social_instagram %}
-                        <li><a href="{{ social_instagram }}"><i class="socicon socicon-instagram icon icon--sm"></i></a></li>
-                    {% endif %}
-                    {% if social_youtube %}
-                        <li><a href="{{ social_youtube }}"><i class="socicon socicon-youtube icon icon--sm"></i></a></li>
-                    {% endif %}
-                 </ul>
+                <div class="row d-flex align-items-center">
+                    <div class="col-sm-12 col-md-6">
+                        <a href="/"> <img class="logo" alt="logo" src="{{ logo_url }}"></a>
+                    </div>
+                    <ul class="col-sm-12 col-md-6 social-list list-inline list--hover">
+                        {% if social_linkedin %}
+                            <li><a href="{{ social_linkedin }}"><i class="socicon socicon-linkedin icon icon--sm"></i></a></li>
+                        {% endif %}
+                        {% if social_twitter %}
+                            <li><a href="{{ social_twitter }}"><i class="socicon socicon-twitter icon icon--sm"></i></a></li>
+                        {% endif %}
+                        {% if social_facebook %}
+                            <li><a href="{{ social_facebook }}"><i class="socicon socicon-facebook icon icon--sm"></i></a></li>
+                        {% endif %}
+                        {% if social_instagram %}
+                            <li><a href="{{ social_instagram }}"><i class="socicon socicon-instagram icon icon--sm"></i></a></li>
+                        {% endif %}
+                        {% if social_youtube %}
+                            <li><a href="{{ social_youtube }}"><i class="socicon socicon-youtube icon icon--sm"></i></a></li>
+                        {% endif %}
+                     </ul>
+                </div>
             </div>
         </div>
     </div>
