@@ -9705,4 +9705,12 @@ a.carrier-link {
   width: 100%;
   background: white;
 }
+.footer-logo {
+  max-width: 195px;
+}
+@media (max-width: 724px) {
+  .footer-logo {
+    justify-self: center;
+  }
+}
 /*# sourceMappingURL=theme.css.map */
