@@ -18,8 +18,10 @@ $(function () {
             var windowTop = $(window).scrollTop();
             console.log(stickyBottom)
             if (stickyBottom < windowTop) {
+                $(".nav-placeholder").height($(".navigation").outerHeight());
                 $('.navigation').css('position', 'fixed').css('top', '0');
             } else {
+                $(".nav-placeholder").height(0);
                 $('.navigation').css('position', 'relative').css('top', 'unset');
             }
         });
