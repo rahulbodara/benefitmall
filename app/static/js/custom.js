@@ -25,6 +25,9 @@ $(function () {
                 $('.navigation').css('position', 'relative').css('top', 'unset');
             }
         });
+        $('.notification-close-cross').click(function () {
+            $('.custom-notification').css('display', 'none')
+        })
     });
 
     /**************************************************************************************************/

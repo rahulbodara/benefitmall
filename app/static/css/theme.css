@@ -9713,4 +9713,12 @@ a.carrier-link {
     justify-self: center;
   }
 }
+.notification-close-cross {
+  height: 20px;
+  line-height: 0;
+  width: 20px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+}
 /*# sourceMappingURL=theme.css.map */

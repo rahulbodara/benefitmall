@@ -1,10 +1,10 @@
 {#<div class="{{ notification.text_alignment }} notification {{ notification.location }} {{ notification.size }} notification--reveal" data-animation="{% if 'pos-top' in notification.location %}from-top{% else %}from-bottom{% endif %}">#}
 <div class="custom-notification {{ notification.text_alignment }} {{ notification.background_color }}" >
-    <div class="container">
+    <div class="container d-flex justify-content-center align-items-center">
+        <button class="btn notification-close-cross mr-5">X</button>
         {% if notification.header %}
             <h5>{{ notification.header }}</h5>
         {% endif %}
         {{ notification.body | safe }}
     </div>
-<div class="notification-close-cross notification-close"></div>
 </div>
