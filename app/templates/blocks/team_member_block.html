@@ -17,13 +17,13 @@
                     {% format_paragraph self.body self.body_size %}
                     <ul class="social-list list-inline list--hover">
                         {% if self.social_mail %}
-                            <li class="list-inline-item"><a href="mailto:{{ self.social_mail }}"><i class="socicon socicon-mail icon icon--xs"></i></a></li>
+                            <li class="list-inline-item"><a href="mailto:{{ self.social_mail }}" target="_blank"><i class="socicon socicon-mail icon icon--xs"></i></a></li>
                         {% endif %}
                         {% if self.social_facebook %}
-                            <li class="list-inline-item"><a href="{{ self.social_facebook }}"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
+                            <li class="list-inline-item"><a href="{{ self.social_facebook }}" target="_blank"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
                         {% endif %}
                         {% if self.social_instagram %}
-                            <li class="list-inline-item"><a href="{{ self.social_instagram }}"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
+                            <li class="list-inline-item"><a href="{{ self.social_instagram }}" target="_blank"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
                         {% endif %}
                         {% if self.social_twitter %}
                             <li class="list-inline-item"><a href="{{ self.social_twitter }}"><i class="socicon socicon-twitter icon icon--xs"></i></a></li>
