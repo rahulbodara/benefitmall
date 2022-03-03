@@ -30,6 +30,8 @@ HORIZONTAL_ALIGNMENT_CHOICES = (
     ('text-center', 'Align Center'),
     ('text-right', 'Align Right'),
 )
+
+
 class Notification(models.Model):
     size = models.CharField(max_length=50, choices=NOTIFICATION_WIDTH_CHOICES, default=NOTIFICATION_WIDTH_CHOICES[0][0])
     location = models.CharField(max_length=50, choices=NOTIFICATION_LOCATION_CHOICES, default=NOTIFICATION_LOCATION_CHOICES[0][0])

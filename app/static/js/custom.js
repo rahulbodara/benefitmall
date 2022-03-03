@@ -10,6 +10,25 @@ $(function () {
     });
     /**************************************************************************************************/
 
+    // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+    $(document).ready(function() {
+        var stickyBottom = $('.navigation').offset().top + $('.navigation').height();
+
+        $(window).scroll(function() {
+            var windowTop = $(window).scrollTop();
+            console.log(stickyBottom)
+            if (stickyBottom < windowTop) {
+                $(".nav-placeholder").height($(".navigation").outerHeight());
+                $('.navigation').css('position', 'fixed').css('top', '0');
+            } else {
+                $(".nav-placeholder").height(0);
+                $('.navigation').css('position', 'relative').css('top', 'unset');
+            }
+        });
+        $('.notification-close-cross').click(function () {
+            $('.custom-notification').css('display', 'none')
+        })
+    });
 
     /**************************************************************************************************/
     // Image caption insert
