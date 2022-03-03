@@ -158,8 +158,8 @@ class SiteSettingsMiddleware:
 
             # Add media urls
             if settings.MEDIA_URL.startswith('http'):
-                connect_src.append(settings.MEDIA_URL[0:-1])
-                img_src.append(settings.MEDIA_URL[0:-1])
+                connect_src.append(settings.MEDIA_URL)
+                img_src.append(settings.MEDIA_URL)
 
             if settings.STATIC_URL.startswith('http'):
                 connect_src.append(settings.STATIC_URL[0:-1])
