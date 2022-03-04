@@ -17,7 +17,11 @@ from .views import get_page_meta_data
 
 class AbstractBasePage(Page):
     # Hide from sitemap
-    hide_in_sitemap = models.BooleanField(default=False, verbose_name="Hide in sitemap", help_text="Don't show this page in the sitemap.")
+    hide_in_sitemap = models.BooleanField(default=False, verbose_name="Hide in sitemap",
+                                          help_text="Don't show this page in the sitemap.")
+    # Add Contact Form
+    include_contact_form = models.BooleanField(default=False, verbose_name="Attach Contact Form",
+                                               help_text="Attach Contact Form To Bottom of Page")
     # SEO Metadata Fields
     canonical_url = models.CharField(
         max_length=255, blank=True, null=True,
@@ -50,6 +54,7 @@ class AbstractBasePage(Page):
             FieldRowPanel([
                 FieldPanel('show_in_menus'),
                 FieldPanel('hide_in_sitemap'),
+                FieldPanel('include_contact_form'),
             ]),
             FieldPanel('canonical_url'),
             FieldPanel('seo_title'),
@@ -84,6 +89,9 @@ class AbstractBasePage(Page):
 class AbstractBaseEmailForm(AbstractEmailForm):
     # Hide from sitemap
     hide_in_sitemap = models.BooleanField(default=False, verbose_name="Hide this page from the sitemap?")
+    # Add Contact Form
+    include_contact_form = models.BooleanField(default=False, verbose_name="Attach Contact Form",
+                                               help_text="Attach Contact Form To Bottom of Page")
     # SEO Metadata Fields
     canonical_url = models.CharField(
         max_length=255, blank=True, null=True,
@@ -116,6 +124,7 @@ class AbstractBaseEmailForm(AbstractEmailForm):
             FieldRowPanel([
                 FieldPanel('show_in_menus'),
                 FieldPanel('hide_in_sitemap'),
+                FieldPanel('include_contact_form')
             ]),
             FieldPanel('canonical_url'),
             FieldPanel('seo_title'),

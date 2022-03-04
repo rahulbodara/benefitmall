@@ -8,10 +8,11 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from wagtail.core.models import Site
 
-from app.models import BlogPage, EventPage, NewsPage, Person, Division
+from app.models import BlogPage, EventPage, NewsPage, Person, Division, ContactPage, State
 from app.choices.block_edit_choices import BIO_LAYOUT_CHOICES, SUBHEAD_SIZE_CHOICES
 from app.wagtail_hooks import HeaderFooter
 from app.choices.model_choices import TIME_ZONE_CHOICES
+
 
 register = template.Library()
 
@@ -211,3 +212,22 @@ def format_tz(tz):
     for tup in TIME_ZONE_CHOICES:
         if tz == tup[0]:
             return tup[1]
+
+
+@register.simple_tag()
+def get_contact_form():
+    page = ContactPage.objects.first()
+
+    topics_list = page.topics.replace('"', '').split(',')
+    topic_choices = [(topic, topic) for topic in topics_list]
+    state_choices = [
+        ('{} - {}'.format(state.name, state.abbreviation), '{} - {}'.format(state.name, state.abbreviation)) for state
+        in State.objects.all()]
+
+    context = {
+        'topics': topic_choices,
+        'states': state_choices,
+        'page': page,
+    }
+    return context
+
