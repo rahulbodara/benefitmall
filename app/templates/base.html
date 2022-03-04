@@ -1,4 +1,4 @@
-{% load static wagtailuserbar navigation_tags sitesettings wagtailuserbar %}
+{% load static wagtailuserbar navigation_tags sitesettings wagtailuserbar app_tags %}
 <!doctype html>
 <html lang="en">
     <head>
@@ -36,6 +36,10 @@
 		<div class="main-container">
 			{% block content %}
 			{% endblock %}
+            {% if page.include_contact_form  %}
+                {% get_contact_form as form_page %}
+                {% include 'forms/form_widget.html' with page=form_page %}
+            {% endif %}
 			<!-- FOOTER -->
             {% render_footer %}
 			<!-- END FOOTER -->
