@@ -10,7 +10,7 @@ from wagtail.core.models import Page
 from django.utils.safestring import mark_safe
 from datetime import datetime
 register = template.Library()
-
+hard_exclude_in_sitemap = ['EventPage', 'BlogPage', 'NewsPage']
 @register.simple_tag(takes_context=True)
 def get_site_root(context):
     return context['request'].site.root_page
@@ -46,7 +46,7 @@ def get_page_items(parent, context):
     ret = '<ul>'
     children = Page.objects.child_of(parent).live().specific()
     for page in children:
-        if not page.hide_in_sitemap:
+        if not page.hide_in_sitemap and page.specific.__class__.__name__ not in hard_exclude_in_sitemap:
             ret += '<li><a href="{1}">{0}</a>'.format(
                 escape(page.title),
                 get_path(page, context)
