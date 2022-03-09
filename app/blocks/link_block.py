@@ -49,10 +49,10 @@ class LinkBlockStructValue(StructValue):
 
     def target(self):
         link_type = self.get('link_type')
-        if link_type == 'document' or 'url':
+        if link_type == 'document' or link_type == 'url':
             return '_blank'
         else:
-            return ''
+            return '_self'
 
 class LinkBlock(StructBlock):
     link_type = CustomChoiceBlock(label='Type', choices=LINK_TYPE_CHOICES, default=LINK_TYPE_CHOICES[0][0], required=False, widget=CustomRadioSelect)
