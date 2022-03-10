@@ -74,7 +74,7 @@ class ContactPage(DefaultPage):
 
 				topic_index = topics_list.index(topic)
 				recipient = self.email_recipients.split(',')[topic_index]
-
+				recipient_list = recipient.split('/')
 				print('RECIPIENTS:', topic_index, self.email_recipients.split(','))
 				# Email to BenefitMall
 				message = render_to_string('emails/contact_form_message.txt', context)
@@ -82,7 +82,7 @@ class ContactPage(DefaultPage):
 				send_mail(
 					subject=self.email_subject,
 					from_email=self.email_from,
-					recipient_list=[recipient],
+					recipient_list=recipient_list,
 					message=message,
 					html_message=message_html
 				)
