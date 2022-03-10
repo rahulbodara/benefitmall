@@ -25,6 +25,9 @@ from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBl
 
 from app.models import EventPage, EventRegistration, NewsPage, BlogPage, Notification, BusinessType, State, Division, Person, Location
 
+from django.utils.html import escape
+from wagtail.core import hooks
+from wagtail.core.rich_text import LinkHandler
 
 @register_setting(icon='cogs')
 class HeaderFooter(BaseSetting):
@@ -465,3 +468,16 @@ class PeoplePlacesAdminGroup(ModelAdminGroup):
 
 modeladmin_register(PeoplePlacesAdminGroup)
 
+
+class NewWindowExternalLinkHandler(LinkHandler):
+    identifier = 'external'
+
+    @classmethod
+    def expand_db_attributes(cls, attrs):
+        href = attrs["href"]
+        return '<a href="%s" target="_blank">' % escape(href)
+
+
+@hooks.register('register_rich_text_features')
+def register_external_link(features):
+    features.register_link_type(NewWindowExternalLinkHandler)
