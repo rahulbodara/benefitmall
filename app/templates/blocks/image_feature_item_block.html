@@ -56,8 +56,8 @@
 {#    {% else %}{# 4 #}
 {#        {% image self.image fill-255x198 as image %}#}
 {#    {% endif %}#}
-    <div class="{{ cols }} col-centered">
-        <div class="feature {{item_alignment}}">
+    <div class="{{ cols }}">
+        <div class="feature {{ item_alignment }}">
             <a href="{{ self.link.page.url }}">
                 <img src="{{ image.url }}" alt="{{ image.alt }}">
             </a>
