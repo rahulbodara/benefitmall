@@ -9701,7 +9701,7 @@ a.carrier-link {
   text-align: center;
 }
 .navigation {
-  z-index: 9999;
+  z-index: 9998;
   width: 100%;
   background: white;
 }

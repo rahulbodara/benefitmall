@@ -1,9 +1,9 @@
 {% load wagtailcore_tags security %}
 {# LIVE CHAT DEPLOYMENT SCRIPT #}
-{#<script type='text/javascript' src='https://c.la1-c1cs-ord.salesforceliveagent.com/content/g/js/48.0/deployment.js'></script>#}
-{#<script type='text/javascript'>#}
-{#liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', '{% get_setting 'CHAT_DEPLOYMENT_ID' %}', '{% get_setting 'CHAT_ORG_ID' %}');#}
-{#</script>#}
+<script type='text/javascript' src='https://c.la1-c1cs-ord.salesforceliveagent.com/content/g/js/48.0/deployment.js'></script>
+<script type='text/javascript'>
+liveagent.init('https://d.la1-c1cs-ord.salesforceliveagent.com/chat', '{% get_setting 'CHAT_DEPLOYMENT_ID' %}', '{% get_setting 'CHAT_ORG_ID' %}');
+</script>
 
 
 {% if header_utility_nav %}
@@ -56,12 +56,12 @@
         </div><!--end of container-->
     </div>
 {% endif %}
-{#<script type="text/javascript">#}
-{#if (!window._laq) { window._laq = []; }#}
-{#window._laq.push(#}
-{#    function(){#}
-{#        liveagent.showWhenOnline('{% get_setting 'CHAT_BUTTON_ID' %}', document.getElementById('liveagent_button_online_{% get_setting 'CHAT_BUTTON_ID' %}'));#}
-{#        liveagent.showWhenOffline('{% get_setting 'CHAT_BUTTON_ID' %}', document.getElementById('liveagent_button_offline_{% get_setting 'CHAT_BUTTON_ID' %}'));#}
-{#    }#}
-{#);#}
-{#</script>#}
+<script type="text/javascript">
+if (!window._laq) { window._laq = []; }
+window._laq.push(
+    function(){
+        liveagent.showWhenOnline('{% get_setting 'CHAT_BUTTON_ID' %}', document.getElementById('liveagent_button_online_{% get_setting 'CHAT_BUTTON_ID' %}'));
+        liveagent.showWhenOffline('{% get_setting 'CHAT_BUTTON_ID' %}', document.getElementById('liveagent_button_offline_{% get_setting 'CHAT_BUTTON_ID' %}'));
+    }
+);
+</script>
