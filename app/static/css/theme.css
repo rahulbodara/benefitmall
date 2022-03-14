@@ -161,7 +161,6 @@ blockquote {
 }
 ul,
 ol {
-  list-style: none;
   line-height: 1.85714286em;
 }
 ul.bullets {
