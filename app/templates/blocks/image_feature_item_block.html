@@ -58,14 +58,20 @@
 {#    {% endif %}#}
     <div class="{{ cols }}">
         <div class="feature {{ item_alignment }}">
-            <a href="{{ self.link.page.url }}">
+            {% if self.link.link_type %}
+                <a href="{{ self.link.href_prefix }}{{ self.link.href }}" target="{{ self.link.target }}">
+                    <img src="{{ image.url }}" alt="{{ image.alt }}">
+                </a>
+                <a href="{{ self.link.href_prefix }}{{ self.link.href }}" target="{{ self.link.target }}">
+                    <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
+                </a>
+                {% if self.text %}<p class="{{ body_size }}">{{ self.text }}</p>{% endif %}
+                {% include_block self.link %}
+            {% else %}
                 <img src="{{ image.url }}" alt="{{ image.alt }}">
-            </a>
-            <a href="{{ self.link.page.url }}">
                 <{{ heading_size }}>{{ self.header }}</{{ heading_size }}>
-            </a>
-            {% if self.text %}<p class="{{ body_size }}">{{ self.text }}</p>{% endif %}
-            {% include_block self.link %}
+                {% if self.text %}<p class="{{ body_size }}">{{ self.text }}</p>{% endif %}
+            {% endif %}
         </div>
     </div>
 {% endif %}
