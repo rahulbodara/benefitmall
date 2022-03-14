@@ -75,6 +75,10 @@ AWS_STORAGE_BUCKET_NAME = env('BUCKETEER_BUCKET_NAME')
 AWS_AUTO_CREATE_BUCKET = False
 AWS_QUERYSTRING_AUTH = False
 
+CHAT_BUTTON_ID = env('CHAT_BUTTON_ID')
+CHAT_DEPLOYMENT_ID = env('CHAT_DEPLOYMENT_ID')
+CHAT_ORG_ID = env('CHAT_ORG_ID')
+
 # AWS cache settings, don't change unless you know what you're doing:
 AWS_EXPIRY = 60 * 60 * 24 * 7
 
