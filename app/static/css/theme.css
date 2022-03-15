@@ -162,6 +162,7 @@ blockquote {
 ul,
 ol {
   line-height: 1.85714286em;
+  padding-left: 40px;
 }
 ul.bullets {
   list-style: inside;
