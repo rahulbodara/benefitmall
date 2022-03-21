@@ -475,6 +475,11 @@ class NewWindowExternalLinkHandler(LinkHandler):
     @classmethod
     def expand_db_attributes(cls, attrs):
         href = attrs["href"]
+        if 'bucketeer' in href:
+            path = href.split('/')[-1]
+            href = 'https://{}.s3.amazonaws.com/public/documents/{}'.format(settings.AWS_STORAGE_BUCKET_NAME, path)
+            return '<a href="%s" target="_blank">' % escape(href)
+
         return '<a href="%s" target="_blank">' % escape(href)
 
 
