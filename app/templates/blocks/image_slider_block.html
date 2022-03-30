@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="slider" data-arrows="{{ self.arrows }}" data-paging="{{ self.paging }}" {% if self.speed %} data-timing="{{ self.speed }}" data-autoplay="true" {% endif %}>
-                            <ul class="slides">
+                            <ul class="slides list-unstyled">
                                 {% for block in self.items %}
                                     {% include_block block with size=self.slider_size %}
                                 {% endfor %}
@@ -23,7 +23,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="slider slider--columns" data-arrows="{{ self.arrows }}" data-paging="{{ self.paging }}" {% if self.speed %} data-timing="{{ self.speed }}" data-autoplay="true" {% endif %}>
-                            <ul class="slides">
+                            <ul class="slides list-unstyled">
                             {% for block in self.items %}
                                 {% include_block block with size=self.slider_size %}
                             {% endfor %}
@@ -38,7 +38,7 @@
                         <div class="col">
 {#                        slider--inline-arrows slider--arrows-hover#}
                             <div class="slider text-center" data-arrows="{{ self.arrows }}" data-paging="{{ self.paging }}" {% if self.speed %} data-timing="{{ self.speed }}" data-autoplay="true" {% endif %}>
-                                <ul class="slides">
+                                <ul class="slides list-unstyled">
                                     {% for block in self.items %}
                                         {% include_block block with size=self.slider_size %}
                                     {% endfor %}
