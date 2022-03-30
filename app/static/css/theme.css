@@ -8719,22 +8719,26 @@ article .article__body > a:first-child > img {
   margin-bottom: 1.85714286em;
 }
 article .article__body p,
-article .article__body ul {
+article .article__body ul,
+article .article__body ol {
   font-size: 1.35714286em;
   line-height: 1.68421053em;
   font-weight: 400;
   color: #1a1a1a;
 }
 article .article__body p:not(:last-child),
-article .article__body ul:not(:last-child) {
+article .article__body ul:not(:last-child),
+article .article__body ol:not(:last-child) {
   margin-bottom: 1.36842105em;
 }
 article .article__body p + .btn:last-child,
-article .article__body ul + .btn:last-child {
+article .article__body ul + .btn:last-child,
+article .article__body ol + .btn:last-child {
   margin-top: 0.92857143em;
 }
 article .article__body p + h5,
-article .article__body ul + h5 {
+article .article__body ul + h5,
+article .article__body ol + h5 {
   margin-top: 2.78571429em;
 }
 article .article__body blockquote {
