@@ -1,0 +1,27 @@
+{% load wagtailcore_tags app_tags %}
+{% podcast_list as podcasts %}
+
+<section class="text-center {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
+    {% include_block self.background %}
+    <div class="container {{ self.background.size_mode }}">
+        <div class="row d-flex align-items-center">
+            {% for podcast in podcasts %}
+                <div class="col-md-4">
+                    <div class="row d-flex align-items-center">
+                            <div class="col-md-6">
+                                <a href="{{ podcast.link }}"><img src="{{ podcast.image.file.url }}" alt="{{ podcast.image.title }}" class="border--round"></a>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="p-0 m-0">{{ podcast.date|date:'F jS, Y' }}</p>
+                                <h4 class="p-0 m-0"><a href="{{ podcast.link }}">{{ podcast.title }}</a></h4>
+                                <p class="p-0 m-0">{{ podcast.description|truncatechars:200 }}</p>
+                            </div>
+                        </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="{{ podcasts.0.get_index }}" class="btn btn-primary">More Podcasts</a>
+        </div>
+    </div>
+</section>

@@ -23,7 +23,7 @@ from app.models import Icon
 from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES, BACKGROUND_MODE_CHOICES_NO_IMAGE, IMAGE_INVERT_CHOICES_LIST, IMAGE_OVERLAY_CHOICES
 from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, HeaderUtilityStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
 
-from app.models import EventPage, EventRegistration, NewsPage, BlogPage, Notification, BusinessType, State, Division, Person, Location
+from app.models import EventPage, EventRegistration, NewsPage, BlogPage, Notification, Podcast, BusinessType, State, Division, Person, Location
 
 from django.utils.html import escape
 from wagtail.core import hooks
@@ -432,6 +432,15 @@ class NotificationAdmin(ModelAdmin):
 
 modeladmin_register(NotificationAdmin)
 
+class PodcastAdmin(ModelAdmin):
+    model = Podcast
+    menu_label = 'Podcasts'
+    menu_icon = 'fa-podcast'
+    list_display = ('date', 'title', 'link')
+    list_filter = ('date', )
+    search_fields = ('title', 'description', )
+
+modeladmin_register(PodcastAdmin)
 
 from app.models.people import BusinessType, State, Division, Person, Location
 

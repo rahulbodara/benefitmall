@@ -8,7 +8,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from wagtail.core.models import Site
 
-from app.models import BlogPage, EventPage, NewsPage, Person, Division, ContactPage, State
+from app.models import BlogPage, EventPage, NewsPage, Person, Division, ContactPage, State, Podcast
 from app.choices.block_edit_choices import BIO_LAYOUT_CHOICES, SUBHEAD_SIZE_CHOICES
 from app.wagtail_hooks import HeaderFooter
 from app.choices.model_choices import TIME_ZONE_CHOICES
@@ -76,6 +76,10 @@ def render_person_list(context, layout=BIO_LAYOUT_CHOICES[0][0], title_size=SUBH
 
     person_list_context = {'people': people, 'layout': layout, 'title_size': title_size}
     return render_to_string('blocks/person_list_item_block.html', context=person_list_context, request=context['request'])
+
+@register.simple_tag()
+def podcast_list():
+    return Podcast.objects.all().order_by('-date')[:3]
 
 
 @register.simple_tag()
