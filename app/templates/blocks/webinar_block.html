@@ -1,28 +1,28 @@
 {% load wagtailcore_tags app_tags %}
-{% podcast_list as podcasts %}
+{% webinar_list as webinars %}
 
 <section class="text-center {{ self.background.classes }}" {{ self.background.data_image_overlay }}>
     {% include_block self.background %}
     <div class="container {{ self.background.size_mode }}">
         <div class="row d-flex align-items-center">
-            {% for podcast in podcasts %}
+            {% for webinar in webinars %}
                 <div class="col-sm-4 hex-webinar-teaser views-row">
                     <div class="views-field views-field-field-article-square-image hex-teaser-image">
                         <div class="field-content">
-                            <img src="{{ podcast.image.file.url }}" width="200" height="230" loading="lazy">
+                            <img src="{{ webinar.image.file.url }}" width="200" height="230" loading="lazy">
                         </div>
                     </div>
                     <div class="views-field views-field-field-tags hex-teaser-badge">
                         <div class="field-content">
-                            <a href="{{ podcast.get_index }}">Podcasts</a>
+                            <a href="{{ webinar.get_index }}">Webinars</a>
                         </div>
                     </div>
                     <div class="views-field views-field-created hex-teaser-text">
                         <span class="field-content">
-                            <a href="{{  podcast.link }}">
+                            <a href="{{  webinar.get_full_url }}">
                                 <span class="news-container">
-                                    <span class="news-date">{{ podcast.date }}</span>
-                                    <h3>{{ podcast.title }}</h3>
+                                    <span class="news-date">{{ webinar.date }}</span>
+                                    <h3>{{ webinar.title }}</h3>
                                 </span>
                             </a>
                         </span>
@@ -31,7 +31,7 @@
             {% endfor %}
         </div>
         <div class="text-center mt-5">
-            <a href="{{ podcasts.0.get_index }}" class="btn btn-primary">More Podcasts</a>
+            <a href="{{ webinars.0.get_index }}" class="btn btn-primary">More Webinars</a>
         </div>
     </div>
 </section>

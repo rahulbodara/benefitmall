@@ -10,25 +10,25 @@
     <section class="space--xs">
         <div class="container">
             <div class="row d-flex align-items-center">
-                {% for podcast in page.podcast %}
+                {% for webinar in page.webinar %}
                     <div class="col-sm-6 hex-webinar-teaser views-row">
                         <div class="views-field views-field-field-article-square-image hex-teaser-image">
                             <div class="field-content">
-                                <img src="{{ podcast.image.file.url }}" width="200" height="230" loading="lazy">
+                                <img src="{{ webinar.image.file.url }}" width="200" height="230" loading="lazy">
                             </div>
                         </div>
                         <div class="views-field views-field-field-tags hex-teaser-badge">
                             <div class="field-content">
-                                <a href="{{ podcast.get_index }}">Podcasts</a>
+                                <a href="{{ webinar.get_index }}">Webinars</a>
                             </div>
                         </div>
                         <div class="views-field views-field-created hex-teaser-text">
                             <span class="field-content">
-                                <a href="{{  podcast.get_full_url }}">
+                                <a href="{{  webinar.get_full_url }}">
                                     <span class="news-container">
-                                        <span class="news-date">{{ podcast.date }}</span>
-                                        <h3>{{ podcast.title }}</h3>
-                                        <span class="news-description">{{ podcast.description|truncatechars:150 }}</span>
+                                        <span class="news-date">{{ webinar.date }}</span>
+                                        <h3>{{ webinar.title }}</h3>
+                                        <span class="news-description">{{ webinar.description|truncatechars:150 }}</span>
                                     </span>
                                 </a>
                             </span>
@@ -39,7 +39,7 @@
                 {% endfor %}
             </div>
 
-            {% if page.podcast.paginator.num_pages > 1 %}
+            {% if page.webinar.paginator.num_pages > 1 %}
                 <div class="pagination">
                     {% if page.podcast.has_previous %}
                         <a style="float:none;" href="?{% query_transform page=page.podcast.previous_page_number %}" class="pagination__prev">« Prev</a>

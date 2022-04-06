@@ -8,10 +8,11 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from wagtail.core.models import Site
 
-from app.models import BlogPage, EventPage, NewsPage, Person, Division, ContactPage, State, Podcast
+from app.models import BlogPage, EventPage, NewsPage, Person, Division, ContactPage, State, Podcast, WebinarPage
 from app.choices.block_edit_choices import BIO_LAYOUT_CHOICES, SUBHEAD_SIZE_CHOICES
 from app.wagtail_hooks import HeaderFooter
 from app.choices.model_choices import TIME_ZONE_CHOICES
+
 
 
 register = template.Library()
@@ -80,6 +81,10 @@ def render_person_list(context, layout=BIO_LAYOUT_CHOICES[0][0], title_size=SUBH
 @register.simple_tag()
 def podcast_list():
     return Podcast.objects.all().order_by('-date')[:3]
+
+@register.simple_tag()
+def webinar_list():
+    return WebinarPage.objects.all().order_by('-date')[:3]
 
 
 @register.simple_tag()

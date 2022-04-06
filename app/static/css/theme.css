@@ -4236,7 +4236,6 @@ p a,
 span a,
 label a {
   font-size: 1em;
-  text-decoration: underline;
   font-weight: 400;
   line-height: 1.85714286em;
 }
@@ -9724,5 +9723,96 @@ a.carrier-link {
   color: #fff;
   font-weight: bold;
   font-size: 20px;
+}
+.hex-webinar-teaser-block {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  text-underline: none;
+}
+.hex-webinar-teaser-block .block-title {
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 140%;
+  letter-spacing: 0.08em;
+  color: rgba(35, 31, 32, 0.6);
+  margin-bottom: 0;
+}
+.hex-webinar-teaser-block .more-link a {
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 120%;
+  color: #000000;
+  float: right;
+  clear: both;
+}
+.views-row.hex-webinar-teaser {
+  margin-top: 30px;
+  position: relative;
+}
+.views-row.hex-webinar-teaser:nth-child(odd) {
+  clear: both;
+}
+@media (min-width: 992px) {
+  .views-row.hex-webinar-teaser {
+    display: flex;
+    height: 230px;
+  }
+}
+.views-row.hex-webinar-teaser .hex-teaser-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.views-row.hex-webinar-teaser .hex-teaser-badge a {
+  background: #1071AD;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 140%;
+  padding: 5px 10px;
+  margin-left: 15px;
+}
+.views-row.hex-webinar-teaser .hex-teaser-image,
+.views-row.hex-webinar-teaser .hex-teaser-image img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+}
+@media (min-width: 992px) {
+  .views-row.hex-webinar-teaser .hex-teaser-image {
+    height: 230px;
+    width: 200px;
+  }
+}
+.views-row.hex-webinar-teaser .hex-teaser-text {
+  margin-bottom: 0;
+  padding: 25px 15px 15px 15px;
+  background-color: lightgrey;
+}
+@media (min-width: 992px) {
+  .views-row.hex-webinar-teaser .hex-teaser-text {
+    width: calc(100% - 200px);
+  }
+}
+.views-row.hex-webinar-teaser .hex-teaser-text .news-date {
+  font-size: 14px;
+  line-height: 140%;
+  color: black;
+}
+.views-row.hex-webinar-teaser .hex-teaser-text h3 {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 140%;
+  color: black;
+  margin-top: 10px;
+}
+.views-row.hex-webinar-teaser .hex-teaser-text .news-description {
+  color: black;
+}
+.views-row.hex-webinar-teaser:last-child {
+  margin-bottom: 30px;
+}
+.hex-tab-pane {
+  margin-top: 10px;
 }
 /*# sourceMappingURL=theme.css.map */

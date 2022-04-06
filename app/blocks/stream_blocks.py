@@ -39,6 +39,7 @@ from .header_footer.footer_block import FooterLinkBlock, FooterButtonBlock, Foot
 from .salesforce.lead_form_block import LeadFormBlock
 from .person_list_block import PersonListBlock
 from .podcast_block import PodcastBlock
+from .webinar_block import WebinarBlock
 
 class DefaultStreamBlock(StreamBlock):
     wysiwyg_block = WYSIWYGBlock()
@@ -73,6 +74,7 @@ class DefaultStreamBlock(StreamBlock):
     recent_news_block = RecentNewsBlock()
     upcoming_events_block = UpcomingEventsBlock()
     podcast_block = PodcastBlock()
+    webinar_block = WebinarBlock()
 
 
 class HeaderLinkStreamBlock(StreamBlock):

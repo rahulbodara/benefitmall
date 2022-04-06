@@ -15,8 +15,8 @@ from app.models import DefaultPage
 from site_settings.models import AbstractBasePage
 
 
-class PodcastIndexPage(DefaultPage):
-    subpage_types = []
+class WebinarIndexPage(DefaultPage):
+    subpage_types = ['app.WebinarPage']
 
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
@@ -29,31 +29,32 @@ class PodcastIndexPage(DefaultPage):
     ])
 
     def serve(self, request, *args, **kwargs):
-        podcast = Podcast.objects.all().order_by('-date')
-        paginator = Paginator(podcast, 12)
+        webinar = WebinarPage.objects.all().order_by('-date')
+        paginator = Paginator(webinar, 12)
         try:
-            self.podcast = paginator.page(request.GET.get('page'))  # Return linked page
+            self.webinar = paginator.page(request.GET.get('page'))  # Return linked page
         except PageNotAnInteger:
-            self.podcast = paginator.page(1)  # Return first page
+            self.webinar = paginator.page(1)  # Return first page
         except EmptyPage:
-            self.podcast = paginator.page(paginator.num_pages)  # Return last page
+            self.webinar = paginator.page(paginator.num_pages)  # Return last page
 
         return Page.serve(self, request, *args, **kwargs)
 
     @classmethod
     def can_create_at(cls, parent):
         # Only allow one child instance
-        return super(PodcastIndexPage, cls).can_create_at(parent) and not cls.objects.exists()
+        return super(WebinarIndexPage, cls).can_create_at(parent) and not cls.objects.exists()
 
 
-class Podcast(models.Model):
+class WebinarPage(DefaultPage):
     date = models.DateTimeField(default=datetime.datetime.today, help_text='Date displayed to the public, not related to scheduled publishing dates')
     image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+')
-    title = models.CharField(max_length=150, help_text='Podcast Title')
-    description = models.CharField(max_length=150, help_text='Short description of the podcast limited to 150 characters')
-    link = models.URLField(help_text='Link to Podcast')
+    description = models.CharField(max_length=150, help_text='Short description of the webinar limited to 150 characters', null=True, blank=True)
+    link = models.URLField(help_text='Link to Webinar')
 
-    panels = [
+    parent_page_type = ['app.WebinarIndexPage']
+
+    content_panels = [
         MultiFieldPanel([
             FieldPanel('title'),
             ImageChooserPanel('image'),
@@ -61,7 +62,14 @@ class Podcast(models.Model):
             FieldPanel('date'),
             FieldPanel('description', widget=forms.Textarea),
         ], heading='Info', classname='collapsible'),
+        StreamFieldPanel('body')
     ]
 
+    edit_handler = TabbedInterface([
+        ObjectList(content_panels, heading='Content'),
+        AbstractBasePage.meta_panels,
+    ])
+
+
     def get_index(self):
-        return PodcastIndexPage.objects.first().get_full_url()
+        return self.get_parent().get_full_url()
