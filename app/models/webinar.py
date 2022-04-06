@@ -52,7 +52,7 @@ class WebinarPage(DefaultPage):
     description = models.CharField(max_length=150, help_text='Short description of the webinar limited to 150 characters', null=True, blank=True)
     link = models.URLField(help_text='Link to Webinar')
 
-    parent_page_type = ['WebinarIndexPage']
+    parent_page_types = ['WebinarIndexPage']
 
     content_panels = [
         MultiFieldPanel([
