@@ -23,7 +23,7 @@ from app.models import Icon
 from app.choices import NAVIGATION_CHOICES, FOOTER_CHOICES, BACKGROUND_MODE_CHOICES_NO_IMAGE, IMAGE_INVERT_CHOICES_LIST, IMAGE_OVERLAY_CHOICES
 from app.blocks.stream_blocks import HeaderLinkStreamBlock, HeaderButtonStreamBlock, HeaderUtilityStreamBlock, FooterLinkStreamBlock, FooterButtonStreamBlock, FooterUtilityLinkStreamBlock, FooterCategoryLinkStreamBlock
 
-from app.models import EventPage, EventRegistration, NewsPage, BlogPage, Notification, BusinessType, State, Division, Person, Location
+from app.models import EventPage, EventRegistration, NewsPage, BlogPage, Notification, Podcast, WebinarPage, BusinessType, State, Division, Person, Location
 
 from django.utils.html import escape
 from wagtail.core import hooks
@@ -432,6 +432,26 @@ class NotificationAdmin(ModelAdmin):
 
 modeladmin_register(NotificationAdmin)
 
+class PodcastAdmin(ModelAdmin):
+    model = Podcast
+    menu_label = 'Podcasts'
+    menu_icon = 'fa-podcast'
+    list_display = ('date', 'title', 'link')
+    list_filter = ('date', )
+    search_fields = ('title', 'description', )
+
+modeladmin_register(PodcastAdmin)
+
+class WebinarAdmin(ModelAdmin):
+    model = WebinarPage
+    menu_label = 'Webinars'
+    menu_icon = 'fa-video-camera'
+    list_display = ('date', 'title')
+    list_filter = ('date', )
+    search_fields = ('title', 'description', )
+
+modeladmin_register(WebinarAdmin)
+
 
 from app.models.people import BusinessType, State, Division, Person, Location
 
@@ -469,20 +489,21 @@ class PeoplePlacesAdminGroup(ModelAdminGroup):
 modeladmin_register(PeoplePlacesAdminGroup)
 
 
-class NewWindowExternalLinkHandler(LinkHandler):
-    identifier = 'external'
-
-    @classmethod
-    def expand_db_attributes(cls, attrs):
-        href = attrs["href"]
-        if 'bucketeer' in href:
-            path = href.split('/')[-1]
-            href = 'https://{}.s3.amazonaws.com/public/documents/{}'.format(settings.AWS_STORAGE_BUCKET_NAME, path)
-            return '<a href="%s" target="_blank">' % escape(href)
-
-        return '<a href="%s" target="_blank">' % escape(href)
-
-
-@hooks.register('register_rich_text_features')
-def register_external_link(features):
-    features.register_link_type(NewWindowExternalLinkHandler)
+# class NewWindowExternalLinkHandler(LinkHandler):
+#     identifier = 'external'
+#
+#     @classmethod
+#     def expand_db_attributes(cls, attrs):
+#         href = attrs["href"]
+#         if 'bucketeer' in href:
+#             path = href.split('/')[-2]
+#             path = '{}/{}'.format(path, href.split('/')[-1])
+#             href = 'https://{}.s3.amazonaws.com/public/{}'.format(settings.AWS_STORAGE_BUCKET_NAME, path)
+#             return '<a href="%s" target="_blank">' % escape(href)
+#
+#         return '<a href="%s" target="_blank">' % escape(href)
+#
+#
+# @hooks.register('register_rich_text_features')
+# def register_external_link(features):
+#     features.register_link_type(NewWindowExternalLinkHandler)
