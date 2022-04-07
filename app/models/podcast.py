@@ -48,7 +48,7 @@ class PodcastIndexPage(DefaultPage):
 
 class Podcast(models.Model):
     date = models.DateTimeField(default=datetime.datetime.today, help_text='Date displayed to the public, not related to scheduled publishing dates')
-    image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+')
+    image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+', help_text='Image Dimensions 200x230px')
     title = models.CharField(max_length=150, help_text='Podcast Title')
     description = models.CharField(max_length=150, help_text='Short description of the podcast limited to 150 characters')
     link = models.URLField(help_text='Link to Podcast')
