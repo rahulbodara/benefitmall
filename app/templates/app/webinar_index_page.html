@@ -28,7 +28,9 @@
                                     <span class="news-container">
                                         <span class="news-date">{{ webinar.date }}</span>
                                         <h3>{{ webinar.title }}</h3>
-                                        <span class="news-description">{{ webinar.description|truncatechars:150 }}</span>
+                                        {% if webinar.description %}
+                                            <span class="news-description">{{ webinar.description|truncatechars:150 }}</span>
+                                        {% endif %}
                                     </span>
                                 </a>
                             </span>
