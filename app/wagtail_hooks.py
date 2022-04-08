@@ -489,21 +489,21 @@ class PeoplePlacesAdminGroup(ModelAdminGroup):
 modeladmin_register(PeoplePlacesAdminGroup)
 
 
-# class NewWindowExternalLinkHandler(LinkHandler):
-#     identifier = 'external'
-#
-#     @classmethod
-#     def expand_db_attributes(cls, attrs):
-#         href = attrs["href"]
-#         if 'bucketeer' in href:
-#             path = href.split('/')[-2]
-#             path = '{}/{}'.format(path, href.split('/')[-1])
-#             href = 'https://{}.s3.amazonaws.com/public/{}'.format(settings.AWS_STORAGE_BUCKET_NAME, path)
-#             return '<a href="%s" target="_blank">' % escape(href)
-#
-#         return '<a href="%s" target="_blank">' % escape(href)
-#
-#
-# @hooks.register('register_rich_text_features')
-# def register_external_link(features):
-#     features.register_link_type(NewWindowExternalLinkHandler)
+class NewWindowExternalLinkHandler(LinkHandler):
+    identifier = 'external'
+
+    @classmethod
+    def expand_db_attributes(cls, attrs):
+        href = attrs["href"]
+        if 'bucketeer' in href:
+            path = href.split('/')[-2]
+            path = '{}/{}'.format(path, href.split('/')[-1])
+            href = 'https://{}.s3.amazonaws.com/public/{}'.format(settings.AWS_STORAGE_BUCKET_NAME, path)
+            return '<a href="%s" target="_blank">' % escape(href)
+
+        return '<a href="%s" target="_blank">' % escape(href)
+
+
+@hooks.register('register_rich_text_features')
+def register_external_link(features):
+    features.register_link_type(NewWindowExternalLinkHandler)
