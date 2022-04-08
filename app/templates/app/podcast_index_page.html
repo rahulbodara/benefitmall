@@ -14,7 +14,7 @@
                     <div class="col-sm-6 hex-webinar-teaser views-row">
                         <div class="views-field views-field-field-article-square-image hex-teaser-image">
                             <div class="field-content">
-                                <img src="{{ podcast.image.file.url }}" width="200" height="230" loading="lazy">
+                                {% image podcast.image fill-200x230 %}
                             </div>
                         </div>
                         <div class="views-field views-field-field-tags hex-teaser-badge">
@@ -24,7 +24,7 @@
                         </div>
                         <div class="views-field views-field-created hex-teaser-text">
                             <span class="field-content">
-                                <a href="{{  podcast.get_full_url }}">
+                                <a href="{{  podcast.link }}">
                                     <span class="news-container">
                                         <span class="news-date">{{ podcast.date }}</span>
                                         <h3>{{ podcast.title }}</h3>

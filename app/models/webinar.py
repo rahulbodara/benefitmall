@@ -10,7 +10,8 @@ from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, StreamField
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
-
+from wagtail.documents.edit_handlers import DocumentChooserPanel
+from app.widgets import CustomRadioSelect
 from app.models import DefaultPage
 from site_settings.models import AbstractBasePage
 
@@ -48,20 +49,17 @@ class WebinarIndexPage(DefaultPage):
 
 class WebinarPage(DefaultPage):
     date = models.DateTimeField(default=datetime.datetime.today, help_text='Date displayed to the public, not related to scheduled publishing dates')
-    image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+')
+    image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+', help_text='Image Dimensions 200x230px')
     description = models.CharField(max_length=150, help_text='Short description of the webinar limited to 150 characters', null=True, blank=True)
-    link = models.URLField(help_text='Link to Webinar')
-
-    parent_page_type = ['app.WebinarIndexPage']
+    parent_page_types = ['WebinarIndexPage']
 
     content_panels = [
         MultiFieldPanel([
             FieldPanel('title'),
             ImageChooserPanel('image'),
-            FieldPanel('link'),
             FieldPanel('date'),
             FieldPanel('description', widget=forms.Textarea),
-        ], heading='Info', classname='collapsible'),
+        ], heading='Info', classname='collapsible webinar-info'),
         StreamFieldPanel('body')
     ]
 
@@ -69,7 +67,6 @@ class WebinarPage(DefaultPage):
         ObjectList(content_panels, heading='Content'),
         AbstractBasePage.meta_panels,
     ])
-
 
     def get_index(self):
         return self.get_parent().get_full_url()
