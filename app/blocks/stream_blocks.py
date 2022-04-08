@@ -71,7 +71,7 @@ class DefaultStreamBlock(StreamBlock):
     # contact_map = ContactMapBlock()
     sitemap = SitemapBlock()
     recent_blogs_block = RecentBlogsBlock()
-    recent_news_block = RecentNewsBlock()
+    # recent_news_block = RecentNewsBlock()
     upcoming_events_block = UpcomingEventsBlock()
     podcast_block = PodcastBlock()
     webinar_block = WebinarBlock()

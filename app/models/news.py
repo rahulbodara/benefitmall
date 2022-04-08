@@ -60,12 +60,10 @@ class NewsIndexPage(RoutablePageMixin, DefaultPage):
 
 class NewsPage(RoutablePageMixin, DefaultPage):
 	news_datetime = models.DateTimeField(verbose_name='Date & Time', help_text="The date and time of the press release.")
-	image = models.ForeignKey('wagtailimages.Image', verbose_name='Image', null=True, on_delete=models.SET_NULL, related_name='+', help_text='Recommended size: 350 W x 220 H')
 
 	content_panels = Page.content_panels + [
 		MultiFieldPanel([
 			FieldPanel('news_datetime'),
-			ImageChooserPanel('image'),
 		], heading="Event"),
 		StreamFieldPanel('body'),
 	]
