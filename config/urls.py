@@ -35,7 +35,6 @@ def return_tile_wide(request):
     return HttpResponse(f.content, content_type="image/png")
 
 
-
 urlpatterns = [
     url(r'', include(site_settings_urls)),
     url('^sitemap\.xml$', sitemap),

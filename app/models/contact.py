@@ -1,18 +1,17 @@
 from django.db import models
 from django import forms
 from django.core.mail import send_mail
-from django.shortcuts import redirect
+from django.shortcuts import redirect 
 from django.template.loader import render_to_string
-
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, ObjectList, StreamFieldPanel, TabbedInterface
 from wagtail.core.models import Page, Http404
 from wagtail.admin.widgets import AdminTagWidget
-
 from app.models import DefaultPage, AbstractBasePage, State
 
 
 class ContactPage(DefaultPage):
+	# template = 'form_widget.html'
 	topics = models.CharField(max_length=1000, help_text='List of form topics. Separated by commas.')
 	email_recipients = models.CharField(verbose_name='Recipients', max_length=1000, help_text='List of email addresses in order of respective topic. Separated by commas.')
 	email_from = models.EmailField(verbose_name='From')
